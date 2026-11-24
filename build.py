@@ -149,6 +149,7 @@ def main():
     messenger = data.get("messenger_url", "").strip()
     instagram = data.get("instagram_url", "").strip()
     tiktok = data.get("tiktok_url", "").strip()
+    youtube = data.get("youtube_url", "").strip()
     google = data.get("google_url", "").strip()
     texting = bool(data.get("text_enabled", True))
     sms_body = "Hi " + data["owner"] + ", I'd like a quote for a car detail."
@@ -170,6 +171,8 @@ def main():
             out.append(("Instagram", "Photos of recent work", esc(instagram), True))
         if tiktok:
             out.append(("TikTok", "Videos of recent work", esc(tiktok), True))
+        if youtube:
+            out.append(("YouTube", "Videos of recent work", esc(youtube), True))
         if google:
             out.append(("Google", "Reviews and business listing", esc(google), True))
         return out
@@ -211,7 +214,7 @@ def main():
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"]}}
         for s in services
     ]
-    same_as = [u for u in (data["facebook_url"], instagram, tiktok, google) if u]
+    same_as = [u for u in (data["facebook_url"], instagram, tiktok, youtube, google) if u]
     ld["sameAs"] = same_as
     if phone:
         ld["telephone"] = phone
