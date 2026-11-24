@@ -20,55 +20,105 @@
   "vehicle_types": [
     {
       "id": "small",
-      "name": "Small car or hatch",
-      "multiplier": null
+      "name": "Small car or hatch"
     },
     {
       "id": "medium",
-      "name": "Sedan or wagon",
-      "multiplier": null
+      "name": "Sedan or wagon"
     },
     {
       "id": "large",
-      "name": "SUV, ute or people mover",
-      "multiplier": null
+      "name": "SUV, ute or people mover"
     }
   ],
   "dirt_levels": [
     {
       "id": "light",
       "name": "Light: a quick refresh",
-      "extra": null
+      "quote_only": false
     },
     {
       "id": "normal",
       "name": "Normal: everyday dirt",
-      "extra": null
+      "quote_only": false
     },
     {
       "id": "heavy",
       "name": "Heavy: pet hair, mud or sand",
-      "extra": null
+      "quote_only": true
     }
   ],
   "services": [
     {
       "id": "interior",
-      "name": "Interior detail",
+      "group": "details",
+      "name": "Interior Detail",
       "summary": "Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.",
-      "price": null
-    },
-    {
-      "id": "exterior",
-      "name": "Exterior detail",
-      "summary": "Hand wash and decontaminate the paint, then polish and protect it. Clean the wheels and glass.",
-      "price": null
+      "prices": {
+        "small": 350,
+        "medium": 450,
+        "large": 550
+      }
     },
     {
       "id": "full",
-      "name": "Full detail",
-      "summary": "Interior and exterior together, for a complete clean and finish.",
-      "price": null
+      "group": "details",
+      "name": "Inside and Out Detail",
+      "summary": "The full interior detail, plus a hand wash, paint decontamination, polish and protection. Wheels and glass included.",
+      "prices": {
+        "small": 550,
+        "medium": 650,
+        "large": 750
+      }
+    },
+    {
+      "id": "maintenance",
+      "group": "details",
+      "name": "Maintenance Detail",
+      "summary": "For existing customers. A regular inside and out clean every 4 to 8 weeks, to keep a detailed car looking detailed. Available after your first full detail or ceramic coating.",
+      "prices": null
+    },
+    {
+      "id": "interior-protect",
+      "group": "protection",
+      "name": "Interior Detail and Protection",
+      "summary": "A full interior detail, then a protective coating on the seats and carpets, so spills and stains clean up easily.",
+      "prices": null
+    },
+    {
+      "id": "ceramic",
+      "group": "protection",
+      "name": "Ceramic Coating",
+      "summary": "Paint decontaminated and polished, then sealed with a ceramic coating for lasting gloss and easier washing. Needs an undercover space at your place.",
+      "prices": null
+    },
+    {
+      "id": "glass",
+      "group": "addons",
+      "name": "Glass Ceramic",
+      "summary": "A ceramic coating for the windscreen and windows, so rain beads and runs off. Add it to a ceramic coating or a full detail.",
+      "prices": null
+    },
+    {
+      "id": "trim",
+      "group": "addons",
+      "name": "Trim Dye and Ceramic",
+      "summary": "Faded exterior plastics dyed back to black, then sealed with a ceramic coating.",
+      "prices": null
+    }
+  ],
+  "service_groups": [
+    {
+      "id": "details",
+      "name": "Details"
+    },
+    {
+      "id": "protection",
+      "name": "Protection"
+    },
+    {
+      "id": "addons",
+      "name": "Add-ons"
     }
   ]
 }

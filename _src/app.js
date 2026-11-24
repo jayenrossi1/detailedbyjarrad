@@ -11,7 +11,6 @@
   var maxSide = 1600;
 
   var prices = config.services || {};
-  var vehicles = config.vehicles || [];
   var dirts = config.dirts || [];
   var currency = config.currency || '$';
 
@@ -97,32 +96,31 @@
     if (picked.length === 0) {
       return { kind: 'empty' };
     }
-    var vehicle = byId(vehicles, vehicleField.value);
     var dirt = byId(dirts, dirtField.value);
-    var pending = !vehicle || typeof vehicle.multiplier !== 'number' ||
-      !dirt || typeof dirt.extra !== 'number';
-    var subtotal = 0;
+    if (dirt && dirt.quote) {
+      return { kind: 'quote' };
+    }
+    var size = vehicleField.value;
+    var total = 0;
+    var pending = false;
     picked.forEach(function (id) {
-      var price = prices[id];
+      var price = prices[id] ? prices[id][size] : null;
       if (typeof price === 'number') {
-        subtotal += price;
+        total += price;
       } else {
         pending = true;
       }
     });
-    if (pending) {
-      return { kind: 'pending' };
-    }
-    return {
-      kind: 'price',
-      total: subtotal * vehicle.multiplier * (1 + dirt.extra / 100)
-    };
+    return pending ? { kind: 'pending' } : { kind: 'price', total: total };
   }
 
   function estimateSummary() {
     var state = estimate();
     if (state.kind === 'price') {
       return money(state.total) + ' (estimate, final price confirmed by ' + config.owner + ')';
+    }
+    if (state.kind === 'quote') {
+      return 'Heavy job, to be quoted from photos by ' + config.owner;
     }
     return state.kind === 'pending' ? 'To be confirmed by ' + config.owner : 'No services chosen';
   }
@@ -133,9 +131,12 @@
     if (state.kind === 'empty') {
       estFigure.textContent = 'Choose a service';
       estNote.textContent = 'Pick at least one service from the menu. Your estimate updates as you choose.';
+    } else if (state.kind === 'quote') {
+      estFigure.textContent = 'Quoted from your photos';
+      estNote.textContent = 'Heavy jobs are priced one by one. Add photos and ' + config.owner + ' will send your price.';
     } else if (state.kind === 'pending') {
       estFigure.textContent = 'To be confirmed';
-      estNote.textContent = config.owner + ' confirms your exact price after he reviews your photos.';
+      estNote.textContent = 'One or more of your services is priced on request. ' + config.owner + ' will confirm your price.';
     } else {
       estFigure.textContent = money(state.total);
       estNote.textContent = 'Estimated total. ' + config.owner + ' confirms the final price after he reviews your photos.';

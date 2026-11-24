@@ -10,15 +10,16 @@ The built `index.html` is one self-contained file. The font, the logo and all CS
 ## What to fill in (data.json)
 
 - `phone`, `email`, `hours`, `suburbs`: contact details and service areas. Blank values are hidden on the site.
-- `services[].price`: the base price in dollars for each service, for a standard car. `null` means pending.
-- `vehicle_types[].multiplier`: the price factor for each vehicle size, for example `1.0` for a small car and `1.2` for an SUV. `null` means pending.
-- `dirt_levels[].extra`: the percentage added for each dirt level, for example `0`, `15` and `30`. `null` means pending.
+- `services[].prices`: the price for each vehicle size (`small`, `medium`, `large`). `null` shows "Price on request".
+- `services[].group`: which menu group the service sits in (`service_groups`).
+- `dirt_levels[].quote_only`: when `true`, choosing that level shows "Quoted from your photos" in place of a price.
 - `form_endpoint`: the address that receives quote requests and photos. Blank means requests are copied to the clipboard instead.
 - `photo_limit`: the most photos a customer can add (6 by default).
+- `reviews.json`: the Google reviews, rating and link.
 
 ## How the estimate works
 
-Estimate = sum of the chosen services' prices, × vehicle multiplier, × (1 + dirt extra ÷ 100). It updates as the customer chooses. Until every number it needs is set, it shows "To be confirmed". The estimate is always marked as an estimate, and the owner confirms the final price after reviewing the photos.
+Estimate = the chosen services' prices for the selected vehicle size, added together. It shows "To be confirmed" if any chosen service has no price yet, and "Quoted from your photos" for heavy jobs. The owner confirms the final price.
 
 ## Photos
 

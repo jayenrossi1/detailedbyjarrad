@@ -26,21 +26,49 @@
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Interior detail"
+        "name": "Interior Detail"
       }
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Exterior detail"
+        "name": "Inside and Out Detail"
       }
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Full detail"
+        "name": "Maintenance Detail"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Interior Detail and Protection"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Ceramic Coating"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Glass Ceramic"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Trim Dye and Ceramic"
       }
     }
   ],
@@ -500,8 +528,28 @@ main[id] {
   gap: 0.4rem;
 }
 
-.menu__text h3 {
+.menu__text h4 {
+  margin: 0;
+  font-stretch: 70%;
+  font-weight: 800;
   font-size: 1.6rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.menu__text .menu__price {
+  color: #000000;
+  font-weight: 700;
+}
+
+.menu__group {
+  margin-top: 3rem;
+  color: var(--red);
+}
+
+.menu__group + .menu {
+  margin-top: 0.9rem;
 }
 
 .menu__text p {
@@ -1235,11 +1283,22 @@ main[id] {
   <section class="services" id="services" aria-labelledby="services-title">
     <div class="wrap">
       <h2 id="services-title">Services</h2>
-      <p class="intro">Choose what you need. Your estimate updates as you add services.</p>
+      <p class="intro">Choose what you need. Prices are for well-kept cars and depend on the size of your vehicle. Heavy jobs are quoted from photos.</p>
+      <h3 class="menu__group">Details</h3>
       <ul class="menu">
-      <li class="menu__item"><div class="menu__text"><h3>Interior detail</h3><p>Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.</p></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior detail" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h3>Exterior detail</h3><p>Hand wash and decontaminate the paint, then polish and protect it. Clean the wheels and glass.</p></div><button class="btn btn-line menu__add" type="button" data-service="exterior" data-name="Exterior detail" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h3>Full detail</h3><p>Interior and exterior together, for a complete clean and finish.</p></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Full detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Interior Detail</h4><p class="menu__price">From $350</p><p>Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.</p></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Inside and Out Detail</h4><p class="menu__price">From $550</p><p>The full interior detail, plus a hand wash, paint decontamination, polish and protection. Wheels and glass included.</p></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Inside and Out Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Maintenance Detail</h4><p class="menu__price">Price on request</p><p>For existing customers. A regular inside and out clean every 4 to 8 weeks, to keep a detailed car looking detailed. Available after your first full detail or ceramic coating.</p></div><button class="btn btn-line menu__add" type="button" data-service="maintenance" data-name="Maintenance Detail" aria-pressed="false">Add to quote</button></li>
+      </ul>
+      <h3 class="menu__group">Protection</h3>
+      <ul class="menu">
+      <li class="menu__item"><div class="menu__text"><h4>Interior Detail and Protection</h4><p class="menu__price">Price on request</p><p>A full interior detail, then a protective coating on the seats and carpets, so spills and stains clean up easily.</p></div><button class="btn btn-line menu__add" type="button" data-service="interior-protect" data-name="Interior Detail and Protection" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Ceramic Coating</h4><p class="menu__price">Price on request</p><p>Paint decontaminated and polished, then sealed with a ceramic coating for lasting gloss and easier washing. Needs an undercover space at your place.</p></div><button class="btn btn-line menu__add" type="button" data-service="ceramic" data-name="Ceramic Coating" aria-pressed="false">Add to quote</button></li>
+      </ul>
+      <h3 class="menu__group">Add-ons</h3>
+      <ul class="menu">
+      <li class="menu__item"><div class="menu__text"><h4>Glass Ceramic</h4><p class="menu__price">Price on request</p><p>A ceramic coating for the windscreen and windows, so rain beads and runs off. Add it to a ceramic coating or a full detail.</p></div><button class="btn btn-line menu__add" type="button" data-service="glass" data-name="Glass Ceramic" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Trim Dye and Ceramic</h4><p class="menu__price">Price on request</p><p>Faded exterior plastics dyed back to black, then sealed with a ceramic coating.</p></div><button class="btn btn-line menu__add" type="button" data-service="trim" data-name="Trim Dye and Ceramic" aria-pressed="false">Add to quote</button></li>
       </ul>
       
       <p class="note">Not sure what you need? <a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Message Jarrad on Facebook</a>.</p>
@@ -1406,7 +1465,7 @@ main[id] {
       <li><a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Facebook</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-24T19:12+10:00">Tue 24 Nov 2026, 7:12 pm AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T08:17+10:00">Wed 25 Nov 2026, 8:17 am AEST</time></p>
   </div>
 </footer>
 
@@ -1429,7 +1488,7 @@ main[id] {
   </div>
 </dialog>
 
-<script>window.SITE_CONFIG = {"owner": "Jarrad", "formEndpoint": "", "email": "", "currency": "$", "photoLimit": 6, "services": {"interior": null, "exterior": null, "full": null}, "vehicles": [{"id": "small", "multiplier": null}, {"id": "medium", "multiplier": null}, {"id": "large", "multiplier": null}], "dirts": [{"id": "light", "extra": null}, {"id": "normal", "extra": null}, {"id": "heavy", "extra": null}]};</script>
+<script>window.SITE_CONFIG = {"owner": "Jarrad", "formEndpoint": "", "email": "", "currency": "$", "photoLimit": 6, "services": {"interior": {"small": 350, "medium": 450, "large": 550}, "full": {"small": 550, "medium": 650, "large": 750}, "maintenance": null, "interior-protect": null, "ceramic": null, "glass": null, "trim": null}, "dirts": [{"id": "light", "quote": false}, {"id": "normal", "quote": false}, {"id": "heavy", "quote": true}]};</script>
 <script>
 /* Detailed By Jarrad: menu picks, instant estimate, photo dropbox and the quote form.
    No dependencies, and no network calls until a request is sent. */
@@ -1444,7 +1503,6 @@ main[id] {
   var maxSide = 1600;
 
   var prices = config.services || {};
-  var vehicles = config.vehicles || [];
   var dirts = config.dirts || [];
   var currency = config.currency || '$';
 
@@ -1530,32 +1588,31 @@ main[id] {
     if (picked.length === 0) {
       return { kind: 'empty' };
     }
-    var vehicle = byId(vehicles, vehicleField.value);
     var dirt = byId(dirts, dirtField.value);
-    var pending = !vehicle || typeof vehicle.multiplier !== 'number' ||
-      !dirt || typeof dirt.extra !== 'number';
-    var subtotal = 0;
+    if (dirt && dirt.quote) {
+      return { kind: 'quote' };
+    }
+    var size = vehicleField.value;
+    var total = 0;
+    var pending = false;
     picked.forEach(function (id) {
-      var price = prices[id];
+      var price = prices[id] ? prices[id][size] : null;
       if (typeof price === 'number') {
-        subtotal += price;
+        total += price;
       } else {
         pending = true;
       }
     });
-    if (pending) {
-      return { kind: 'pending' };
-    }
-    return {
-      kind: 'price',
-      total: subtotal * vehicle.multiplier * (1 + dirt.extra / 100)
-    };
+    return pending ? { kind: 'pending' } : { kind: 'price', total: total };
   }
 
   function estimateSummary() {
     var state = estimate();
     if (state.kind === 'price') {
       return money(state.total) + ' (estimate, final price confirmed by ' + config.owner + ')';
+    }
+    if (state.kind === 'quote') {
+      return 'Heavy job, to be quoted from photos by ' + config.owner;
     }
     return state.kind === 'pending' ? 'To be confirmed by ' + config.owner : 'No services chosen';
   }
@@ -1566,9 +1623,12 @@ main[id] {
     if (state.kind === 'empty') {
       estFigure.textContent = 'Choose a service';
       estNote.textContent = 'Pick at least one service from the menu. Your estimate updates as you choose.';
+    } else if (state.kind === 'quote') {
+      estFigure.textContent = 'Quoted from your photos';
+      estNote.textContent = 'Heavy jobs are priced one by one. Add photos and ' + config.owner + ' will send your price.';
     } else if (state.kind === 'pending') {
       estFigure.textContent = 'To be confirmed';
-      estNote.textContent = config.owner + ' confirms your exact price after he reviews your photos.';
+      estNote.textContent = 'One or more of your services is priced on request. ' + config.owner + ' will confirm your price.';
     } else {
       estFigure.textContent = money(state.total);
       estNote.textContent = 'Estimated total. ' + config.owner + ' confirms the final price after he reviews your photos.';

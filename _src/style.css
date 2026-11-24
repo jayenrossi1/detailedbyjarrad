@@ -450,8 +450,28 @@ main[id] {
   gap: 0.4rem;
 }
 
-.menu__text h3 {
+.menu__text h4 {
+  margin: 0;
+  font-stretch: 70%;
+  font-weight: 800;
   font-size: 1.6rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.menu__text .menu__price {
+  color: #000000;
+  font-weight: 700;
+}
+
+.menu__group {
+  margin-top: 3rem;
+  color: var(--red);
+}
+
+.menu__group + .menu {
+  margin-top: 0.9rem;
 }
 
 .menu__text p {

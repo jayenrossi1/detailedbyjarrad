@@ -75,15 +75,13 @@ def main():
     vehicles = data["vehicle_types"]
     dirts = data["dirt_levels"]
 
+    sizes = [v["id"] for v in vehicles]
     for s in services:
-        if not is_number_or_blank(s.get("price")):
-            raise SystemExit(f"Build stopped: price for '{s['name']}' must be a number or null.")
-    for v in vehicles:
-        if not is_number_or_blank(v.get("multiplier")):
-            raise SystemExit(f"Build stopped: multiplier for '{v['name']}' must be a number or null.")
-    for d in dirts:
-        if not is_number_or_blank(d.get("extra")):
-            raise SystemExit(f"Build stopped: extra for '{d['name']}' must be a number or null.")
+        prices = s.get("prices")
+        if prices is not None and not all(
+            isinstance(prices.get(size), (int, float)) and prices[size] >= 0 for size in sizes
+        ):
+            raise SystemExit(f"Build stopped: '{s['name']}' needs a price for every vehicle size, or null.")
 
     name = esc(data["business_name"])
     owner = esc(data["owner"])
@@ -93,14 +91,31 @@ def main():
     hours = data.get("hours", "").strip()
     suburbs = [s.strip() for s in data.get("suburbs", []) if s.strip()]
 
+    currency = data.get("currency", "$")
+
+    def price_label(s):
+        prices = s.get("prices")
+        if prices is None:
+            return "Price on request"
+        return f"From {currency}{min(prices.values()):,.0f}"
+
+    def service_row(s):
+        return (
+            '<li class="menu__item">'
+            f'<div class="menu__text"><h4>{esc(s["name"])}</h4>'
+            f'<p class="menu__price">{esc(price_label(s))}</p>'
+            f'<p>{esc(s["summary"])}</p></div>'
+            '<button class="btn btn-line menu__add" type="button" '
+            f'data-service="{esc(s["id"])}" data-name="{esc(s["name"])}" aria-pressed="false">'
+            "Add to quote</button>"
+            "</li>"
+        )
+
     service_rows = "\n      ".join(
-        '<li class="menu__item">'
-        f'<div class="menu__text"><h3>{esc(s["name"])}</h3><p>{esc(s["summary"])}</p></div>'
-        '<button class="btn btn-line menu__add" type="button" '
-        f'data-service="{esc(s["id"])}" data-name="{esc(s["name"])}" aria-pressed="false">'
-        "Add to quote</button>"
-        "</li>"
-        for s in services
+        f'<h3 class="menu__group">{esc(g["name"])}</h3>\n      <ul class="menu">\n      '
+        + "\n      ".join(service_row(s) for s in services if s.get("group") == g["id"])
+        + "\n      </ul>"
+        for g in data["service_groups"]
     )
     vehicle_options = "".join(
         f'<option value="{esc(v["id"])}">{esc(v["name"])}</option>' for v in vehicles
@@ -257,9 +272,8 @@ def main():
         "email": email,
         "currency": data.get("currency", "$"),
         "photoLimit": int(data.get("photo_limit", 6)),
-        "services": {s["id"]: s.get("price") for s in services},
-        "vehicles": [{"id": v["id"], "multiplier": v.get("multiplier")} for v in vehicles],
-        "dirts": [{"id": d["id"], "extra": d.get("extra")} for d in dirts],
+        "services": {s["id"]: s.get("prices") for s in services},
+        "dirts": [{"id": d["id"], "quote": bool(d.get("quote_only"))} for d in dirts],
     }
     config_json = json.dumps(config, ensure_ascii=False).replace("</", "<\\/")
 
