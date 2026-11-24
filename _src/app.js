@@ -459,6 +459,71 @@
     });
   }
 
+  /* Email delivery through a form-to-email service: a plain form post, so the
+     photos travel as ordinary file attachments. The page returns with ?sent=1. */
+  function sendByPost() {
+    var total = photos.reduce(function (sum, photo) {
+      return sum + photo.blob.size;
+    }, 0);
+    if (total > 9 * 1024 * 1024) {
+      setStatus('Your photos are too large to send together. Remove one and try again.', 'error');
+      return;
+    }
+    submitButton.disabled = true;
+    setStatus('Sending your request.', 'info');
+    var values = new FormData(form);
+    var post = document.createElement('form');
+    post.method = 'post';
+    post.action = config.formEndpoint;
+    post.enctype = 'multipart/form-data';
+    post.hidden = true;
+    function add(name, value) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value === null || value === undefined ? '' : String(value);
+      post.appendChild(input);
+    }
+    add('_subject', 'Quote request from ' + values.get('name'));
+    add('_template', 'table');
+    add('_captcha', 'false');
+    add('_next', location.origin + location.pathname + '?sent=1#quote');
+    add('Name', values.get('name'));
+    add('Mobile', values.get('mobile'));
+    if (String(values.get('email') || '').trim()) {
+      add('email', values.get('email'));
+    }
+    add('Car', values.get('car'));
+    add('Vehicle size', selectedLabel(vehicleField));
+    add('Condition', selectedLabel(dirtField));
+    add('Suburb or postcode', values.get('suburb'));
+    add('Services', picked.length ? picked.map(nameFor).join(', ') : 'None chosen');
+    add('Estimate', estimateSummary());
+    add('Anything else', values.get('message'));
+    var attached = 0;
+    try {
+      photos.forEach(function (photo, index) {
+        var transfer = new DataTransfer();
+        transfer.items.add(new File([photo.blob], 'car-photo-' + (index + 1) + '.jpg', { type: 'image/jpeg' }));
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'photo_' + (index + 1);
+        input.files = transfer.files;
+        if (input.files.length === 1) {
+          post.appendChild(input);
+          attached += 1;
+        }
+      });
+    } catch (error) {
+      attached = 0;
+    }
+    add('Photos', photos.length
+      ? attached + ' of ' + photos.length + ' attached' + (attached < photos.length ? '. Ask the customer to text the rest.' : '')
+      : 'None');
+    document.body.appendChild(post);
+    post.submit();
+  }
+
   function setStatus(text, tone) {
     statusLine.textContent = text;
     statusLine.setAttribute('data-tone', tone);
@@ -486,7 +551,9 @@
     if (!form.reportValidity()) {
       return;
     }
-    if (config.formEndpoint) {
+    if (config.formEndpoint && config.formMode === 'post') {
+      sendByPost();
+    } else if (config.formEndpoint) {
       sendToService();
     } else {
       fallbackRequest();
@@ -495,4 +562,11 @@
 
   render();
   renderPhotos();
+
+  if (/[?&]sent=1/.test(location.search)) {
+    setStatus('Request sent. Thank you. ' + config.owner + ' will reply with your estimate.', 'ok');
+    if (window.history && history.replaceState) {
+      history.replaceState(null, '', location.pathname + '#quote');
+    }
+  }
 })();

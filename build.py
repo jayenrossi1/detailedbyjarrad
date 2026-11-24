@@ -272,6 +272,7 @@ def main():
     config = {
         "owner": data["owner"],
         "formEndpoint": data.get("form_endpoint", "").strip(),
+        "formMode": data.get("form_mode", "fetch"),
         "email": email,
         "currency": data.get("currency", "$"),
         "photoLimit": int(data.get("photo_limit", 6)),
