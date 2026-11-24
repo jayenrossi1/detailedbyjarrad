@@ -1,0 +1,74 @@
+{
+  "business_name": "Detailed By Jarrad",
+  "owner": "Jarrad",
+  "tagline": "Mobile car detailing. We come to you.",
+  "timezone": "Australia/Brisbane",
+  "facebook_url": "https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/",
+  "messenger_url": "",
+  "instagram_url": "",
+  "tiktok_url": "",
+  "google_url": "https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx",
+  "phone": "0407 530 046",
+  "text_enabled": true,
+  "whatsapp": "",
+  "email": "",
+  "form_endpoint": "",
+  "suburbs": [],
+  "hours": "",
+  "currency": "$",
+  "photo_limit": 6,
+  "vehicle_types": [
+    {
+      "id": "small",
+      "name": "Small car or hatch",
+      "multiplier": null
+    },
+    {
+      "id": "medium",
+      "name": "Sedan or wagon",
+      "multiplier": null
+    },
+    {
+      "id": "large",
+      "name": "SUV, ute or people mover",
+      "multiplier": null
+    }
+  ],
+  "dirt_levels": [
+    {
+      "id": "light",
+      "name": "Light: a quick refresh",
+      "extra": null
+    },
+    {
+      "id": "normal",
+      "name": "Normal: everyday dirt",
+      "extra": null
+    },
+    {
+      "id": "heavy",
+      "name": "Heavy: pet hair, mud or sand",
+      "extra": null
+    }
+  ],
+  "services": [
+    {
+      "id": "interior",
+      "name": "Interior detail",
+      "summary": "Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.",
+      "price": null
+    },
+    {
+      "id": "exterior",
+      "name": "Exterior detail",
+      "summary": "Hand wash and decontaminate the paint, then polish and protect it. Clean the wheels and glass.",
+      "price": null
+    },
+    {
+      "id": "full",
+      "name": "Full detail",
+      "summary": "Interior and exterior together, for a complete clean and finish.",
+      "price": null
+    }
+  ]
+}

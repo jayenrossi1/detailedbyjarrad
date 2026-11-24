@@ -1,0 +1,178 @@
+{{DRAFT}}
+<a class="skip-link" href="#services">Skip to services</a>
+
+<header class="site-head">
+  <div class="site-head__inner">
+    <a class="wordmark" href="#top" aria-label="{{BUSINESS}}, back to top"><img class="wordmark__badge" src="{{LOGO_SMALL}}" alt="" width="36" height="36"><span class="wordmark__name">{{BUSINESS}}</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+      {{HEADER_CALL}}
+      <button class="btn btn-ghost btn-sm" id="quote-count" type="button" aria-haspopup="dialog">Quote (0)</button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__mark"><img class="hero__badge" src="{{LOGO_LARGE}}" alt="{{BUSINESS}} logo" width="560" height="560"></div>
+      <h1>{{BUSINESS}}</h1>
+      <p class="lead">{{TAGLINE}}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#quote">Get an estimate</a>
+        <a class="btn btn-ghost" href="{{FACEBOOK}}" target="_blank" rel="noopener">Message on Facebook</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <h2 id="services-title">Services</h2>
+      <p class="intro">Choose what you need. Your estimate updates as you add services.</p>
+      <ul class="menu">
+      {{SERVICES}}
+      </ul>
+      {{AREAS}}
+      <p class="note">Not sure what you need? <a href="{{FACEBOOK}}" target="_blank" rel="noopener">Message {{OWNER}} on Facebook</a>.</p>
+    </div>
+  </section>
+
+  <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <h2 id="reviews-title">Reviews</h2>
+      <p class="intro">Rated {{REVIEW_RATING}} out of 5 from {{REVIEW_COUNT}} Google reviews.{{REVIEWS_LINK}}</p>
+      <ul class="reviews__list">
+      {{REVIEWS_TOP}}
+      </ul>
+      <details class="reviews__more">
+        <summary class="btn btn-line"><span class="when-closed">Show all {{REVIEW_SHOWN}} reviews</span><span class="when-open">Show fewer reviews</span></summary>
+        <ul class="reviews__list">
+        {{REVIEWS_REST}}
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <section class="quote" id="quote" tabindex="-1" aria-labelledby="quote-title">
+    <div class="wrap quote__layout">
+      <div class="quote__summary">
+        <h2 id="quote-title">Get an estimate</h2>
+        <p class="intro">Choose your services, tell us about your car and add photos. Your estimate updates as you go.</p>
+        <div class="chosen" id="chosen"></div>
+        <section class="estimate" aria-labelledby="est-title">
+          <h3 id="est-title">Your estimate</h3>
+          <p class="estimate__figure" id="est-figure" aria-live="polite"></p>
+          <p class="estimate__note" id="est-note"></p>
+        </section>
+      </div>
+
+      <div class="quote__form">
+        <form class="quote-form" id="quote-form" method="post">
+          <fieldset class="group">
+            <legend>Your car</legend>
+            <div class="group__grid">
+              <div class="field">
+                <label for="f-vehicle">Vehicle size</label>
+                <select id="f-vehicle" name="vehicle">{{VEHICLE_OPTIONS}}</select>
+              </div>
+              <div class="field">
+                <label for="f-dirt">How dirty is it?</label>
+                <select id="f-dirt" name="dirt">{{DIRT_OPTIONS}}</select>
+              </div>
+              <div class="field field--wide">
+                <label for="f-car">Make, model and year</label>
+                <input id="f-car" name="car" type="text" autocomplete="off" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend>Photos</legend>
+            <p class="help">Up to {{PHOTO_LIMIT}} photos. Include the front, back, both sides, and any marks or spots you want treated. Photos are resized on your device before they are sent.</p>
+            <div class="dropzone" id="dropzone">
+              <p>Drop photos here, or</p>
+              <button class="btn btn-ghost" type="button" id="photo-pick">Choose photos</button>
+              <input type="file" id="f-photos" accept="image/*" multiple hidden>
+            </div>
+            <ul class="photos" id="photos" hidden></ul>
+            <p class="status" id="photo-status" role="status" aria-live="polite"></p>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend>Your details</legend>
+            <div class="group__grid">
+              <div class="field">
+                <label for="f-name">Name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="f-mobile">Mobile</label>
+                <input id="f-mobile" name="mobile" type="tel" autocomplete="tel" required>
+              </div>
+              <div class="field">
+                <label for="f-suburb">Suburb or postcode</label>
+                <input id="f-suburb" name="suburb" type="text" autocomplete="address-level2">
+              </div>
+              <div class="field">
+                <label for="f-email">Email (optional)</label>
+                <input id="f-email" name="email" type="email" autocomplete="email">
+              </div>
+              <div class="field field--wide">
+                <label for="f-message">Anything else?</label>
+                <textarea id="f-message" name="message" rows="4"></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <input type="hidden" id="f-services" name="services" value="">
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Send request</button>
+          </div>
+          <p class="status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <noscript><p class="chosen-empty">Turn on JavaScript to send a quote request, or message {{OWNER}} on Facebook.</p></noscript>
+      </div>
+    </div>
+  </section>
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Contact {{OWNER}}</h2>
+      <p class="intro">Whichever suits you. {{OWNER}} replies to every message.</p>
+      <ul class="ways">
+        {{CONTACT_WAYS}}
+      </ul>
+      {{FOOT_HOURS}}
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p class="wordmark wordmark--foot"><img class="wordmark__badge" src="{{LOGO_SMALL}}" alt="" width="36" height="36">{{BUSINESS}}</p>
+    <ul class="foot-links">
+      {{FOOT_WAYS}}
+    </ul>
+    <p class="small">&copy; {{YEAR}} {{BUSINESS}}. Site updated <time datetime="{{STAMP_ISO}}">{{STAMP}}</time></p>
+  </div>
+</footer>
+
+<nav class="sticky-bar" aria-label="Quick actions">
+  <a class="btn btn-primary" href="#quote">Get an estimate</a>
+  {{STICKY_SECOND}}
+</nav>
+
+<dialog class="drawer" id="quote-list" aria-labelledby="ql-title">
+  <div class="drawer__inner">
+    <div class="drawer__head">
+      <h2 id="ql-title">Your services</h2>
+      <button class="btn btn-ghost btn-sm" type="button" data-close>Close</button>
+    </div>
+    <ul class="ql-items" id="ql-items" hidden></ul>
+    <p class="note" id="ql-empty">Nothing added yet. Add a service from the menu.</p>
+    <div class="drawer__actions">
+      <button class="btn btn-primary" type="button" id="ql-go">Get an estimate</button>
+    </div>
+  </div>
+</dialog>
