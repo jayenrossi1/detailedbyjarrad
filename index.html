@@ -940,14 +940,196 @@ main[id] {
   font-size: var(--fs-small);
 }
 
-.product__buy {
+.product__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 0.75rem;
-  justify-self: start;
 }
 
-.product__buy.is-off {
+.product__size {
+  min-height: 3rem;
+  padding: 0.6rem 2.4rem 0.6rem 0.9rem;
+  border: 2px solid #000000;
+  border-radius: var(--radius);
+  background: #ffffff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 0.8rem center / 0.75rem auto;
+  color: #000000;
+  font: inherit;
+  font-weight: 600;
+  appearance: none;
+  cursor: pointer;
+}
+
+.product__add.is-off {
   opacity: 0.55;
   cursor: default;
+}
+
+.product__body .product__msg {
+  min-height: 1.4rem;
+  font-size: var(--fs-small);
+  color: #b80000;
+}
+
+.product__body .product__msg[data-tone="ok"] {
+  color: #1a7f37;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Cart: a floating button once something is in it, and a drawer. */
+
+.cart-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  min-height: 3rem;
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #ffffff;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.6);
+}
+
+.cart-items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart-items li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 1rem;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.cart-line__name {
+  font-weight: 600;
+}
+
+.cart-line__price {
+  font-weight: 700;
+  text-align: right;
+}
+
+.cart-line__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  grid-column: 1 / -1;
+}
+
+.cart-line__controls span {
+  min-width: 1.6rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.cart-qty {
+  width: 2.5rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--line-dark-strong);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--paper);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cart-qty:hover {
+  border-color: var(--paper);
+}
+
+.cart-line__controls .chip-remove {
+  margin-left: auto;
+}
+
+.cart-delivery {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.cart-delivery legend {
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.cart-delivery label {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.cart-delivery input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  accent-color: var(--red);
+}
+
+.cart-totals {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1.25rem 0 0;
+}
+
+.cart-totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart-totals dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cart-totals .cart-total {
+  margin-top: 0.4rem;
+  padding-top: 0.7rem;
+  border-top: 2px solid var(--paper);
+  font-stretch: 70%;
+  font-weight: 800;
+  font-size: 1.9rem;
+  text-transform: uppercase;
+}
+
+.cart-totals .cart-total dd {
+  font-weight: 800;
+}
+
+#cart-checkout .help {
+  margin-top: 1rem;
+}
+
+.cart-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
 }
 
 .merch .note {
@@ -1528,6 +1710,10 @@ main[id] {
     padding-bottom: 5rem;
   }
 
+  .cart-fab {
+    bottom: 5.25rem;
+  }
+
   .sticky-bar {
     position: fixed;
     left: 0;
@@ -1625,7 +1811,17 @@ main[id] {
     </div>
   </section>
 
-  <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"></div></section>
+  <section class="quote" id="quote" tabindex="-1" aria-labelledby="quote-title">
+    <div class="wrap quote__layout">
+      <div class="quote__summary">
+        <h2 id="quote-title">Get an estimate</h2>
+        <p class="intro">Choose your services, tell us about your car and add photos. Your estimate updates as you go.</p>
+        <div class="chosen" id="chosen"></div>
+        <section class="estimate" aria-labelledby="est-title">
+          <h3 id="est-title">Your estimate</h3>
+          <p class="estimate__figure" id="est-figure" aria-live="polite"></p>
+          <p class="estimate__note" id="est-note"></p>
+        </section>
 
   <section class="reviews" id="reviews" aria-labelledby="reviews-title">
     <div class="wrap">
@@ -1682,17 +1878,6 @@ main[id] {
     </div>
   </section>
 
-  <section class="quote" id="quote" tabindex="-1" aria-labelledby="quote-title">
-    <div class="wrap quote__layout">
-      <div class="quote__summary">
-        <h2 id="quote-title">Get an estimate</h2>
-        <p class="intro">Choose your services, tell us about your car and add photos. Your estimate updates as you go.</p>
-        <div class="chosen" id="chosen"></div>
-        <section class="estimate" aria-labelledby="est-title">
-          <h3 id="est-title">Your estimate</h3>
-          <p class="estimate__figure" id="est-figure" aria-live="polite"></p>
-          <p class="estimate__note" id="est-note"></p>
-        </section>
       </div>
 
       <div class="quote__form">
@@ -1764,7 +1949,9 @@ main[id] {
       </div>
     </div>
   </section>
-  <section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap"><h2 id="merch-title">Merch</h2><p class="intro">Wear the badge. Tees and hoodies with the Detailed By Jarrad print on the back.</p><ul class="products"><li class="product"><img class="product__img" src="img/merch/tee-back.webp" alt="Detailed By Jarrad Tee" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Tee</h3><p class="product__price">$49.95</p><p>Large badge print on the back.</p><a class="btn btn-primary product__buy" href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20to%20order%20the%20Detailed%20By%20Jarrad%20Tee.%20Size%3A%20">Order by text</a></div></li><li class="product"><img class="product__img" src="img/merch/hoodie-back.webp" alt="Detailed By Jarrad Hoodie" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Hoodie</h3><p class="product__price">$74.95</p><p>Pullover hoodie with the large badge print on the back.</p><a class="btn btn-primary product__buy" href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20to%20order%20the%20Detailed%20By%20Jarrad%20Hoodie.%20Size%3A%20">Order by text</a></div></li></ul><p class="note">Free local pickup or drop-off on the Atherton Tablelands. Postage Australia-wide is a flat $12, and free on orders of $100 or more.</p></div></section>
+  <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"></div></section>
+
+  <section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap"><h2 id="merch-title">Merch</h2><p class="intro">Wear the badge. Tees and hoodies with the Detailed By Jarrad print on the back.</p><ul class="products"><li class="product" data-product="tee" data-name="Detailed By Jarrad Tee" data-price="4995"><img class="product__img" src="img/merch/tee-back.webp" alt="Detailed By Jarrad Tee" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Tee</h3><p class="product__price">$49.95</p><p>Large badge print on the back.</p><div class="product__row"><label class="visually-hidden" for="size-tee">Size for Detailed By Jarrad Tee</label><select class="product__size" id="size-tee"><option value="">Size</option><option>S</option><option>M</option><option>L</option></select><button class="btn btn-primary product__add" type="button">Add to cart</button></div><p class="product__msg" role="status" aria-live="polite"></p></div></li><li class="product" data-product="hoodie" data-name="Detailed By Jarrad Hoodie" data-price="7495"><img class="product__img" src="img/merch/hoodie-back.webp" alt="Detailed By Jarrad Hoodie" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Hoodie</h3><p class="product__price">$74.95</p><p>Pullover hoodie with the large badge print on the back.</p><div class="product__row"><label class="visually-hidden" for="size-hoodie">Size for Detailed By Jarrad Hoodie</label><select class="product__size" id="size-hoodie"><option value="">Size</option><option>S</option><option>M</option><option>L</option></select><button class="btn btn-primary product__add" type="button">Add to cart</button></div><p class="product__msg" role="status" aria-live="polite"></p></div></li></ul><p class="note">Free local pickup or drop-off on the Atherton Tablelands. Postage Australia-wide is a flat $12, and free on orders of $100 or more.</p></div></section>
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
@@ -1794,7 +1981,7 @@ main[id] {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T10:52+10:00">Wed 25 Nov 2026, 10:52 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T10:57+10:00">Wed 25 Nov 2026, 10:57 am AEST</time></p>
   </div>
 </footer>
 
@@ -1802,6 +1989,8 @@ main[id] {
   <a class="btn btn-primary" href="#quote">Get an estimate</a>
   <a class="btn btn-ghost" href="tel:0407530046">Call</a>
 </nav>
+
+<button class="cart-fab" id="cart-fab" type="button" aria-haspopup="dialog" hidden>Cart (0)</button><dialog class="drawer" id="cart" aria-labelledby="cart-title"><div class="drawer__inner"><div class="drawer__head"><h2 id="cart-title">Your cart</h2><button class="btn btn-ghost btn-sm" type="button" data-close>Close</button></div><ul class="cart-items" id="cart-items"></ul><p class="note" id="cart-empty">Your cart is empty. Add a tee or hoodie from the Merch section.</p><div id="cart-checkout"><fieldset class="cart-delivery"><legend>Delivery</legend><label><input type="radio" name="cart-delivery" value="pickup" checked> Pickup or drop-off on the Atherton Tablelands (free)</label><label><input type="radio" name="cart-delivery" value="post"> Post, Australia-wide</label></fieldset><dl class="cart-totals"><div><dt>Items</dt><dd id="cart-sub"></dd></div><div><dt>Delivery</dt><dd id="cart-post"></dd></div><div class="cart-total"><dt>Total</dt><dd id="cart-total"></dd></div></dl><p class="help">Send your order to Jarrad. He replies to confirm it and arrange payment.</p><div class="cart-actions"><a class="btn btn-primary" id="cart-sms" href="#merch">Order by text</a><a class="btn btn-ghost" id="cart-email" href="#merch">Order by email</a></div></div></div></dialog>
 
 <dialog class="drawer" id="quote-list" aria-labelledby="ql-title">
   <div class="drawer__inner">
@@ -1817,7 +2006,7 @@ main[id] {
   </div>
 </dialog>
 
-<script>window.SITE_CONFIG = {"owner": "Jarrad", "formEndpoint": "https://formsubmit.co/detailedbyjarrad@gmail.com", "formMode": "post", "email": "detailedbyjarrad@gmail.com", "currency": "$", "photoLimit": 6, "services": {"interior": {"small": 350, "medium": 450, "large": 550}, "full": {"small": 550, "medium": 650, "large": 750}, "maintenance": null, "interior-protect": null, "ceramic": null, "glass": null, "trim": null}, "dirts": [{"id": "light", "quote": false}, {"id": "normal", "quote": false}, {"id": "heavy", "quote": true}]};</script>
+<script>window.SITE_CONFIG = {"owner": "Jarrad", "formEndpoint": "https://formsubmit.co/detailedbyjarrad@gmail.com", "formMode": "post", "email": "detailedbyjarrad@gmail.com", "currency": "$", "photoLimit": 6, "services": {"interior": {"small": 350, "medium": 450, "large": 550}, "full": {"small": 550, "medium": 650, "large": 750}, "maintenance": null, "interior-protect": null, "ceramic": null, "glass": null, "trim": null}, "dirts": [{"id": "light", "quote": false}, {"id": "normal", "quote": false}, {"id": "heavy", "quote": true}], "merch": {"postage": 1200, "freeOver": 10000, "phone": "0407530046", "area": "Atherton Tablelands"}};</script>
 <script>
 /* Detailed By Jarrad: menu picks, instant estimate, photo dropbox and the quote form.
    No dependencies, and no network calls until a request is sent. */
@@ -2380,6 +2569,234 @@ main[id] {
       fallbackRequest();
     }
   });
+
+  /* Merch cart. Orders go to the owner by text or email; he confirms and arranges payment. */
+  (function () {
+    var dialog = document.getElementById('cart');
+    if (!dialog) {
+      return;
+    }
+    var shop = config.merch || {};
+    var fab = document.getElementById('cart-fab');
+    var list = document.getElementById('cart-items');
+    var emptyNote = document.getElementById('cart-empty');
+    var checkout = document.getElementById('cart-checkout');
+    var subCell = document.getElementById('cart-sub');
+    var postCell = document.getElementById('cart-post');
+    var totalCell = document.getElementById('cart-total');
+    var smsLink = document.getElementById('cart-sms');
+    var emailLink = document.getElementById('cart-email');
+    var deliveryInputs = Array.prototype.slice.call(dialog.querySelectorAll('input[name="cart-delivery"]'));
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-product]'));
+    var catalogue = {};
+    var cart = [];
+    var KEY = 'dbj-cart-v1';
+
+    cards.forEach(function (card) {
+      catalogue[card.getAttribute('data-product')] = {
+        name: card.getAttribute('data-name'),
+        price: parseInt(card.getAttribute('data-price'), 10)
+      };
+    });
+
+    function dollars(cents) {
+      return currency + (cents / 100).toFixed(2);
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(cart.map(function (line) {
+          return { id: line.id, size: line.size, qty: line.qty };
+        })));
+      } catch (error) { /* storage is a convenience only */ }
+    }
+
+    function load() {
+      try {
+        var saved = JSON.parse(localStorage.getItem(KEY) || '[]');
+        saved.forEach(function (line) {
+          var qty = parseInt(line.qty, 10);
+          if (catalogue[line.id] && qty > 0 && qty < 100) {
+            cart.push({ id: String(line.id), size: String(line.size || ''), qty: qty });
+          }
+        });
+      } catch (error) {
+        cart = [];
+      }
+    }
+
+    function delivery() {
+      var chosen = deliveryInputs.filter(function (input) {
+        return input.checked;
+      })[0];
+      return chosen ? chosen.value : 'pickup';
+    }
+
+    function totals() {
+      var sub = 0;
+      var count = 0;
+      cart.forEach(function (line) {
+        sub += catalogue[line.id].price * line.qty;
+        count += line.qty;
+      });
+      var posting = delivery() === 'post';
+      var postage = posting && sub < (shop.freeOver || Infinity) ? (shop.postage || 0) : 0;
+      if (!shop.freeOver && posting) {
+        postage = shop.postage || 0;
+      }
+      return { sub: sub, count: count, posting: posting, postage: postage, total: sub + postage };
+    }
+
+    function label(line) {
+      return catalogue[line.id].name + (line.size ? ' (' + line.size + ')' : '');
+    }
+
+    function orderText() {
+      var sum = totals();
+      var lines = ['Hi ' + config.owner + ", I'd like to order:"];
+      cart.forEach(function (line) {
+        lines.push(line.qty + ' x ' + label(line) + ' ' + dollars(catalogue[line.id].price * line.qty));
+      });
+      lines.push('Delivery: ' + (sum.posting
+        ? 'Post (' + (sum.postage ? dollars(sum.postage) : 'free') + ')'
+        : 'Pickup or drop-off' + (shop.area ? ' on the ' + shop.area : '')));
+      lines.push('Total: ' + dollars(sum.total));
+      lines.push('My name: ');
+      if (sum.posting) {
+        lines.push('Post to: ');
+      }
+      return lines.join('\n');
+    }
+
+    function qtyButton(text, name, onClick) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'cart-qty';
+      button.textContent = text;
+      button.setAttribute('aria-label', name);
+      button.addEventListener('click', onClick);
+      return button;
+    }
+
+    function renderCart() {
+      var sum = totals();
+      fab.hidden = sum.count === 0;
+      fab.textContent = 'Cart (' + sum.count + ')';
+      list.textContent = '';
+      cart.forEach(function (line, index) {
+        var row = document.createElement('li');
+        var name = document.createElement('span');
+        name.className = 'cart-line__name';
+        name.textContent = label(line);
+        var price = document.createElement('span');
+        price.className = 'cart-line__price';
+        price.textContent = dollars(catalogue[line.id].price * line.qty);
+        var controls = document.createElement('div');
+        controls.className = 'cart-line__controls';
+        var qty = document.createElement('span');
+        qty.textContent = line.qty;
+        controls.appendChild(qtyButton('\u2212', 'One fewer ' + label(line), function () {
+          line.qty -= 1;
+          if (line.qty < 1) {
+            cart.splice(index, 1);
+          }
+          update();
+        }));
+        controls.appendChild(qty);
+        controls.appendChild(qtyButton('+', 'One more ' + label(line), function () {
+          if (line.qty < 20) {
+            line.qty += 1;
+          }
+          update();
+        }));
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'chip-remove';
+        remove.textContent = 'Remove';
+        remove.setAttribute('aria-label', 'Remove ' + label(line) + ' from cart');
+        remove.addEventListener('click', function () {
+          cart.splice(index, 1);
+          update();
+        });
+        controls.appendChild(remove);
+        row.appendChild(name);
+        row.appendChild(price);
+        row.appendChild(controls);
+        list.appendChild(row);
+      });
+      emptyNote.hidden = cart.length > 0;
+      checkout.hidden = cart.length === 0;
+      subCell.textContent = dollars(sum.sub);
+      postCell.textContent = sum.posting ? (sum.postage ? dollars(sum.postage) : 'Free postage') : 'Free';
+      totalCell.textContent = dollars(sum.total);
+      var text = encodeURIComponent(orderText());
+      smsLink.hidden = !shop.phone;
+      smsLink.href = 'sms:' + shop.phone + '?&body=' + text;
+      emailLink.hidden = !config.email;
+      emailLink.href = 'mailto:' + config.email + '?subject=' + encodeURIComponent('Merch order') + '&body=' + text;
+    }
+
+    function update() {
+      save();
+      renderCart();
+    }
+
+    cards.forEach(function (card) {
+      var button = card.querySelector('button.product__add');
+      if (!button) {
+        return;
+      }
+      var select = card.querySelector('.product__size');
+      var note = card.querySelector('.product__msg');
+      button.addEventListener('click', function () {
+        var id = card.getAttribute('data-product');
+        var size = select ? select.value : '';
+        if (select && !size) {
+          note.textContent = 'Choose a size first.';
+          note.removeAttribute('data-tone');
+          select.focus();
+          return;
+        }
+        var existing = cart.filter(function (line) {
+          return line.id === id && line.size === size;
+        })[0];
+        if (existing) {
+          existing.qty = Math.min(20, existing.qty + 1);
+        } else {
+          cart.push({ id: id, size: size, qty: 1 });
+        }
+        note.textContent = 'Added to cart.';
+        note.setAttribute('data-tone', 'ok');
+        update();
+      });
+    });
+
+    deliveryInputs.forEach(function (input) {
+      input.addEventListener('change', renderCart);
+    });
+
+    fab.addEventListener('click', function () {
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+      }
+      root.classList.add('is-locked');
+    });
+
+    dialog.addEventListener('close', function () {
+      root.classList.remove('is-locked');
+    });
+
+    Array.prototype.forEach.call(dialog.querySelectorAll('[data-close]'), function (button) {
+      button.addEventListener('click', function () {
+        dialog.close();
+      });
+    });
+
+    load();
+    renderCart();
+  })();
 
   render();
   renderPhotos();

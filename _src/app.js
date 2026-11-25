@@ -560,6 +560,234 @@
     }
   });
 
+  /* Merch cart. Orders go to the owner by text or email; he confirms and arranges payment. */
+  (function () {
+    var dialog = document.getElementById('cart');
+    if (!dialog) {
+      return;
+    }
+    var shop = config.merch || {};
+    var fab = document.getElementById('cart-fab');
+    var list = document.getElementById('cart-items');
+    var emptyNote = document.getElementById('cart-empty');
+    var checkout = document.getElementById('cart-checkout');
+    var subCell = document.getElementById('cart-sub');
+    var postCell = document.getElementById('cart-post');
+    var totalCell = document.getElementById('cart-total');
+    var smsLink = document.getElementById('cart-sms');
+    var emailLink = document.getElementById('cart-email');
+    var deliveryInputs = Array.prototype.slice.call(dialog.querySelectorAll('input[name="cart-delivery"]'));
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-product]'));
+    var catalogue = {};
+    var cart = [];
+    var KEY = 'dbj-cart-v1';
+
+    cards.forEach(function (card) {
+      catalogue[card.getAttribute('data-product')] = {
+        name: card.getAttribute('data-name'),
+        price: parseInt(card.getAttribute('data-price'), 10)
+      };
+    });
+
+    function dollars(cents) {
+      return currency + (cents / 100).toFixed(2);
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(cart.map(function (line) {
+          return { id: line.id, size: line.size, qty: line.qty };
+        })));
+      } catch (error) { /* storage is a convenience only */ }
+    }
+
+    function load() {
+      try {
+        var saved = JSON.parse(localStorage.getItem(KEY) || '[]');
+        saved.forEach(function (line) {
+          var qty = parseInt(line.qty, 10);
+          if (catalogue[line.id] && qty > 0 && qty < 100) {
+            cart.push({ id: String(line.id), size: String(line.size || ''), qty: qty });
+          }
+        });
+      } catch (error) {
+        cart = [];
+      }
+    }
+
+    function delivery() {
+      var chosen = deliveryInputs.filter(function (input) {
+        return input.checked;
+      })[0];
+      return chosen ? chosen.value : 'pickup';
+    }
+
+    function totals() {
+      var sub = 0;
+      var count = 0;
+      cart.forEach(function (line) {
+        sub += catalogue[line.id].price * line.qty;
+        count += line.qty;
+      });
+      var posting = delivery() === 'post';
+      var postage = posting && sub < (shop.freeOver || Infinity) ? (shop.postage || 0) : 0;
+      if (!shop.freeOver && posting) {
+        postage = shop.postage || 0;
+      }
+      return { sub: sub, count: count, posting: posting, postage: postage, total: sub + postage };
+    }
+
+    function label(line) {
+      return catalogue[line.id].name + (line.size ? ' (' + line.size + ')' : '');
+    }
+
+    function orderText() {
+      var sum = totals();
+      var lines = ['Hi ' + config.owner + ", I'd like to order:"];
+      cart.forEach(function (line) {
+        lines.push(line.qty + ' x ' + label(line) + ' ' + dollars(catalogue[line.id].price * line.qty));
+      });
+      lines.push('Delivery: ' + (sum.posting
+        ? 'Post (' + (sum.postage ? dollars(sum.postage) : 'free') + ')'
+        : 'Pickup or drop-off' + (shop.area ? ' on the ' + shop.area : '')));
+      lines.push('Total: ' + dollars(sum.total));
+      lines.push('My name: ');
+      if (sum.posting) {
+        lines.push('Post to: ');
+      }
+      return lines.join('\n');
+    }
+
+    function qtyButton(text, name, onClick) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'cart-qty';
+      button.textContent = text;
+      button.setAttribute('aria-label', name);
+      button.addEventListener('click', onClick);
+      return button;
+    }
+
+    function renderCart() {
+      var sum = totals();
+      fab.hidden = sum.count === 0;
+      fab.textContent = 'Cart (' + sum.count + ')';
+      list.textContent = '';
+      cart.forEach(function (line, index) {
+        var row = document.createElement('li');
+        var name = document.createElement('span');
+        name.className = 'cart-line__name';
+        name.textContent = label(line);
+        var price = document.createElement('span');
+        price.className = 'cart-line__price';
+        price.textContent = dollars(catalogue[line.id].price * line.qty);
+        var controls = document.createElement('div');
+        controls.className = 'cart-line__controls';
+        var qty = document.createElement('span');
+        qty.textContent = line.qty;
+        controls.appendChild(qtyButton('\u2212', 'One fewer ' + label(line), function () {
+          line.qty -= 1;
+          if (line.qty < 1) {
+            cart.splice(index, 1);
+          }
+          update();
+        }));
+        controls.appendChild(qty);
+        controls.appendChild(qtyButton('+', 'One more ' + label(line), function () {
+          if (line.qty < 20) {
+            line.qty += 1;
+          }
+          update();
+        }));
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'chip-remove';
+        remove.textContent = 'Remove';
+        remove.setAttribute('aria-label', 'Remove ' + label(line) + ' from cart');
+        remove.addEventListener('click', function () {
+          cart.splice(index, 1);
+          update();
+        });
+        controls.appendChild(remove);
+        row.appendChild(name);
+        row.appendChild(price);
+        row.appendChild(controls);
+        list.appendChild(row);
+      });
+      emptyNote.hidden = cart.length > 0;
+      checkout.hidden = cart.length === 0;
+      subCell.textContent = dollars(sum.sub);
+      postCell.textContent = sum.posting ? (sum.postage ? dollars(sum.postage) : 'Free postage') : 'Free';
+      totalCell.textContent = dollars(sum.total);
+      var text = encodeURIComponent(orderText());
+      smsLink.hidden = !shop.phone;
+      smsLink.href = 'sms:' + shop.phone + '?&body=' + text;
+      emailLink.hidden = !config.email;
+      emailLink.href = 'mailto:' + config.email + '?subject=' + encodeURIComponent('Merch order') + '&body=' + text;
+    }
+
+    function update() {
+      save();
+      renderCart();
+    }
+
+    cards.forEach(function (card) {
+      var button = card.querySelector('button.product__add');
+      if (!button) {
+        return;
+      }
+      var select = card.querySelector('.product__size');
+      var note = card.querySelector('.product__msg');
+      button.addEventListener('click', function () {
+        var id = card.getAttribute('data-product');
+        var size = select ? select.value : '';
+        if (select && !size) {
+          note.textContent = 'Choose a size first.';
+          note.removeAttribute('data-tone');
+          select.focus();
+          return;
+        }
+        var existing = cart.filter(function (line) {
+          return line.id === id && line.size === size;
+        })[0];
+        if (existing) {
+          existing.qty = Math.min(20, existing.qty + 1);
+        } else {
+          cart.push({ id: id, size: size, qty: 1 });
+        }
+        note.textContent = 'Added to cart.';
+        note.setAttribute('data-tone', 'ok');
+        update();
+      });
+    });
+
+    deliveryInputs.forEach(function (input) {
+      input.addEventListener('change', renderCart);
+    });
+
+    fab.addEventListener('click', function () {
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+      }
+      root.classList.add('is-locked');
+    });
+
+    dialog.addEventListener('close', function () {
+      root.classList.remove('is-locked');
+    });
+
+    Array.prototype.forEach.call(dialog.querySelectorAll('[data-close]'), function (button) {
+      button.addEventListener('click', function () {
+        dialog.close();
+      });
+    });
+
+    load();
+    renderCart();
+  })();
+
   render();
   renderPhotos();
 

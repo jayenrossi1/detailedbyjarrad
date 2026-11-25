@@ -7,16 +7,30 @@
       "price": 49.95,
       "description": "Large badge print on the back.",
       "image": "img/merch/tee-back.webp",
-      "checkout_url": "",
-      "sold_out": false
+      "sold_out": false,
+      "id": "tee",
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ]
     },
     {
       "name": "Detailed By Jarrad Hoodie",
       "price": 74.95,
       "description": "Pullover hoodie with the large badge print on the back.",
       "image": "img/merch/hoodie-back.webp",
-      "checkout_url": "",
-      "sold_out": false
+      "sold_out": false,
+      "id": "hoodie",
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ]
     }
-  ]
+  ],
+  "postage": {
+    "flat": 12,
+    "free_over": 100
+  }
 }

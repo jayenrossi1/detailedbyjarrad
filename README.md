@@ -26,20 +26,24 @@ Estimate = the chosen services' prices for the selected vehicle size, added toge
 The Merch section and its header link appear only when `products` has at least one item. Each product:
 
     {
+      "id": "tee",
       "name": "Logo Tee",
       "price": 35,
       "description": "Heavyweight cotton, regular fit.",
       "sizes": ["S", "M", "L", "XL"],
       "colours": ["Black"],
       "image": "img/merch/logo-tee.webp",
-      "checkout_url": "",
       "sold_out": false
     }
 
 - `image`: a square photo in `img/merch/`, about 600 px wide.
-- `checkout_url`: the payment provider's checkout link. With it, the button reads "Buy now". Without it, the button reads "Order by text" and opens a message to the owner.
+- `id`: a short unique name, such as `tee`.
+- `sizes`: the sizes offered. The customer picks one before adding to the cart.
 - `sold_out`: `true` replaces the button with "Sold out".
-- `postage_note` (top level): one line shown under the products, such as postage price and timing.
+- `postage_note` (top level): one line shown under the products.
+- `postage` (top level): `flat` is the postage price in dollars, and `free_over` is the order value at which postage is free. The cart uses both.
+
+The cart sends the order to the owner by text or email. He confirms it and arranges payment.
 
 ## Photos
 

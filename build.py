@@ -236,37 +236,37 @@ def main():
         image = item.get("image", "").strip()
         if image and not (ROOT / image).is_file():
             raise SystemExit(f"Build stopped: merch image not found: {image}")
+        if not isinstance(item.get("price"), (int, float)):
+            raise SystemExit(f"Build stopped: merch item '{item.get('name')}' needs a price.")
+        pid = esc(item["id"])
         picture = (
             f'<img class="product__img" src="{esc(image)}" alt="{esc(item["name"])}" '
             'width="640" height="640" loading="lazy" decoding="async">'
             if image else '<div class="product__img product__img--none" aria-hidden="true"></div>'
         )
-        facts = []
-        if item.get("sizes"):
-            facts.append("Sizes: " + ", ".join(item["sizes"]))
-        if item.get("colours"):
-            facts.append("Colours: " + ", ".join(item["colours"]))
-        facts_html = "".join(f'<p class="product__fact">{esc(f)}</p>' for f in facts)
-        if not isinstance(item.get("price"), (int, float)):
-            price = "Message for price"
-        elif float(item["price"]).is_integer():
-            price = f'{currency}{item["price"]:,.0f}'
-        else:
-            price = f'{currency}{item["price"]:,.2f}'
-        checkout = item.get("checkout_url", "").strip()
-        order_text = f"Hi {data['owner']}, I'd like to order the {item['name']}. Size: "
-        if item.get("sold_out"):
-            action = '<span class="btn btn-line product__buy is-off">Sold out</span>'
-        elif checkout:
-            action = f'<a class="btn btn-primary product__buy" href="{esc(checkout)}" target="_blank" rel="noopener">Buy now</a>'
-        elif phone:
-            action = f'<a class="btn btn-primary product__buy" href="sms:{tel(phone)[4:]}?&body={quote(order_text)}">Order by text</a>'
-        else:
-            action = f'<a class="btn btn-primary product__buy" href="{facebook}" target="_blank" rel="noopener">Order on Facebook</a>'
+        price = f'{currency}{item["price"]:,.0f}' if float(item["price"]).is_integer() else f'{currency}{item["price"]:,.2f}'
+        colours = f'<p class="product__fact">Colours: {esc(", ".join(item["colours"]))}</p>' if item.get("colours") else ""
         desc = f'<p>{esc(item["description"])}</p>' if item.get("description") else ""
+        if item.get("sold_out"):
+            action = '<div class="product__row"><span class="btn btn-line product__add is-off">Sold out</span></div>'
+        else:
+            sizes = item.get("sizes") or []
+            select = ""
+            if sizes:
+                options = '<option value="">Size</option>' + "".join(f"<option>{esc(sz)}</option>" for sz in sizes)
+                select = (
+                    f'<label class="visually-hidden" for="size-{pid}">Size for {esc(item["name"])}</label>'
+                    f'<select class="product__size" id="size-{pid}">{options}</select>'
+                )
+            action = (
+                f'<div class="product__row">{select}'
+                '<button class="btn btn-primary product__add" type="button">Add to cart</button></div>'
+                '<p class="product__msg" role="status" aria-live="polite"></p>'
+            )
         return (
-            f'<li class="product">{picture}<div class="product__body"><h3>{esc(item["name"])}</h3>'
-            f'<p class="product__price">{price}</p>{desc}{facts_html}{action}</div></li>'
+            f'<li class="product" data-product="{pid}" data-name="{esc(item["name"])}" '
+            f'data-price="{round(item["price"] * 100)}">{picture}<div class="product__body"><h3>{esc(item["name"])}</h3>'
+            f'<p class="product__price">{price}</p>{desc}{colours}{action}</div></li>'
         )
 
     if products:
@@ -278,9 +278,30 @@ def main():
             '<ul class="products">' + "".join(product_card(i) for i in products) + f"</ul>{postage}</div></section>"
         )
         nav_merch = '<a href="#merch">Merch</a>'
+        area_name = esc(data.get("area", ""))
+        merch_cart = (
+            '<button class="cart-fab" id="cart-fab" type="button" aria-haspopup="dialog" hidden>Cart (0)</button>'
+            '<dialog class="drawer" id="cart" aria-labelledby="cart-title"><div class="drawer__inner">'
+            '<div class="drawer__head"><h2 id="cart-title">Your cart</h2>'
+            '<button class="btn btn-ghost btn-sm" type="button" data-close>Close</button></div>'
+            '<ul class="cart-items" id="cart-items"></ul>'
+            '<p class="note" id="cart-empty">Your cart is empty. Add a tee or hoodie from the Merch section.</p>'
+            '<div id="cart-checkout">'
+            '<fieldset class="cart-delivery"><legend>Delivery</legend>'
+            f'<label><input type="radio" name="cart-delivery" value="pickup" checked> Pickup or drop-off on the {area_name} (free)</label>'
+            '<label><input type="radio" name="cart-delivery" value="post"> Post, Australia-wide</label></fieldset>'
+            '<dl class="cart-totals"><div><dt>Items</dt><dd id="cart-sub"></dd></div>'
+            '<div><dt>Delivery</dt><dd id="cart-post"></dd></div>'
+            '<div class="cart-total"><dt>Total</dt><dd id="cart-total"></dd></div></dl>'
+            f'<p class="help">Send your order to {owner}. He replies to confirm it and arrange payment.</p>'
+            '<div class="cart-actions"><a class="btn btn-primary" id="cart-sms" href="#merch">Order by text</a>'
+            '<a class="btn btn-ghost" id="cart-email" href="#merch">Order by email</a></div>'
+            "</div></div></dialog>"
+        )
     else:
         merch_section = ""
         nav_merch = ""
+        merch_cart = ""
 
     areas = f'<p class="areas">We cover {esc(join_names(suburbs))}.</p>' if suburbs else ""
 
@@ -332,6 +353,7 @@ def main():
         "{{SERVICES}}": service_rows,
         "{{AREAS}}": areas,
         "{{MERCH}}": merch_section,
+        "{{MERCH_CART}}": merch_cart,
         "{{ABOUT}}": about_section,
         "{{AREA}}": esc(data.get("area", "")),
         "{{NAV_MERCH}}": nav_merch,
@@ -375,6 +397,12 @@ def main():
         "photoLimit": int(data.get("photo_limit", 6)),
         "services": {s["id"]: s.get("prices") for s in services},
         "dirts": [{"id": d["id"], "quote": bool(d.get("quote_only"))} for d in dirts],
+        "merch": {
+            "postage": round(float((merch.get("postage") or {}).get("flat", 0)) * 100),
+            "freeOver": round(float((merch.get("postage") or {}).get("free_over", 0)) * 100),
+            "phone": tel(phone)[4:] if phone else "",
+            "area": data.get("area", ""),
+        },
     }
     config_json = json.dumps(config, ensure_ascii=False).replace("</", "<\\/")
 
