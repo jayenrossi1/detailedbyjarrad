@@ -190,7 +190,8 @@
       },
       {
         "src": "img/hoodie-street.webp",
-        "alt": "The Detailed By Jarrad hoodie, seen from the back"
+        "alt": "The Detailed By Jarrad hoodie, worn beside a white Lamborghini",
+        "wide": true
       }
     ]
   },

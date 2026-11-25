@@ -241,8 +241,8 @@ def main():
             + "".join(f"<p>{esc(t)}</p>" for t in about.get("text", []))
             + '<p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div>'
             + "".join(
-                f'<img class="about__photo" src="{esc(ph["src"])}" alt="{esc(ph["alt"])}" '
-                'width="720" height="960" loading="lazy" decoding="async">'
+                f'<img class="about__photo{" about__photo--wide" if ph.get("wide") else ""}" src="{esc(ph["src"])}" alt="{esc(ph["alt"])}" '
+                f'width="{960 if ph.get("wide") else 720}" height="960" loading="lazy" decoding="async">'
                 for ph in about["photos"]
             )
             + "</div></section>"

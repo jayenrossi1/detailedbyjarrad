@@ -806,7 +806,7 @@ main[id] {
 /* The text lines up with the other sections; the photos run on to the right. */
 .about__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3333fr);
   gap: 1.25rem;
   align-items: center;
   max-width: none;
@@ -815,10 +815,9 @@ main[id] {
   padding-right: var(--pad);
 }
 
-@media (min-width: 100rem) {
-  .about__layout {
-    grid-template-columns: minmax(0, 24rem) repeat(3, minmax(0, 21rem));
-  }
+/* The square photo is a third wider, so all three stand at the same height. */
+.about__photo.about__photo--wide {
+  aspect-ratio: 1 / 1;
 }
 
 .about__text {
@@ -844,7 +843,7 @@ main[id] {
 
 @media (max-width: 52rem) {
   .about__layout {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3333fr);
     gap: 0.6rem;
   }
 
@@ -2180,7 +2179,7 @@ a.rating:hover .rating__count {
     </div>
   </section>
 
-  <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/hoodie-street.webp" alt="The Detailed By Jarrad hoodie, seen from the back" width="720" height="960" loading="lazy" decoding="async"></div></section>
+  <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo about__photo--wide" src="img/hoodie-street.webp" alt="The Detailed By Jarrad hoodie, worn beside a white Lamborghini" width="960" height="960" loading="lazy" decoding="async"></div></section>
 
   <section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap"><h2 id="merch-title">Merch</h2><p class="intro">Wear the badge. Tees and hoodies with the Detailed By Jarrad print on the back.</p><ul class="products"><li class="product" data-product="tee" data-name="Detailed By Jarrad Tee" data-price="4999"><div class="product__body"><h3>Detailed By Jarrad Tee</h3><p class="product__price">$49.99</p><p>Large badge print on the back.</p><fieldset class="sizes"><legend>Choose your size</legend><div class="sizes__row"><label class="size-chip"><input type="radio" name="size-tee" value="S"><span>S</span></label><label class="size-chip"><input type="radio" name="size-tee" value="M"><span>M</span></label><label class="size-chip"><input type="radio" name="size-tee" value="L"><span>L</span></label><label class="size-chip"><input type="radio" name="size-tee" value="XL"><span>XL</span></label><label class="size-chip"><input type="radio" name="size-tee" value="XXL"><span>XXL</span></label></div></fieldset><button class="btn btn-primary product__add" type="button">Add to cart</button><p class="product__msg" role="status" aria-live="polite"></p></div></li><li class="product" data-product="hoodie" data-name="Detailed By Jarrad Hoodie" data-price="7999"><div class="product__body"><h3>Detailed By Jarrad Hoodie</h3><p class="product__price">$79.99</p><p>Pullover hoodie with the large badge print on the back.</p><fieldset class="sizes"><legend>Choose your size</legend><div class="sizes__row"><label class="size-chip"><input type="radio" name="size-hoodie" value="S"><span>S</span></label><label class="size-chip"><input type="radio" name="size-hoodie" value="M"><span>M</span></label><label class="size-chip"><input type="radio" name="size-hoodie" value="L"><span>L</span></label><label class="size-chip"><input type="radio" name="size-hoodie" value="XL"><span>XL</span></label><label class="size-chip"><input type="radio" name="size-hoodie" value="XXL"><span>XXL</span></label></div></fieldset><button class="btn btn-primary product__add" type="button">Add to cart</button><p class="product__msg" role="status" aria-live="polite"></p></div></li></ul><p class="note">Free local pickup or drop-off on the Atherton Tablelands. Postage Australia-wide is a flat $12, and free on orders of $100 or more.</p></div></section>
 
@@ -2213,7 +2212,7 @@ a.rating:hover .rating__count {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T12:28+10:00">Wed 25 Nov 2026, 12:28 pm AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T12:46+10:00">Wed 25 Nov 2026, 12:46 pm AEST</time></p>
   </div>
 </footer>
 
