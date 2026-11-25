@@ -2338,6 +2338,186 @@ main h2::before {
   text-underline-offset: 0.2em;
 }
 
+/* Dark theme: the whole page is black and near black, with red and white on top. */
+:root {
+  color-scheme: dark;
+  --panel: #0c0c0c;
+}
+
+html {
+  background: #000000;
+}
+
+body {
+  background: #000000;
+  color: var(--paper);
+}
+
+.services,
+.reviews,
+.contact {
+  background: var(--panel);
+  color: var(--paper);
+  border-top: 1px solid var(--line-dark);
+}
+
+.merch {
+  background: #000000;
+  color: var(--paper);
+  border-top: 1px solid var(--line-dark);
+}
+
+.services::before,
+.services::after {
+  background: repeating-radial-gradient(circle at center, transparent 0 2.6rem, rgb(224 0 0 / 0.3) 2.6rem calc(2.6rem + 2px));
+}
+
+main h2,
+main h3,
+main h4 {
+  color: #ffffff;
+}
+
+main .intro,
+.menu__text p,
+.menu__includes li,
+.areas,
+.note,
+.help,
+.reviews__count,
+.contact .small {
+  color: var(--muted-dark);
+}
+
+.services a,
+.reviews .intro a,
+.contact a:not(.way) {
+  color: #ffffff;
+}
+
+/* Vehicle size switch. */
+.seg-group {
+  border-color: var(--line-dark-strong);
+  background: transparent;
+}
+
+.seg span {
+  color: var(--paper);
+}
+
+.seg + .seg {
+  border-color: var(--line-dark-strong);
+}
+
+.seg:hover span {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.seg input:checked + span {
+  background: var(--red);
+  color: #ffffff;
+}
+
+.seg input:focus-visible + span {
+  outline-color: #ffffff;
+}
+
+/* Price board. */
+.menu__group,
+.menu__from {
+  color: #ff4040;
+}
+
+.menu__group {
+  border-color: var(--line-dark-strong);
+}
+
+.menu__item {
+  border-bottom-color: var(--line-dark);
+}
+
+.menu__figure {
+  color: #ffffff;
+}
+
+.menu-group--dark {
+  background: #000000;
+  box-shadow: 0 0 0 1px var(--line-dark);
+}
+
+.btn-line {
+  color: var(--paper);
+  border-color: var(--line-dark-strong);
+}
+
+.btn-line:hover {
+  background: var(--paper);
+  color: #000000;
+  border-color: var(--paper);
+}
+
+/* Google rating card. */
+.rating {
+  background: var(--ink-raise);
+  color: var(--paper);
+}
+
+/* Reviews. */
+.review {
+  border-top-color: var(--line-dark-strong);
+}
+
+.review blockquote,
+.review__name {
+  color: var(--paper);
+}
+
+.reviews__btn {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--line-dark-strong);
+}
+
+.reviews__btn:disabled {
+  opacity: 0.35;
+}
+
+/* Clothing cards sit on black, so they get a raised tone and a hairline. */
+.product {
+  background:
+    radial-gradient(90% 55% at 50% 0%, rgb(255 255 255 / 0.1), transparent 70%),
+    var(--panel);
+  box-shadow: inset 0 5px 0 var(--red), 0 0 0 1px var(--line-dark);
+}
+
+/* Contact. */
+.way {
+  background: #000000;
+  color: var(--paper);
+  border-color: var(--line-dark-strong);
+}
+
+.way:hover {
+  background: var(--paper);
+  color: #000000;
+  border-color: var(--paper);
+}
+
+.towns li {
+  background: #000000;
+  color: var(--paper);
+  border-color: var(--line-dark);
+  border-left-color: var(--red);
+}
+
+.site-foot {
+  border-top: 1px solid var(--line-dark);
+}
+
+:focus-visible {
+  outline-color: #ffffff;
+}
+
 </style>
 </head>
 <body>
@@ -2582,7 +2762,7 @@ main h2::before {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T16:10+10:00">Wed 25 Nov 2026, 4:10 pm AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T16:15+10:00">Wed 25 Nov 2026, 4:15 pm AEST</time></p>
   </div>
 </footer>
 
