@@ -196,14 +196,36 @@ def main():
             out.append(("Google", "Reviews and business listing", esc(google), True))
         return out
 
+    # Simple line symbols, drawn with the page's own colours. These are generic
+    # symbols, not the companies' logos.
+    icon_paths = {
+        "Call": '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+        "Text": '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+        "WhatsApp": '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>',
+        "Messenger": '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/>',
+        "Email": '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
+        "Facebook": '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>',
+        "Instagram": '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+        "TikTok": '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+        "YouTube": '<polygon points="6 3 20 12 6 21 6 3"/>',
+        "Google": '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    }
+
+    def icon(label):
+        return (
+            '<svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" '
+            f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{icon_paths.get(label, "")}</svg>'
+        )
+
     contact_items = "\n        ".join(
         '<li><a class="way" href="' + href + '"'
         + (' target="_blank" rel="noopener"' if external else "")
-        + f'><span class="way__label">{label}</span><span class="way__detail">{detail}</span></a></li>'
+        + f'><span class="way__badge">{icon(label)}</span>'
+        + f'<span class="way__words"><span class="way__label">{label}</span><span class="way__detail">{detail}</span></span></a></li>'
         for label, detail, href, external in ways()
     )
     foot_ways = "\n      ".join(
-        '<li><a href="' + href + '"' + (' target="_blank" rel="noopener"' if external else "") + f'>{label}</a></li>'
+        '<li><a href="' + href + '"' + (' target="_blank" rel="noopener"' if external else "") + f'>{icon(label)}{label}</a></li>'
         for label, detail, href, external in ways()
     )
     header_call = f'<a class="head-call" href="{tel(phone)}">Call</a>' if phone else ""

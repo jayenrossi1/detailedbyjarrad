@@ -1171,8 +1171,9 @@ main[id] {
 }
 
 .way {
-  display: grid;
-  gap: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   min-height: 5.25rem;
   padding: 1rem 1.15rem;
   border: 2px solid #000000;
@@ -1186,6 +1187,42 @@ main[id] {
 .way:hover {
   background: #000000;
   color: var(--paper);
+}
+
+/* Symbol tile: red with a white line icon. */
+.way__badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: #ffffff;
+}
+
+.way__icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.way__words {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.foot-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.foot-links .way__icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: #ff4040;
 }
 
 .way__label {

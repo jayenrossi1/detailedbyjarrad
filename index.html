@@ -1268,8 +1268,9 @@ main[id] {
 }
 
 .way {
-  display: grid;
-  gap: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   min-height: 5.25rem;
   padding: 1rem 1.15rem;
   border: 2px solid #000000;
@@ -1283,6 +1284,42 @@ main[id] {
 .way:hover {
   background: #000000;
   color: var(--paper);
+}
+
+/* Symbol tile: red with a white line icon. */
+.way__badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: #ffffff;
+}
+
+.way__icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.way__words {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.foot-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.foot-links .way__icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: #ff4040;
 }
 
 .way__label {
@@ -2141,12 +2178,12 @@ a.rating:hover .rating__count {
       <h2 id="contact-title">Contact Jarrad</h2>
       <p class="intro">Whichever suits you. Jarrad replies to every message.</p>
       <ul class="ways">
-        <li><a class="way" href="tel:0407530046"><span class="way__label">Call</span><span class="way__detail">0407 530 046</span></a></li>
-        <li><a class="way" href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20a%20quote%20for%20a%20car%20detail."><span class="way__label">Text</span><span class="way__detail">0407 530 046</span></a></li>
-        <li><a class="way" href="mailto:detailedbyjarrad@gmail.com?subject=Quote%20request"><span class="way__label">Email</span><span class="way__detail">detailedbyjarrad@gmail.com</span></a></li>
-        <li><a class="way" href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener"><span class="way__label">Facebook</span><span class="way__detail">Detailed By Jarrad</span></a></li>
-        <li><a class="way" href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><span class="way__label">YouTube</span><span class="way__detail">Videos of recent work</span></a></li>
-        <li><a class="way" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><span class="way__label">Google</span><span class="way__detail">Reviews and business listing</span></a></li>
+        <li><a class="way" href="tel:0407530046"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span class="way__words"><span class="way__label">Call</span><span class="way__detail">0407 530 046</span></span></a></li>
+        <li><a class="way" href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20a%20quote%20for%20a%20car%20detail."><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="way__words"><span class="way__label">Text</span><span class="way__detail">0407 530 046</span></span></a></li>
+        <li><a class="way" href="mailto:detailedbyjarrad@gmail.com?subject=Quote%20request"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span><span class="way__words"><span class="way__label">Email</span><span class="way__detail">detailedbyjarrad@gmail.com</span></span></a></li>
+        <li><a class="way" href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></span><span class="way__words"><span class="way__label">Facebook</span><span class="way__detail">Detailed By Jarrad</span></span></a></li>
+        <li><a class="way" href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></span><span class="way__words"><span class="way__label">YouTube</span><span class="way__detail">Videos of recent work</span></span></a></li>
+        <li><a class="way" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="way__words"><span class="way__label">Google</span><span class="way__detail">Reviews and business listing</span></span></a></li>
       </ul>
       <p class="areas">We cover the Atherton Tablelands, including Atherton, Mareeba, Malanda, Yungaburra, Herberton, Kuranda, Ravenshoe and Millaa Millaa.</p>
       <p class="small">Hours: Monday to Friday, 8am to 5pm</p>
@@ -2158,14 +2195,14 @@ a.rating:hover .rating__count {
   <div class="wrap site-foot__inner">
     <p class="wordmark wordmark--foot"><img class="wordmark__badge" src="data:image/webp;base64,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" alt="" width="36" height="36">Detailed By Jarrad</p>
     <ul class="foot-links">
-      <li><a href="tel:0407530046">Call</a></li>
-      <li><a href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20a%20quote%20for%20a%20car%20detail.">Text</a></li>
-      <li><a href="mailto:detailedbyjarrad@gmail.com?subject=Quote%20request">Email</a></li>
-      <li><a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Facebook</a></li>
-      <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
-      <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
+      <li><a href="tel:0407530046"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a></li>
+      <li><a href="sms:0407530046?&body=Hi%20Jarrad%2C%20I%27d%20like%20a%20quote%20for%20a%20car%20detail."><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a></li>
+      <li><a href="mailto:detailedbyjarrad@gmail.com?subject=Quote%20request"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>Email</a></li>
+      <li><a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>Facebook</a></li>
+      <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>YouTube</a></li>
+      <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T11:55+10:00">Wed 25 Nov 2026, 11:55 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T12:00+10:00">Wed 25 Nov 2026, 12:00 pm AEST</time></p>
   </div>
 </footer>
 
