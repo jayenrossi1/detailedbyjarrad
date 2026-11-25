@@ -1,7 +1,8 @@
 {
   "business_name": "Detailed By Jarrad",
   "owner": "Jarrad",
-  "tagline": "Mobile car detailing. We come to you.",
+  "tagline": "Mobile car detailing on the Atherton Tablelands. We come to you.",
+  "area": "Atherton Tablelands",
   "timezone": "Australia/Brisbane",
   "facebook_url": "https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/",
   "messenger_url": "",
@@ -15,8 +16,10 @@
   "email": "detailedbyjarrad@gmail.com",
   "form_endpoint": "https://formsubmit.co/detailedbyjarrad@gmail.com",
   "form_mode": "post",
-  "suburbs": [],
-  "hours": "",
+  "suburbs": [
+    "the Atherton Tablelands"
+  ],
+  "hours": "8am to 5pm",
   "currency": "$",
   "photo_limit": 6,
   "vehicle_types": [
@@ -122,5 +125,22 @@
       "id": "addons",
       "name": "Add-ons"
     }
-  ]
+  ],
+  "about": {
+    "heading": "Meet Jarrad",
+    "text": [
+      "Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.",
+      "He is rated 5.0 out of 5 from 43 Google reviews."
+    ],
+    "photos": [
+      {
+        "src": "img/jarrad-ute.webp",
+        "alt": "Jarrad standing in front of his ute"
+      },
+      {
+        "src": "img/jarrad-shirt.webp",
+        "alt": "Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt"
+      }
+    ]
+  }
 }
