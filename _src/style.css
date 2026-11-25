@@ -698,65 +698,6 @@ main[id] {
   text-underline-offset: 0.2em;
 }
 
-/* About: two portraits beside a short introduction, on black. */
-
-.about {
-  padding: 5rem 0 5.5rem;
-  background: var(--ink);
-  color: var(--paper);
-}
-
-/* The text lines up with the other sections; the photos run on to the right. */
-.about__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3333fr);
-  gap: 1.25rem;
-  align-items: center;
-  max-width: none;
-  margin: 0;
-  padding-left: max(var(--pad), calc((100vw - var(--max)) / 2 + var(--pad)));
-  padding-right: var(--pad);
-}
-
-/* The square photo is a third wider, so all three stand at the same height. */
-.about__photo.about__photo--wide {
-  aspect-ratio: 1 / 1;
-}
-
-.about__text {
-  display: grid;
-  gap: 1rem;
-  padding-right: 1.5rem;
-}
-
-.about__text p {
-  max-width: 28rem;
-  color: var(--muted-dark);
-}
-
-.about__photo {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  border-radius: var(--radius);
-  background: var(--ink-raise);
-}
-
-@media (max-width: 52rem) {
-  .about__layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3333fr);
-    gap: 0.6rem;
-  }
-
-  .about__text {
-    grid-column: 1 / -1;
-    padding-right: 0;
-    margin-bottom: 1rem;
-  }
-}
-
 /* Reviews: one row to swipe or step through. Every review is in it. */
 
 .reviews {
@@ -860,6 +801,7 @@ main[id] {
 .merch {
   padding: 5rem 0 5.5rem;
   background: #ffffff;
+  border-top: 1px solid var(--line-light);
 }
 
 .products {
@@ -2192,15 +2134,6 @@ main h2::before {
   border-left: 2.5px solid #ffffff;
   border-bottom: 2.5px solid #ffffff;
   transform: rotate(-45deg);
-}
-
-/* Meet Jarrad lines up to the page edge without counting the scrollbar. */
-.about {
-  container-type: inline-size;
-}
-
-.about__layout {
-  padding-left: max(var(--pad), calc((100cqw - var(--max)) / 2 + var(--pad)));
 }
 
 /* Towns covered. */

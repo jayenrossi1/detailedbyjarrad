@@ -235,26 +235,6 @@ def main():
     )
     header_call = f'<a class="head-call" href="{tel(phone)}">Call</a>' if phone else ""
 
-    about = data.get("about") or {}
-    if about.get("photos"):
-        for ph in about["photos"]:
-            if not (ROOT / ph["src"]).is_file():
-                raise SystemExit(f"Build stopped: photo not found: {ph['src']}")
-        about_section = (
-            '<section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout">'
-            f'<div class="about__text"><h2 id="about-title">{esc(about["heading"])}</h2>'
-            + "".join(f"<p>{esc(t)}</p>" for t in about.get("text", []))
-            + '<p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div>'
-            + "".join(
-                f'<img class="about__photo{" about__photo--wide" if ph.get("wide") else ""}" src="{esc(ph["src"])}" alt="{esc(ph["alt"])}" '
-                f'width="{960 if ph.get("wide") else 720}" height="960" loading="lazy" decoding="async">'
-                for ph in about["photos"]
-            )
-            + "</div></section>"
-        )
-    else:
-        about_section = ""
-
     # Merch store. Hidden until merch.json lists at least one product.
     merch = json.loads((ROOT / "merch.json").read_text(encoding="utf-8"))
     products = merch.get("products", [])
@@ -424,7 +404,6 @@ def main():
         "{{SIZE_SWITCH}}": size_switch,
         "{{REVIEWS_ALL}}": reviews_all,
         "{{MERCH_CART}}": merch_cart,
-        "{{ABOUT}}": about_section,
         "{{AREA}}": esc(data.get("area", "")),
         "{{SITE_URL}}": esc(data.get("site_url", "")),
         "{{NAV_MERCH}}": nav_merch,

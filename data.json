@@ -173,27 +173,5 @@
       "dark": false
     }
   ],
-  "about": {
-    "heading": "Meet Jarrad",
-    "text": [
-      "Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.",
-      "He is rated 5.0 out of 5 from 43 Google reviews."
-    ],
-    "photos": [
-      {
-        "src": "img/jarrad-ute.webp",
-        "alt": "Jarrad standing in front of his ute"
-      },
-      {
-        "src": "img/jarrad-shirt.webp",
-        "alt": "Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt"
-      },
-      {
-        "src": "img/hoodie-street.webp",
-        "alt": "The Detailed By Jarrad hoodie, worn beside a white Lamborghini",
-        "wide": true
-      }
-    ]
-  },
   "opening_hours": "Mo-Fr 08:00-17:00"
 }
