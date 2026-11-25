@@ -27,7 +27,7 @@
     "Ravenshoe",
     "Millaa Millaa"
   ],
-  "hours": "8am to 5pm",
+  "hours": "Monday to Friday, 8am to 5pm",
   "currency": "$",
   "photo_limit": 6,
   "vehicle_types": [
@@ -189,5 +189,6 @@
         "alt": "Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt"
       }
     ]
-  }
+  },
+  "opening_hours": "Mo-Fr 08:00-17:00"
 }

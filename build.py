@@ -356,6 +356,8 @@ def main():
         ld["email"] = email
     if suburbs:
         ld["areaServed"] = suburbs
+    if data.get("opening_hours"):
+        ld["openingHours"] = data["opening_hours"]
     ld_tag = (
         '<script type="application/ld+json">'
         + json.dumps(ld, ensure_ascii=False, indent=2).replace("</", "<\\/")
