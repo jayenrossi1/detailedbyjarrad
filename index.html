@@ -1301,6 +1301,48 @@ main[id] {
   color: var(--muted-dark);
 }
 
+/* Google rating: a small white card under the estimate. */
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  box-shadow: inset 0 -4px 0 var(--red);
+}
+
+a.rating:hover .rating__count {
+  text-decoration: underline;
+}
+
+.rating__score {
+  font-stretch: 70%;
+  font-weight: 800;
+  font-size: 3.25rem;
+  line-height: 0.9;
+}
+
+.rating__text {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.rating__stars {
+  color: var(--red);
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
+.rating__count {
+  font-weight: 600;
+}
+
 /* Form */
 
 .quote-form {
@@ -1822,61 +1864,8 @@ main[id] {
           <p class="estimate__figure" id="est-figure" aria-live="polite"></p>
           <p class="estimate__note" id="est-note"></p>
         </section>
+        <a class="rating" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 from 43 reviews on Google. Read them on Google"><span class="rating__score">5.0</span><span class="rating__text"><span class="rating__stars" aria-hidden="true">★★★★★</span><span class="rating__count">43 reviews on Google</span></span></a>
 
-  <section class="reviews" id="reviews" aria-labelledby="reviews-title">
-    <div class="wrap">
-      <h2 id="reviews-title">Reviews</h2>
-      <p class="intro">Rated 5.0 out of 5 from 43 Google reviews. <a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Read them on Google</a>.</p>
-      <ul class="reviews__list">
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod exhibited remarkable attention to detail, leaving my car spotless and free of dog hair. I highly recommend his services. The pricing is excellent, especially given the level of care, precision, and time he invests, along with the convenience of coming to your location. Thank you!</blockquote><p class="review__name">Rebekah K</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad detailed two of our vehicles, he came to our premises which was very convenient. He&#x27;s punctual and professional. Most importantly we are extremely happy with his quality of work and his prices are great. We highly recommend Jarrad and his services.</blockquote><p class="review__name">Stacey N</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod has done the best job detailing my car! My vehicle went from filthy and dusty to looking fresh and brand new in no time. I can’t recommend Jarrod enough. Definitely the best on the Tablelands.</blockquote><p class="review__name">Hannah</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I was very impressed in Detailed by Jarrad. He arrived on time. Worked solidly the whole time he was here. The detail he went to was way beyond my expectations especially after having other detailers. Price was very reasonable. Thank you.</blockquote><p class="review__name">Chris K</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job on my work Ute made it look not only brand new but smell brand new highly recommend!</blockquote><p class="review__name">Oliver</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>HIGHLY RECOMMENDED- Had Jarrad do both mine and my daughter’s car and to say it was amazing is an understatement. Jarrad did an awesome job and paid so much attention to detail. His pricing is very reasonable and he is such a nice guy. Highly recommended.</blockquote><p class="review__name">Indra V</p></li>
-      </ul>
-      <details class="reviews__more">
-        <summary class="btn btn-line"><span class="when-closed">Show all 41 reviews</span><span class="when-open">Show fewer reviews</span></summary>
-        <ul class="reviews__list">
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I’d heard great things about Jarrad’s car detailing expertise, and he didn’t disappoint! He made my father’s 16yo Toyota look like new—we were so impressed. His attention to detail and meticulous efforts are like no other.</blockquote><p class="review__name">Nikki W</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was in desperate need of some attention and Jarrad did an incredible job! The transformation was amazing and I have had compliments from strangers on how clean my car is following his work!</blockquote><p class="review__name">Jade C</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does an excellent job and is such a pleasure to deal with!! My car looks amazing!! Thank you Jarrad 😊</blockquote><p class="review__name">Katie C</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was covered in mould inside and Jarrad did a great job getting rid of the mould. I would definitely recommend him and have him back again.</blockquote><p class="review__name">Aj M</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job. He was meticulous. The car looks fabulous and he is very reasonable so will definitely be booking the car in regularly.</blockquote><p class="review__name">Gail B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had Jarrad do a pre sale detail for my car inside and out. He has amazing attention to detail and did an outstanding job! It&#x27;s never been so clean. And the turn around was fast (within a day).</blockquote><p class="review__name">Sharnie K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>110 % Highly recommend Jarrad, amazing job, great communicator. Iam so so happy. Thank you Jarrad</blockquote><p class="review__name">Katrina M</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a fantastic job detailing my car. He was thorough, professional and extremely friendly. I have an older vehicle and after Jarrad worked his magic it looked brand new again. Highly recommend Detailed by Jarrad!!!</blockquote><p class="review__name">Mel J</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a great job of making my car look clean and fresh again. He was easy to deal with and took pride in ensuring he delivered a great service and a clean car! I would definitely recommend reaching out to Jarrad if your car needs a clean.</blockquote><p class="review__name">Cassy P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad is eager and very reliable when it comes to car detailing. He works around your working commitments to get his job done and does a great job every single time! Thank you Jarrad 😊</blockquote><p class="review__name">Shellie N</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrod. Very professional and great attention to detail as you peeled back several years of neglect with the Hilux outside without under cover storage. Also cleaned up all that Topaz red dirt mud buildup underneath.</blockquote><p class="review__name">Kevin H</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car inside and out, it looks like brand new. Jarrad was super friendly and professional. Would recommend</blockquote><p class="review__name">Sharon S</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>We were very impressed with Jarrad. He kept me updated on estimated time of arrival and worked hard for the time he was here. Very impressed with how much detail he put in. Looking at getting Jarrad back to do another car.</blockquote><p class="review__name">Allison G</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad recently detailed two of our cars and did a brilliant job. Both cars look brand new, inside and out. The attention to detail is unmatched, and Jarrad was professional and friendly. Highly recommend!</blockquote><p class="review__name">Maddi K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has done a fantastic job on detailing my car. Definitely recommend him. And a lovely young man. Thanks Jarrad.</blockquote><p class="review__name">Christine T</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Did an excellent job for me couldnt have done better definitely saved me big time had some muddy passengers in the back but he brought it back to brand new. Couldnt recommend anyone better cheers jarrad.👍</blockquote><p class="review__name">Alexander E</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Excellent work by Jarrad. He managed to turn our dear old Corolla into a thing of beauty. He was meticulous and thorough and was really pleasant to talk to. I highly recommend.</blockquote><p class="review__name">Ross R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service from a diligent friendly and honest young man. Very fair in his pricing. Always keen to do an excellent job. Goes above and beyond. We had him detail a 20yr old 4WD and he gave it a new life!</blockquote><p class="review__name">Julianne P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had my car detailed by Jarrad, he did a brilliant job and his pricing is very reasonable. Thanks Jarrad, you&#x27;ve got my business from now on.</blockquote><p class="review__name">Mark A</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great work completed by Jarrad, really happy with the way the Ute turned out! He was great at organising a day that suited us both and worked in the heat to get the Ute sparkling clean again! Would highly recommend and will be using his services again!</blockquote><p class="review__name">Lillian B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does some sweet detailing. He made my car look brand new fr.</blockquote><p class="review__name">Joshua-Tracy K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly Recommend! Jarrad did an amazing job of my car making it sparkle once again!! Will definitely use him again</blockquote><p class="review__name">Michelle R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service by Jarrad. Flexible to suit my timing. Car brilliantly clean when he’d finished.</blockquote><p class="review__name">Carrie L</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car. Highly recommend and will definately be back again.</blockquote><p class="review__name">Angela W</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Had the pleasure of having Jarrod detail the inside of the car. Awesome work with such a friendly attitude 👏 would recommend Jarrod. Five star service.</blockquote><p class="review__name">Kay B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I cannot recommend anyone else for the job! Jarrod offers the best service and experience. He did an amazing job!!</blockquote><p class="review__name">Alisha R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has made my car look new again. Very thorough job.</blockquote><p class="review__name">Cath T</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does fantastic job, very thorough and with a great work ethics. Absolutely recommended</blockquote><p class="review__name">Niilo G</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service, very reasonable pricing and very professional. Easy to contact and book in for car detailing- flexible with days and times.</blockquote><p class="review__name">Monique P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrad for saving my carpets in the back seat from all the oil that got spilt you did an exceptional job and I will definitely use your service again</blockquote><p class="review__name">Helen</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service and a fantastic job. He has a good eye to detail. I highly recommend Jarrad.</blockquote><p class="review__name">Megan P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Fabulous job Jarrad. Very courteous, got straight back to me, nothing was a problem. Highly recommended 👏🏻</blockquote><p class="review__name">Jenni B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great clean, efficient service.</blockquote><p class="review__name">Chris F</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly recommend.</blockquote><p class="review__name">Hugo D</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Best around !</blockquote><p class="review__name">Inscape Hair Artistry</p></li>
-        </ul>
-      </details>
-    </div>
-  </section>
 
       </div>
 
@@ -1949,6 +1938,62 @@ main[id] {
       </div>
     </div>
   </section>
+
+  <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <h2 id="reviews-title">Reviews</h2>
+      <p class="intro">Rated 5.0 out of 5 from 43 Google reviews. <a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Read them on Google</a>.</p>
+      <ul class="reviews__list">
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod exhibited remarkable attention to detail, leaving my car spotless and free of dog hair. I highly recommend his services. The pricing is excellent, especially given the level of care, precision, and time he invests, along with the convenience of coming to your location. Thank you!</blockquote><p class="review__name">Rebekah K</p></li>
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad detailed two of our vehicles, he came to our premises which was very convenient. He&#x27;s punctual and professional. Most importantly we are extremely happy with his quality of work and his prices are great. We highly recommend Jarrad and his services.</blockquote><p class="review__name">Stacey N</p></li>
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod has done the best job detailing my car! My vehicle went from filthy and dusty to looking fresh and brand new in no time. I can’t recommend Jarrod enough. Definitely the best on the Tablelands.</blockquote><p class="review__name">Hannah</p></li>
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I was very impressed in Detailed by Jarrad. He arrived on time. Worked solidly the whole time he was here. The detail he went to was way beyond my expectations especially after having other detailers. Price was very reasonable. Thank you.</blockquote><p class="review__name">Chris K</p></li>
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job on my work Ute made it look not only brand new but smell brand new highly recommend!</blockquote><p class="review__name">Oliver</p></li>
+      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>HIGHLY RECOMMENDED- Had Jarrad do both mine and my daughter’s car and to say it was amazing is an understatement. Jarrad did an awesome job and paid so much attention to detail. His pricing is very reasonable and he is such a nice guy. Highly recommended.</blockquote><p class="review__name">Indra V</p></li>
+      </ul>
+      <details class="reviews__more">
+        <summary class="btn btn-line"><span class="when-closed">Show all 41 reviews</span><span class="when-open">Show fewer reviews</span></summary>
+        <ul class="reviews__list">
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I’d heard great things about Jarrad’s car detailing expertise, and he didn’t disappoint! He made my father’s 16yo Toyota look like new—we were so impressed. His attention to detail and meticulous efforts are like no other.</blockquote><p class="review__name">Nikki W</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was in desperate need of some attention and Jarrad did an incredible job! The transformation was amazing and I have had compliments from strangers on how clean my car is following his work!</blockquote><p class="review__name">Jade C</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does an excellent job and is such a pleasure to deal with!! My car looks amazing!! Thank you Jarrad 😊</blockquote><p class="review__name">Katie C</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was covered in mould inside and Jarrad did a great job getting rid of the mould. I would definitely recommend him and have him back again.</blockquote><p class="review__name">Aj M</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job. He was meticulous. The car looks fabulous and he is very reasonable so will definitely be booking the car in regularly.</blockquote><p class="review__name">Gail B</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had Jarrad do a pre sale detail for my car inside and out. He has amazing attention to detail and did an outstanding job! It&#x27;s never been so clean. And the turn around was fast (within a day).</blockquote><p class="review__name">Sharnie K</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>110 % Highly recommend Jarrad, amazing job, great communicator. Iam so so happy. Thank you Jarrad</blockquote><p class="review__name">Katrina M</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a fantastic job detailing my car. He was thorough, professional and extremely friendly. I have an older vehicle and after Jarrad worked his magic it looked brand new again. Highly recommend Detailed by Jarrad!!!</blockquote><p class="review__name">Mel J</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a great job of making my car look clean and fresh again. He was easy to deal with and took pride in ensuring he delivered a great service and a clean car! I would definitely recommend reaching out to Jarrad if your car needs a clean.</blockquote><p class="review__name">Cassy P</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad is eager and very reliable when it comes to car detailing. He works around your working commitments to get his job done and does a great job every single time! Thank you Jarrad 😊</blockquote><p class="review__name">Shellie N</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrod. Very professional and great attention to detail as you peeled back several years of neglect with the Hilux outside without under cover storage. Also cleaned up all that Topaz red dirt mud buildup underneath.</blockquote><p class="review__name">Kevin H</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car inside and out, it looks like brand new. Jarrad was super friendly and professional. Would recommend</blockquote><p class="review__name">Sharon S</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>We were very impressed with Jarrad. He kept me updated on estimated time of arrival and worked hard for the time he was here. Very impressed with how much detail he put in. Looking at getting Jarrad back to do another car.</blockquote><p class="review__name">Allison G</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad recently detailed two of our cars and did a brilliant job. Both cars look brand new, inside and out. The attention to detail is unmatched, and Jarrad was professional and friendly. Highly recommend!</blockquote><p class="review__name">Maddi K</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has done a fantastic job on detailing my car. Definitely recommend him. And a lovely young man. Thanks Jarrad.</blockquote><p class="review__name">Christine T</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Did an excellent job for me couldnt have done better definitely saved me big time had some muddy passengers in the back but he brought it back to brand new. Couldnt recommend anyone better cheers jarrad.👍</blockquote><p class="review__name">Alexander E</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Excellent work by Jarrad. He managed to turn our dear old Corolla into a thing of beauty. He was meticulous and thorough and was really pleasant to talk to. I highly recommend.</blockquote><p class="review__name">Ross R</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service from a diligent friendly and honest young man. Very fair in his pricing. Always keen to do an excellent job. Goes above and beyond. We had him detail a 20yr old 4WD and he gave it a new life!</blockquote><p class="review__name">Julianne P</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had my car detailed by Jarrad, he did a brilliant job and his pricing is very reasonable. Thanks Jarrad, you&#x27;ve got my business from now on.</blockquote><p class="review__name">Mark A</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great work completed by Jarrad, really happy with the way the Ute turned out! He was great at organising a day that suited us both and worked in the heat to get the Ute sparkling clean again! Would highly recommend and will be using his services again!</blockquote><p class="review__name">Lillian B</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does some sweet detailing. He made my car look brand new fr.</blockquote><p class="review__name">Joshua-Tracy K</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly Recommend! Jarrad did an amazing job of my car making it sparkle once again!! Will definitely use him again</blockquote><p class="review__name">Michelle R</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service by Jarrad. Flexible to suit my timing. Car brilliantly clean when he’d finished.</blockquote><p class="review__name">Carrie L</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car. Highly recommend and will definately be back again.</blockquote><p class="review__name">Angela W</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Had the pleasure of having Jarrod detail the inside of the car. Awesome work with such a friendly attitude 👏 would recommend Jarrod. Five star service.</blockquote><p class="review__name">Kay B</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I cannot recommend anyone else for the job! Jarrod offers the best service and experience. He did an amazing job!!</blockquote><p class="review__name">Alisha R</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has made my car look new again. Very thorough job.</blockquote><p class="review__name">Cath T</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does fantastic job, very thorough and with a great work ethics. Absolutely recommended</blockquote><p class="review__name">Niilo G</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service, very reasonable pricing and very professional. Easy to contact and book in for car detailing- flexible with days and times.</blockquote><p class="review__name">Monique P</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrad for saving my carpets in the back seat from all the oil that got spilt you did an exceptional job and I will definitely use your service again</blockquote><p class="review__name">Helen</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service and a fantastic job. He has a good eye to detail. I highly recommend Jarrad.</blockquote><p class="review__name">Megan P</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Fabulous job Jarrad. Very courteous, got straight back to me, nothing was a problem. Highly recommended 👏🏻</blockquote><p class="review__name">Jenni B</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great clean, efficient service.</blockquote><p class="review__name">Chris F</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly recommend.</blockquote><p class="review__name">Hugo D</p></li>
+        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Best around !</blockquote><p class="review__name">Inscape Hair Artistry</p></li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
   <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"></div></section>
 
   <section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap"><h2 id="merch-title">Merch</h2><p class="intro">Wear the badge. Tees and hoodies with the Detailed By Jarrad print on the back.</p><ul class="products"><li class="product" data-product="tee" data-name="Detailed By Jarrad Tee" data-price="4995"><img class="product__img" src="img/merch/tee-back.webp" alt="Detailed By Jarrad Tee" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Tee</h3><p class="product__price">$49.95</p><p>Large badge print on the back.</p><div class="product__row"><label class="visually-hidden" for="size-tee">Size for Detailed By Jarrad Tee</label><select class="product__size" id="size-tee"><option value="">Size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="btn btn-primary product__add" type="button">Add to cart</button></div><p class="product__msg" role="status" aria-live="polite"></p></div></li><li class="product" data-product="hoodie" data-name="Detailed By Jarrad Hoodie" data-price="7495"><img class="product__img" src="img/merch/hoodie-back.webp" alt="Detailed By Jarrad Hoodie" width="640" height="640" loading="lazy" decoding="async"><div class="product__body"><h3>Detailed By Jarrad Hoodie</h3><p class="product__price">$74.95</p><p>Pullover hoodie with the large badge print on the back.</p><div class="product__row"><label class="visually-hidden" for="size-hoodie">Size for Detailed By Jarrad Hoodie</label><select class="product__size" id="size-hoodie"><option value="">Size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button class="btn btn-primary product__add" type="button">Add to cart</button></div><p class="product__msg" role="status" aria-live="polite"></p></div></li></ul><p class="note">Free local pickup or drop-off on the Atherton Tablelands. Postage Australia-wide is a flat $12, and free on orders of $100 or more.</p></div></section>
@@ -1981,7 +2026,7 @@ main[id] {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T11:02+10:00">Wed 25 Nov 2026, 11:02 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T11:21+10:00">Wed 25 Nov 2026, 11:21 am AEST</time></p>
   </div>
 </footer>
 

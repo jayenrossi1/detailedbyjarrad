@@ -303,6 +303,20 @@ def main():
         nav_merch = ""
         merch_cart = ""
 
+    rating_inner = (
+        f'<span class="rating__score">{esc(rv["rating"])}</span>'
+        '<span class="rating__text"><span class="rating__stars" aria-hidden="true">★★★★★</span>'
+        f'<span class="rating__count">{int(rv["count"])} reviews on Google</span></span>'
+    )
+    rating_label = f'Rated {esc(rv["rating"])} out of 5 from {int(rv["count"])} reviews on Google'
+    if rv.get("google_url", "").strip():
+        rating_box = (
+            f'<a class="rating" href="{esc(rv["google_url"])}" target="_blank" rel="noopener" '
+            f'aria-label="{rating_label}. Read them on Google">{rating_inner}</a>'
+        )
+    else:
+        rating_box = f'<div class="rating" role="img" aria-label="{rating_label}">{rating_inner}</div>'
+
     areas = f'<p class="areas">We cover {esc(join_names(suburbs))}.</p>' if suburbs else ""
 
     if phone:
@@ -353,6 +367,7 @@ def main():
         "{{SERVICES}}": service_rows,
         "{{AREAS}}": areas,
         "{{MERCH}}": merch_section,
+        "{{RATING_BOX}}": rating_box,
         "{{MERCH_CART}}": merch_cart,
         "{{ABOUT}}": about_section,
         "{{AREA}}": esc(data.get("area", "")),
@@ -421,6 +436,18 @@ def main():
         "</html>",
         "",
     ])
+
+    depth = 0
+    for match in __import__("re").finditer(r"<section\b[^>]*>|</section>", page):
+        tag = match.group(0)
+        if tag.startswith("</"):
+            depth -= 1
+        else:
+            if depth > 0 and 'class="estimate"' not in tag:
+                raise SystemExit("Build stopped: a page section is nested inside another section.")
+            depth += 1
+    if depth != 0:
+        raise SystemExit("Build stopped: unbalanced section tags.")
 
     out = ROOT / "index.html"
     out.write_text(page, encoding="utf-8")

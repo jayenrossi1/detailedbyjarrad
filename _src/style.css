@@ -1218,6 +1218,48 @@ main[id] {
   color: var(--muted-dark);
 }
 
+/* Google rating: a small white card under the estimate. */
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  box-shadow: inset 0 -4px 0 var(--red);
+}
+
+a.rating:hover .rating__count {
+  text-decoration: underline;
+}
+
+.rating__score {
+  font-stretch: 70%;
+  font-weight: 800;
+  font-size: 3.25rem;
+  line-height: 0.9;
+}
+
+.rating__text {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.rating__stars {
+  color: var(--red);
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
+.rating__count {
+  font-weight: 600;
+}
+
 /* Form */
 
 .quote-form {
