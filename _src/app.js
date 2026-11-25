@@ -5,6 +5,8 @@
 
   var config = window.SITE_CONFIG || {};
   var root = document.documentElement;
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  root.classList.add('js');
   var picked = [];
   var photos = [];
   var photoLimit = config.photoLimit || 6;
@@ -16,6 +18,8 @@
 
   var menuButtons = Array.prototype.slice.call(document.querySelectorAll('[data-service]'));
   var countButton = document.getElementById('quote-count');
+  var quoteOpen = document.getElementById('quote-open');
+  var quoteTotal = document.getElementById('quote-total');
   var chosenBox = document.getElementById('chosen');
   var form = document.getElementById('quote-form');
   var servicesField = document.getElementById('f-services');
@@ -141,6 +145,11 @@
       estFigure.textContent = money(state.total);
       estNote.textContent = 'Estimated total. ' + config.owner + ' confirms the final price after he reviews your photos.';
     }
+    if (quoteTotal) {
+      quoteTotal.hidden = state.kind !== 'price';
+      quoteTotal.textContent = state.kind === 'price' ? money(state.total) : '';
+    }
+    updateSteps();
   }
 
   /* Drawer and header count */
@@ -215,10 +224,13 @@
     });
   });
 
-  vehicleField.addEventListener('change', renderEstimate);
+  vehicleField.addEventListener('change', function () {
+    applySize(false);
+    renderEstimate();
+  });
   dirtField.addEventListener('change', renderEstimate);
 
-  countButton.addEventListener('click', function () {
+  quoteOpen.addEventListener('click', function () {
     if (typeof drawer.showModal === 'function') {
       drawer.showModal();
     } else {
@@ -325,6 +337,7 @@
     pickButton.textContent = photos.length >= photoLimit
       ? 'All ' + photoLimit + ' photos added'
       : 'Choose photos (' + photos.length + ' of ' + photoLimit + ')';
+    updateSteps();
   }
 
   function addFiles(fileList) {
@@ -451,6 +464,7 @@
       picked = [];
       clearPhotos();
       render();
+      applySize(true);
       setStatus('Request sent. Thank you. ' + config.owner + ' will reply with your estimate.', 'ok');
     }).catch(function () {
       setStatus("Your request didn't send. Try again, or message " + config.owner + ' on Facebook.', 'error');
@@ -810,8 +824,257 @@
     renderCart();
   })();
 
+  /* Vehicle size switch: reprices the menu and stays in step with the form. */
+  var sizeInputs = Array.prototype.slice.call(document.querySelectorAll('input[name="menu-size"]'));
+  var priceBlocks = Array.prototype.slice.call(document.querySelectorAll('.menu__price[data-prices]'));
+
+  function sizeLabel(size) {
+    for (var i = 0; i < sizeInputs.length; i++) {
+      if (sizeInputs[i].value === size) {
+        return sizeInputs[i].parentNode.textContent.trim();
+      }
+    }
+    return '';
+  }
+
+  /* The final value is recorded at once; the count is only how it is shown. */
+  function countTo(el, to, instant) {
+    var from = parseFloat(el.getAttribute('data-value'));
+    el.setAttribute('data-value', to);
+    var token = (el.countToken || 0) + 1;
+    el.countToken = token;
+    if (instant || reduceMotion || isNaN(from) || from === to || !window.requestAnimationFrame) {
+      el.textContent = money(to);
+      return;
+    }
+    var start = null;
+    function frame(now) {
+      if (el.countToken !== token) {
+        return;
+      }
+      if (start === null) {
+        start = now;
+      }
+      var t = Math.min(1, (now - start) / 380);
+      el.textContent = money(from + (to - from) * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) {
+        window.requestAnimationFrame(frame);
+      }
+    }
+    window.requestAnimationFrame(frame);
+  }
+
+  function applySize(instant) {
+    var size = vehicleField.value;
+    var label = sizeLabel(size);
+    sizeInputs.forEach(function (input) {
+      input.checked = input.value === size;
+    });
+    priceBlocks.forEach(function (block) {
+      var table = {};
+      try {
+        table = JSON.parse(block.getAttribute('data-prices')) || {};
+      } catch (error) {
+        table = {};
+      }
+      if (typeof table[size] === 'number') {
+        block.querySelector('.menu__from').textContent = label;
+        countTo(block.querySelector('.menu__figure'), table[size], instant);
+      }
+    });
+  }
+
+  sizeInputs.forEach(function (input) {
+    input.addEventListener('change', function () {
+      if (input.checked) {
+        vehicleField.value = input.value;
+        applySize(false);
+        renderEstimate();
+      }
+    });
+  });
+
+  /* Estimate steps tick off as each part is filled in. */
+  var stepItems = Array.prototype.slice.call(document.querySelectorAll('#steps [data-step]'));
+
+  function updateSteps() {
+    if (!stepItems) {
+      return;
+    }
+    var done = {
+      services: picked.length > 0,
+      car: form.elements.car.value.trim() !== '',
+      photos: photos.length > 0,
+      details: form.elements.name.value.trim() !== '' && form.elements.mobile.value.trim() !== ''
+    };
+    stepItems.forEach(function (item) {
+      var isDone = !!done[item.getAttribute('data-step')];
+      item.setAttribute('data-done', isDone ? 'true' : 'false');
+      var state = item.querySelector('.steps__state');
+      if (state) {
+        state.textContent = isDone ? 'Done: ' : '';
+      }
+    });
+  }
+
+  form.addEventListener('input', updateSteps);
+
+  /* Reviews row: previous and next, and a count of where you are. */
+  (function () {
+    var track = document.getElementById('reviews-track');
+    var prev = document.getElementById('reviews-prev');
+    var next = document.getElementById('reviews-next');
+    var count = document.getElementById('reviews-count');
+    if (!track || !prev || !next || !count || !track.children.length) {
+      return;
+    }
+    var cards = track.children;
+    var queued = false;
+
+    function metrics() {
+      var style = window.getComputedStyle(track);
+      var gap = parseFloat(style.columnGap) || 0;
+      var step = cards[0].getBoundingClientRect().width + gap;
+      var room = track.clientWidth - (parseFloat(style.paddingLeft) || 0) + gap;
+      return { step: step, visible: Math.max(1, Math.floor(room / step)) };
+    }
+
+    function paint() {
+      queued = false;
+      var m = metrics();
+      var total = cards.length;
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      var first = atEnd ? Math.max(1, total - m.visible + 1) : Math.min(total, Math.floor((track.scrollLeft + m.step / 2) / m.step) + 1);
+      var last = Math.min(total, first + m.visible - 1);
+      count.textContent = (first === last ? first : first + ' to ' + last) + ' of ' + total;
+      prev.disabled = track.scrollLeft < 4;
+      next.disabled = atEnd;
+    }
+
+    function move(direction) {
+      var m = metrics();
+      track.scrollBy({ left: direction * m.step * m.visible, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    prev.addEventListener('click', function () {
+      move(-1);
+    });
+    next.addEventListener('click', function () {
+      move(1);
+    });
+    track.addEventListener('scroll', function () {
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(paint);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', paint);
+    paint();
+  })();
+
+  /* Header: reading progress, and the section in view marked in the menu. */
+  (function () {
+    var line = document.getElementById('scroll-line');
+    var links = Array.prototype.slice.call(document.querySelectorAll('.site-nav > a[href^="#"]'));
+    var queued = false;
+
+    function paint() {
+      queued = false;
+      var max = root.scrollHeight - window.innerHeight;
+      var y = window.pageYOffset || root.scrollTop || 0;
+      if (line) {
+        line.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, Math.max(0, y / max)) : 0) + ')';
+      }
+      var mark = window.innerHeight * 0.4;
+      var current = '';
+      links.forEach(function (link) {
+        var target = document.getElementById(link.getAttribute('href').slice(1));
+        if (target) {
+          var box = target.getBoundingClientRect();
+          if (box.top <= mark && box.bottom > mark) {
+            current = link.getAttribute('href');
+          }
+        }
+      });
+      links.forEach(function (link) {
+        if (link.getAttribute('href') === current) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function request() {
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(paint);
+      }
+    }
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    paint();
+  })();
+
+  /* Section headings: the red bar draws in once, when the heading arrives. */
+  (function () {
+    var heads = Array.prototype.slice.call(document.querySelectorAll('main h2'));
+    if (!('IntersectionObserver' in window)) {
+      heads.forEach(function (head) {
+        head.classList.add('is-in');
+      });
+      return;
+    }
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          watcher.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    heads.forEach(function (head) {
+      watcher.observe(head);
+    });
+  })();
+
+  /* Hero light: follows a mouse; on touch screens it keeps its slow drift. */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var light = document.querySelector('.hero__light');
+    if (!hero || !light || reduceMotion) {
+      return;
+    }
+    var queued = false;
+    var x = 0;
+    var y = 0;
+    hero.addEventListener('pointermove', function (event) {
+      if (event.pointerType && event.pointerType !== 'mouse') {
+        return;
+      }
+      var box = hero.getBoundingClientRect();
+      x = event.clientX - box.left;
+      y = event.clientY - box.top;
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(function () {
+          queued = false;
+          light.classList.add('is-tracking');
+          light.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+        });
+      }
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        hero.classList.toggle('is-off', !entries[0].isIntersecting);
+      }).observe(hero);
+    }
+  })();
+
   render();
   renderPhotos();
+  applySize(true);
 
   if (/[?&]sent=1/.test(location.search)) {
     setStatus('Request sent. Thank you. ' + config.owner + ' will reply with your estimate.', 'ok');

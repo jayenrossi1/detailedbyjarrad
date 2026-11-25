@@ -133,6 +133,7 @@
   --max: 68rem;
   --radius: 2px;
   --fast: 120ms ease-out;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 *, *::before, *::after {
@@ -198,9 +199,10 @@ a {
   color: inherit;
 }
 
+/* Anchors stop exactly under the sticky header (its height plus its border). */
 section[id],
 main[id] {
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: calc(4.25rem + 1px);
 }
 
 :focus-visible {
@@ -381,11 +383,35 @@ main[id] {
   text-decoration: none;
 }
 
-.site-nav > a:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--red);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.3em;
+/* A red line marks the link under the pointer and the section in view. */
+.site-nav > a:not(.head-call) {
+  position: relative;
+}
+
+.site-nav > a:not(.head-call)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.4rem;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms var(--ease);
+}
+
+.site-nav > a:not(.head-call):hover::after,
+.site-nav > a[aria-current="true"]::after {
+  transform: none;
+}
+
+@media (min-width: 40.01rem) {
+  .site-nav > a:not(.head-call) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
 }
 
 /* Hero: the logo, the name in capitals, and a red edge that echoes the badge. */
@@ -465,6 +491,10 @@ main[id] {
 
 .hero__inner > :nth-child(4) {
   animation-delay: 380ms;
+}
+
+.hero__inner > :nth-child(5) {
+  animation-delay: 480ms;
 }
 
 .hero__inner {
@@ -684,36 +714,6 @@ main[id] {
   border-color: #ff4040;
 }
 
-/* Price for each vehicle size. */
-.menu__sizes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.85rem 0 0;
-}
-
-.menu__sizes div {
-  display: grid;
-  gap: 0.1rem;
-  min-width: 7.25rem;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid var(--line-light);
-  border-top: 3px solid var(--red);
-  border-radius: var(--radius);
-  background: #ffffff;
-}
-
-.menu__sizes dt {
-  font-size: var(--fs-small);
-  color: var(--grey);
-}
-
-.menu__sizes dd {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
 /* The headline price: the loudest thing in the row. */
 .menu__price {
   display: grid;
@@ -854,38 +854,88 @@ main[id] {
   }
 }
 
-/* Reviews: plain columns under black rules, like the price board. No cards. */
+/* Reviews: one row to swipe or step through. Every review is in it. */
 
 .reviews {
+  container-type: inline-size;
   padding: 5rem 0 5.5rem;
   background: #ffffff;
   border-top: 1px solid var(--line-light);
 }
 
-.reviews__list {
-  columns: 3 17rem;
-  column-gap: 2.5rem;
-  margin: 2.5rem 0 0;
+.reviews__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+}
+
+.reviews__controls {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.js .reviews__controls {
+  display: flex;
+}
+
+.reviews__count {
+  margin-right: 0.5rem;
+  color: var(--grey);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.reviews__btn {
+  width: 3rem;
+  min-height: 3rem;
   padding: 0;
+}
+
+.reviews__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.reviews__track {
+  --edge: max(var(--pad), calc((100vw - var(--max)) / 2 + var(--pad)));
+  --edge: max(var(--pad), calc((100cqw - var(--max)) / 2 + var(--pad)));
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(16.5rem, 29cqw, 21rem);
+  gap: 2rem;
+  margin: 2.5rem 0 0;
+  padding: 0 var(--edge) 0.5rem;
   list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: none;
+}
+
+.reviews__track::-webkit-scrollbar {
+  display: none;
+}
+
+.reviews__track:focus-visible {
+  outline-offset: -3px;
 }
 
 .review {
-  break-inside: avoid;
-  margin: 0 0 1.75rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-content: start;
+  margin: 0;
   padding-top: 1rem;
   border-top: 2px solid #000000;
-}
-
-.review__stars {
-  color: var(--red);
-  font-size: 1rem;
-  letter-spacing: 0.15em;
-  line-height: 1;
+  scroll-snap-align: start;
 }
 
 .review blockquote {
-  margin: 0.7rem 0 0.8rem;
+  margin: 0.8rem 0 1rem;
 }
 
 .review__name {
@@ -895,22 +945,11 @@ main[id] {
   letter-spacing: 0.03em;
 }
 
-.reviews__more {
-  margin-top: 0.75rem;
-}
-
-.reviews__more summary {
-  display: inline-flex;
-  list-style: none;
-}
-
-.reviews__more summary::-webkit-details-marker {
-  display: none;
-}
-
-.reviews__more[open] .when-closed,
-.reviews__more:not([open]) .when-open {
-  display: none;
+@media (max-width: 40rem) {
+  .reviews__track {
+    grid-auto-columns: min(80cqw, 20rem);
+    gap: 1.25rem;
+  }
 }
 
 /* Merch: a small product grid. Appears only when merch.json has products. */
@@ -1361,17 +1400,6 @@ main[id] {
   display: none;
 }
 
-/* Phones show three reviews up front; the rest sit behind "Show all". */
-@media (max-width: 40rem) {
-  .reviews__list:not(.reviews__more .reviews__list) > .review:nth-child(n + 4) {
-    display: none;
-  }
-
-  .reviews:has(.reviews__more[open]) .reviews__list > .review {
-    display: block;
-  }
-}
-
 /* Quote: summary and estimate on the left, the form on the right. */
 
 .quote {
@@ -1394,6 +1422,14 @@ main[id] {
 .quote__summary {
   display: grid;
   gap: 0;
+}
+
+/* On roomy screens the summary stays in view while the form is filled in. */
+@media (min-width: 52.01rem) and (min-height: 50rem) {
+  .quote__summary {
+    position: sticky;
+    top: 5.75rem;
+  }
 }
 
 .chosen {
@@ -1969,6 +2005,337 @@ a.rating:hover .rating__count {
   text-align: center;
 }
 
+/* ---------------------------------------------------------------------------
+   Interaction layer. One rhythm for everything: quick, eased, transform-only.
+   --------------------------------------------------------------------------- */
+
+a,
+button,
+select,
+summary,
+label {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.btn {
+  transition: background-color var(--fast), color var(--fast), border-color var(--fast), transform 120ms var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled:active,
+.btn.is-off:active {
+  transform: none;
+}
+
+/* Five stars, drawn as one shape. */
+.stars {
+  display: inline-block;
+  flex: none;
+  width: 5.5em;
+  height: 1em;
+  background: var(--red);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'/%3E%3C/svg%3E") left center / 1.1em 1em repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'/%3E%3C/svg%3E") left center / 1.1em 1em repeat-x;
+}
+
+/* Header: reading progress, and the running total once a price is known. */
+.scroll-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.quote-total {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: #ffffff;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero: a soft light on the black, like a lamp over polished paint. It drifts
+   on its own and follows a mouse. */
+.hero__light {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 48rem;
+  height: 48rem;
+  margin: -24rem 0 0 -24rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.17), rgb(255 255 255 / 0.06) 45%, transparent 72%);
+  transform: translate3d(50vw, 7rem, 0);
+  pointer-events: none;
+  animation: light-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes light-drift {
+  from {
+    transform: translate3d(20vw, 4rem, 0);
+  }
+  to {
+    transform: translate3d(80vw, 22rem, 0);
+  }
+}
+
+.hero__light.is-tracking {
+  animation: none;
+  transition: transform 260ms var(--ease);
+}
+
+.hero.is-off .hero__light {
+  animation-play-state: paused;
+}
+
+.hero__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  color: var(--paper);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero__rating .stars {
+  background: #ff4040;
+  font-size: 1.05rem;
+}
+
+.hero__rating:hover span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* Section headings: a red bar draws in as the section arrives. */
+main h2::before {
+  content: "";
+  display: block;
+  width: 4rem;
+  height: 6px;
+  margin-bottom: 1.1rem;
+  background: var(--red);
+  transform-origin: left center;
+}
+
+.js main h2::before {
+  transform: scaleX(0);
+  transition: transform 650ms var(--ease) 60ms;
+}
+
+.js main h2.is-in::before {
+  transform: none;
+}
+
+/* Vehicle size switch. */
+.size-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 2rem;
+}
+
+.size-switch__label {
+  font-weight: 700;
+}
+
+.seg-group {
+  display: inline-flex;
+  border: 2px solid #000000;
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.seg {
+  position: relative;
+  cursor: pointer;
+}
+
+.seg + .seg {
+  border-left: 2px solid #000000;
+}
+
+.seg input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.seg span {
+  display: grid;
+  place-items: center;
+  min-height: 2.9rem;
+  padding: 0 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  transition: background-color var(--fast), color var(--fast);
+}
+
+.seg:hover span {
+  background: #f0f0f0;
+}
+
+.seg input:checked + span {
+  background: var(--red);
+  color: #ffffff;
+}
+
+.seg input:focus-visible + span {
+  outline: 3px solid #000000;
+  outline-offset: 3px;
+}
+
+.menu__figure {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 40rem) {
+  .size-switch {
+    display: grid;
+  }
+
+  .seg-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .seg span {
+    min-height: 3.25rem;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+}
+
+/* Estimate steps: each one turns red and ticks itself off. */
+.steps {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted-dark);
+  counter-increment: step;
+  transition: color var(--fast);
+}
+
+.steps a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+.steps__dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 2px solid var(--line-dark-strong);
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background-color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.steps__dot::before {
+  content: counter(step);
+}
+
+.steps li[data-done="true"] {
+  color: #ffffff;
+}
+
+.steps li[data-done="true"] .steps__dot {
+  border-color: var(--red);
+  background: var(--red);
+}
+
+.steps li[data-done="true"] .steps__dot::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.38rem;
+  margin-top: -0.15rem;
+  border-left: 2.5px solid #ffffff;
+  border-bottom: 2.5px solid #ffffff;
+  transform: rotate(-45deg);
+}
+
+/* Meet Jarrad lines up to the page edge without counting the scrollbar. */
+.about {
+  container-type: inline-size;
+}
+
+.about__layout {
+  padding-left: max(var(--pad), calc((100cqw - var(--max)) / 2 + var(--pad)));
+}
+
+/* Towns covered. */
+.towns-block {
+  margin-top: 2.25rem;
+}
+
+.towns-title {
+  font-size: 1.35rem;
+}
+
+.towns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.towns li {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line-light);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius);
+  background: #ffffff;
+  font-weight: 600;
+}
+
+/* Tap targets: footer links and the logo link are at least 44px tall. */
+.foot-links a {
+  min-height: 2.75rem;
+}
+
+.site-head .wordmark {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1993,17 +2360,20 @@ a.rating:hover .rating__count {
       <a href="#merch">Merch</a>
       <a href="#contact">Contact</a>
       <a class="head-call" href="tel:0407530046">Call</a>
-      <button class="btn btn-ghost btn-sm" id="quote-count" type="button" aria-haspopup="dialog">Quote (0)</button>
+      <button class="btn btn-ghost btn-sm" id="quote-open" type="button" aria-haspopup="dialog"><span id="quote-count">Quote (0)</span><span class="quote-total" id="quote-total" hidden></span></button>
     </nav>
   </div>
+  <div class="scroll-line" id="scroll-line" aria-hidden="true"></div>
 </header>
 
 <main id="top">
   <section class="hero">
+    <div class="hero__light" aria-hidden="true"></div>
     <div class="hero__inner">
       <div class="hero__mark"><img class="hero__badge" src="data:image/webp;base64,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" alt="Detailed By Jarrad logo" width="560" height="560"></div>
       <h1>Detailed By Jarrad</h1>
       <p class="lead">Mobile car detailing on the Atherton Tablelands. We come to you.</p>
+      <a class="hero__rating" href="#reviews" aria-label="Rated 5.0 out of 5 from 43 reviews on Google. Read the reviews"><span class="stars" aria-hidden="true"></span><span>5.0 from 43 Google reviews</span></a>
       <div class="actions">
         <a class="btn btn-primary" href="#quote">Get an estimate</a>
         <a class="btn btn-ghost" href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Message on Facebook</a>
@@ -2014,11 +2384,12 @@ a.rating:hover .rating__count {
   <section class="services" id="services" aria-labelledby="services-title">
     <div class="wrap">
       <h2 id="services-title">Services</h2>
-      <p class="intro">Choose what you need. Prices are for well-kept cars and depend on the size of your vehicle. Heavy jobs are quoted from photos.</p>
+      <p class="intro">Pick your vehicle size to see your price, then add what you need. Prices are for well-kept cars. Heavy jobs are quoted from photos.</p>
+      <div class="size-switch"><span class="size-switch__label" id="size-switch-label">Show prices for</span><div class="seg-group" role="radiogroup" aria-labelledby="size-switch-label"><label class="seg"><input type="radio" name="menu-size" value="small" checked><span>Small car</span></label><label class="seg"><input type="radio" name="menu-size" value="medium"><span>Sedan or wagon</span></label><label class="seg"><input type="radio" name="menu-size" value="large"><span>SUV or ute</span></label></div></div>
       <div class="menu-group"><h3 class="menu__group">Details</h3>
       <ul class="menu">
-      <li class="menu__item"><div class="menu__text"><h4>Interior Detail</h4><p>A deep clean of everything inside the car.</p><ul class="menu__includes"><li>Carpets, mats and seats vacuumed and shampooed</li><li>Dash, console and trims cleaned</li><li>Glass and mirrors cleaned</li></ul><dl class="menu__sizes"><div><dt>Small car</dt><dd>$350</dd></div><div><dt>Sedan or wagon</dt><dd>$450</dd></div><div><dt>SUV or ute</dt><dd>$550</dd></div></dl></div><div class="menu__price"><span class="menu__from">from</span><span class="menu__figure">$350</span></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior Detail" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h4>Inside and Out Detail</h4><p>The complete detail, inside and out, in one visit.</p><ul class="menu__includes"><li>Everything in the Interior Detail</li><li>Hand wash and paint decontamination</li><li>Polish and paint protection</li><li>Wheels and glass cleaned</li></ul><dl class="menu__sizes"><div><dt>Small car</dt><dd>$550</dd></div><div><dt>Sedan or wagon</dt><dd>$650</dd></div><div><dt>SUV or ute</dt><dd>$750</dd></div></dl></div><div class="menu__price"><span class="menu__from">from</span><span class="menu__figure">$550</span></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Inside and Out Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Interior Detail</h4><p>A deep clean of everything inside the car.</p><ul class="menu__includes"><li>Carpets, mats and seats vacuumed and shampooed</li><li>Dash, console and trims cleaned</li><li>Glass and mirrors cleaned</li></ul></div><div class="menu__price" data-prices="{&quot;small&quot;: 350, &quot;medium&quot;: 450, &quot;large&quot;: 550}"><span class="menu__from">Small car</span><span class="menu__figure" data-value="350">$350</span></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Inside and Out Detail</h4><p>The complete detail, inside and out, in one visit.</p><ul class="menu__includes"><li>Everything in the Interior Detail</li><li>Hand wash and paint decontamination</li><li>Polish and paint protection</li><li>Wheels and glass cleaned</li></ul></div><div class="menu__price" data-prices="{&quot;small&quot;: 550, &quot;medium&quot;: 650, &quot;large&quot;: 750}"><span class="menu__from">Small car</span><span class="menu__figure" data-value="550">$550</span></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Inside and Out Detail" aria-pressed="false">Add to quote</button></li>
       <li class="menu__item"><div class="menu__text"><h4>Maintenance Detail</h4><p>For existing customers. Keeps a detailed car looking detailed.</p><ul class="menu__includes"><li>A regular inside and out clean</li><li>Every 4 to 8 weeks</li><li>Available after your first full detail or ceramic coating</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="maintenance" data-name="Maintenance Detail" aria-pressed="false">Add to quote</button></li>
       </ul></div>
       <div class="menu-group menu-group--dark"><h3 class="menu__group">Protection</h3>
@@ -2040,14 +2411,19 @@ a.rating:hover .rating__count {
     <div class="wrap quote__layout">
       <div class="quote__summary">
         <h2 id="quote-title">Get an estimate</h2>
-        <p class="intro">Choose your services, tell us about your car and add photos. Your estimate updates as you go.</p>
+        <ol class="steps" id="steps" aria-label="Steps to get your estimate">
+          <li data-step="services"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span><a href="#services">Choose your services</a></span></li>
+          <li data-step="car"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Tell us about your car</span></li>
+          <li data-step="photos"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Add photos (optional)</span></li>
+          <li data-step="details"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Add your details and send</span></li>
+        </ol>
         <div class="chosen" id="chosen"></div>
         <section class="estimate" aria-labelledby="est-title">
           <h3 id="est-title">Your estimate</h3>
           <p class="estimate__figure" id="est-figure" aria-live="polite"></p>
           <p class="estimate__note" id="est-note"></p>
         </section>
-        <a class="rating" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 from 43 reviews on Google. Read them on Google"><span class="rating__score">5.0</span><span class="rating__text"><span class="rating__stars" aria-hidden="true">★★★★★</span><span class="rating__count">43 reviews on Google</span></span></a>
+        <a class="rating" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 from 43 reviews on Google. Read them on Google"><span class="rating__score">5.0</span><span class="rating__text"><span class="stars rating__stars" aria-hidden="true"></span><span class="rating__count">43 reviews on Google</span></span></a>
 
 
       </div>
@@ -2125,58 +2501,60 @@ a.rating:hover .rating__count {
   </section>
 
   <section class="reviews" id="reviews" aria-labelledby="reviews-title">
-    <div class="wrap">
-      <h2 id="reviews-title">Reviews</h2>
-      <p class="intro">Rated 5.0 out of 5 from 43 Google reviews. <a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Read them on Google</a>.</p>
-      <ul class="reviews__list">
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod exhibited remarkable attention to detail, leaving my car spotless and free of dog hair. I highly recommend his services. The pricing is excellent, especially given the level of care, precision, and time he invests, along with the convenience of coming to your location. Thank you!</blockquote><p class="review__name">Rebekah K</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad detailed two of our vehicles, he came to our premises which was very convenient. He&#x27;s punctual and professional. Most importantly we are extremely happy with his quality of work and his prices are great. We highly recommend Jarrad and his services.</blockquote><p class="review__name">Stacey N</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrod has done the best job detailing my car! My vehicle went from filthy and dusty to looking fresh and brand new in no time. I can’t recommend Jarrod enough. Definitely the best on the Tablelands.</blockquote><p class="review__name">Hannah</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I was very impressed in Detailed by Jarrad. He arrived on time. Worked solidly the whole time he was here. The detail he went to was way beyond my expectations especially after having other detailers. Price was very reasonable. Thank you.</blockquote><p class="review__name">Chris K</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job on my work Ute made it look not only brand new but smell brand new highly recommend!</blockquote><p class="review__name">Oliver</p></li>
-      <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>HIGHLY RECOMMENDED- Had Jarrad do both mine and my daughter’s car and to say it was amazing is an understatement. Jarrad did an awesome job and paid so much attention to detail. His pricing is very reasonable and he is such a nice guy. Highly recommended.</blockquote><p class="review__name">Indra V</p></li>
-      </ul>
-      <details class="reviews__more">
-        <summary class="btn btn-line"><span class="when-closed">Show all 41 reviews</span><span class="when-open">Show fewer reviews</span></summary>
-        <ul class="reviews__list">
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I’d heard great things about Jarrad’s car detailing expertise, and he didn’t disappoint! He made my father’s 16yo Toyota look like new—we were so impressed. His attention to detail and meticulous efforts are like no other.</blockquote><p class="review__name">Nikki W</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was in desperate need of some attention and Jarrad did an incredible job! The transformation was amazing and I have had compliments from strangers on how clean my car is following his work!</blockquote><p class="review__name">Jade C</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does an excellent job and is such a pleasure to deal with!! My car looks amazing!! Thank you Jarrad 😊</blockquote><p class="review__name">Katie C</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>My car was covered in mould inside and Jarrad did a great job getting rid of the mould. I would definitely recommend him and have him back again.</blockquote><p class="review__name">Aj M</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job. He was meticulous. The car looks fabulous and he is very reasonable so will definitely be booking the car in regularly.</blockquote><p class="review__name">Gail B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had Jarrad do a pre sale detail for my car inside and out. He has amazing attention to detail and did an outstanding job! It&#x27;s never been so clean. And the turn around was fast (within a day).</blockquote><p class="review__name">Sharnie K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>110 % Highly recommend Jarrad, amazing job, great communicator. Iam so so happy. Thank you Jarrad</blockquote><p class="review__name">Katrina M</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a fantastic job detailing my car. He was thorough, professional and extremely friendly. I have an older vehicle and after Jarrad worked his magic it looked brand new again. Highly recommend Detailed by Jarrad!!!</blockquote><p class="review__name">Mel J</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did a great job of making my car look clean and fresh again. He was easy to deal with and took pride in ensuring he delivered a great service and a clean car! I would definitely recommend reaching out to Jarrad if your car needs a clean.</blockquote><p class="review__name">Cassy P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad is eager and very reliable when it comes to car detailing. He works around your working commitments to get his job done and does a great job every single time! Thank you Jarrad 😊</blockquote><p class="review__name">Shellie N</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrod. Very professional and great attention to detail as you peeled back several years of neglect with the Hilux outside without under cover storage. Also cleaned up all that Topaz red dirt mud buildup underneath.</blockquote><p class="review__name">Kevin H</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car inside and out, it looks like brand new. Jarrad was super friendly and professional. Would recommend</blockquote><p class="review__name">Sharon S</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>We were very impressed with Jarrad. He kept me updated on estimated time of arrival and worked hard for the time he was here. Very impressed with how much detail he put in. Looking at getting Jarrad back to do another car.</blockquote><p class="review__name">Allison G</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad recently detailed two of our cars and did a brilliant job. Both cars look brand new, inside and out. The attention to detail is unmatched, and Jarrad was professional and friendly. Highly recommend!</blockquote><p class="review__name">Maddi K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has done a fantastic job on detailing my car. Definitely recommend him. And a lovely young man. Thanks Jarrad.</blockquote><p class="review__name">Christine T</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Did an excellent job for me couldnt have done better definitely saved me big time had some muddy passengers in the back but he brought it back to brand new. Couldnt recommend anyone better cheers jarrad.👍</blockquote><p class="review__name">Alexander E</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Excellent work by Jarrad. He managed to turn our dear old Corolla into a thing of beauty. He was meticulous and thorough and was really pleasant to talk to. I highly recommend.</blockquote><p class="review__name">Ross R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service from a diligent friendly and honest young man. Very fair in his pricing. Always keen to do an excellent job. Goes above and beyond. We had him detail a 20yr old 4WD and he gave it a new life!</blockquote><p class="review__name">Julianne P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I had my car detailed by Jarrad, he did a brilliant job and his pricing is very reasonable. Thanks Jarrad, you&#x27;ve got my business from now on.</blockquote><p class="review__name">Mark A</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great work completed by Jarrad, really happy with the way the Ute turned out! He was great at organising a day that suited us both and worked in the heat to get the Ute sparkling clean again! Would highly recommend and will be using his services again!</blockquote><p class="review__name">Lillian B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does some sweet detailing. He made my car look brand new fr.</blockquote><p class="review__name">Joshua-Tracy K</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly Recommend! Jarrad did an amazing job of my car making it sparkle once again!! Will definitely use him again</blockquote><p class="review__name">Michelle R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service by Jarrad. Flexible to suit my timing. Car brilliantly clean when he’d finished.</blockquote><p class="review__name">Carrie L</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad did an amazing job detailing my car. Highly recommend and will definately be back again.</blockquote><p class="review__name">Angela W</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Had the pleasure of having Jarrod detail the inside of the car. Awesome work with such a friendly attitude 👏 would recommend Jarrod. Five star service.</blockquote><p class="review__name">Kay B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>I cannot recommend anyone else for the job! Jarrod offers the best service and experience. He did an amazing job!!</blockquote><p class="review__name">Alisha R</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad has made my car look new again. Very thorough job.</blockquote><p class="review__name">Cath T</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Jarrad does fantastic job, very thorough and with a great work ethics. Absolutely recommended</blockquote><p class="review__name">Niilo G</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Amazing service, very reasonable pricing and very professional. Easy to contact and book in for car detailing- flexible with days and times.</blockquote><p class="review__name">Monique P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Thanks Jarrad for saving my carpets in the back seat from all the oil that got spilt you did an exceptional job and I will definitely use your service again</blockquote><p class="review__name">Helen</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great service and a fantastic job. He has a good eye to detail. I highly recommend Jarrad.</blockquote><p class="review__name">Megan P</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Fabulous job Jarrad. Very courteous, got straight back to me, nothing was a problem. Highly recommended 👏🏻</blockquote><p class="review__name">Jenni B</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Great clean, efficient service.</blockquote><p class="review__name">Chris F</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Highly recommend.</blockquote><p class="review__name">Hugo D</p></li>
-        <li class="review"><p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p><blockquote>Best around !</blockquote><p class="review__name">Inscape Hair Artistry</p></li>
-        </ul>
-      </details>
+    <div class="wrap reviews__head">
+      <div>
+        <h2 id="reviews-title">Reviews</h2>
+        <p class="intro">Rated 5.0 out of 5 from 43 Google reviews. <a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Read them on Google</a>.</p>
+      </div>
+      <div class="reviews__controls">
+        <span class="reviews__count" id="reviews-count"></span>
+        <button class="btn btn-line reviews__btn" type="button" id="reviews-prev" aria-label="Previous reviews"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="btn btn-line reviews__btn" type="button" id="reviews-next" aria-label="Next reviews"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
     </div>
+    <ul class="reviews__track" id="reviews-track" tabindex="0" aria-label="Customer reviews. Scroll sideways for more.">
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrod exhibited remarkable attention to detail, leaving my car spotless and free of dog hair. I highly recommend his services. The pricing is excellent, especially given the level of care, precision, and time he invests, along with the convenience of coming to your location. Thank you!</blockquote><p class="review__name">Rebekah K</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad detailed two of our vehicles, he came to our premises which was very convenient. He&#x27;s punctual and professional. Most importantly we are extremely happy with his quality of work and his prices are great. We highly recommend Jarrad and his services.</blockquote><p class="review__name">Stacey N</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrod has done the best job detailing my car! My vehicle went from filthy and dusty to looking fresh and brand new in no time. I can’t recommend Jarrod enough. Definitely the best on the Tablelands.</blockquote><p class="review__name">Hannah</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>I was very impressed in Detailed by Jarrad. He arrived on time. Worked solidly the whole time he was here. The detail he went to was way beyond my expectations especially after having other detailers. Price was very reasonable. Thank you.</blockquote><p class="review__name">Chris K</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did an amazing job on my work Ute made it look not only brand new but smell brand new highly recommend!</blockquote><p class="review__name">Oliver</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>HIGHLY RECOMMENDED- Had Jarrad do both mine and my daughter’s car and to say it was amazing is an understatement. Jarrad did an awesome job and paid so much attention to detail. His pricing is very reasonable and he is such a nice guy. Highly recommended.</blockquote><p class="review__name">Indra V</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>I’d heard great things about Jarrad’s car detailing expertise, and he didn’t disappoint! He made my father’s 16yo Toyota look like new—we were so impressed. His attention to detail and meticulous efforts are like no other.</blockquote><p class="review__name">Nikki W</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>My car was in desperate need of some attention and Jarrad did an incredible job! The transformation was amazing and I have had compliments from strangers on how clean my car is following his work!</blockquote><p class="review__name">Jade C</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad does an excellent job and is such a pleasure to deal with!! My car looks amazing!! Thank you Jarrad 😊</blockquote><p class="review__name">Katie C</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>My car was covered in mould inside and Jarrad did a great job getting rid of the mould. I would definitely recommend him and have him back again.</blockquote><p class="review__name">Aj M</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did an amazing job. He was meticulous. The car looks fabulous and he is very reasonable so will definitely be booking the car in regularly.</blockquote><p class="review__name">Gail B</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>I had Jarrad do a pre sale detail for my car inside and out. He has amazing attention to detail and did an outstanding job! It&#x27;s never been so clean. And the turn around was fast (within a day).</blockquote><p class="review__name">Sharnie K</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>110 % Highly recommend Jarrad, amazing job, great communicator. Iam so so happy. Thank you Jarrad</blockquote><p class="review__name">Katrina M</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did a fantastic job detailing my car. He was thorough, professional and extremely friendly. I have an older vehicle and after Jarrad worked his magic it looked brand new again. Highly recommend Detailed by Jarrad!!!</blockquote><p class="review__name">Mel J</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did a great job of making my car look clean and fresh again. He was easy to deal with and took pride in ensuring he delivered a great service and a clean car! I would definitely recommend reaching out to Jarrad if your car needs a clean.</blockquote><p class="review__name">Cassy P</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad is eager and very reliable when it comes to car detailing. He works around your working commitments to get his job done and does a great job every single time! Thank you Jarrad 😊</blockquote><p class="review__name">Shellie N</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Thanks Jarrod. Very professional and great attention to detail as you peeled back several years of neglect with the Hilux outside without under cover storage. Also cleaned up all that Topaz red dirt mud buildup underneath.</blockquote><p class="review__name">Kevin H</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did an amazing job detailing my car inside and out, it looks like brand new. Jarrad was super friendly and professional. Would recommend</blockquote><p class="review__name">Sharon S</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>We were very impressed with Jarrad. He kept me updated on estimated time of arrival and worked hard for the time he was here. Very impressed with how much detail he put in. Looking at getting Jarrad back to do another car.</blockquote><p class="review__name">Allison G</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad recently detailed two of our cars and did a brilliant job. Both cars look brand new, inside and out. The attention to detail is unmatched, and Jarrad was professional and friendly. Highly recommend!</blockquote><p class="review__name">Maddi K</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad has done a fantastic job on detailing my car. Definitely recommend him. And a lovely young man. Thanks Jarrad.</blockquote><p class="review__name">Christine T</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Did an excellent job for me couldnt have done better definitely saved me big time had some muddy passengers in the back but he brought it back to brand new. Couldnt recommend anyone better cheers jarrad.👍</blockquote><p class="review__name">Alexander E</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Excellent work by Jarrad. He managed to turn our dear old Corolla into a thing of beauty. He was meticulous and thorough and was really pleasant to talk to. I highly recommend.</blockquote><p class="review__name">Ross R</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Amazing service from a diligent friendly and honest young man. Very fair in his pricing. Always keen to do an excellent job. Goes above and beyond. We had him detail a 20yr old 4WD and he gave it a new life!</blockquote><p class="review__name">Julianne P</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>I had my car detailed by Jarrad, he did a brilliant job and his pricing is very reasonable. Thanks Jarrad, you&#x27;ve got my business from now on.</blockquote><p class="review__name">Mark A</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Great work completed by Jarrad, really happy with the way the Ute turned out! He was great at organising a day that suited us both and worked in the heat to get the Ute sparkling clean again! Would highly recommend and will be using his services again!</blockquote><p class="review__name">Lillian B</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad does some sweet detailing. He made my car look brand new fr.</blockquote><p class="review__name">Joshua-Tracy K</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Highly Recommend! Jarrad did an amazing job of my car making it sparkle once again!! Will definitely use him again</blockquote><p class="review__name">Michelle R</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Great service by Jarrad. Flexible to suit my timing. Car brilliantly clean when he’d finished.</blockquote><p class="review__name">Carrie L</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad did an amazing job detailing my car. Highly recommend and will definately be back again.</blockquote><p class="review__name">Angela W</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Had the pleasure of having Jarrod detail the inside of the car. Awesome work with such a friendly attitude 👏 would recommend Jarrod. Five star service.</blockquote><p class="review__name">Kay B</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>I cannot recommend anyone else for the job! Jarrod offers the best service and experience. He did an amazing job!!</blockquote><p class="review__name">Alisha R</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad has made my car look new again. Very thorough job.</blockquote><p class="review__name">Cath T</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Jarrad does fantastic job, very thorough and with a great work ethics. Absolutely recommended</blockquote><p class="review__name">Niilo G</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Amazing service, very reasonable pricing and very professional. Easy to contact and book in for car detailing- flexible with days and times.</blockquote><p class="review__name">Monique P</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Thanks Jarrad for saving my carpets in the back seat from all the oil that got spilt you did an exceptional job and I will definitely use your service again</blockquote><p class="review__name">Helen</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Great service and a fantastic job. He has a good eye to detail. I highly recommend Jarrad.</blockquote><p class="review__name">Megan P</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Fabulous job Jarrad. Very courteous, got straight back to me, nothing was a problem. Highly recommended 👏🏻</blockquote><p class="review__name">Jenni B</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Great clean, efficient service.</blockquote><p class="review__name">Chris F</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Highly recommend.</blockquote><p class="review__name">Hugo D</p></li>
+      <li class="review"><span class="stars" role="img" aria-label="5 out of 5 stars"></span><blockquote>Best around !</blockquote><p class="review__name">Inscape Hair Artistry</p></li>
+    </ul>
   </section>
 
   <section class="about" id="about" aria-labelledby="about-title"><div class="wrap about__layout"><div class="about__text"><h2 id="about-title">Meet Jarrad</h2><p>Detailed By Jarrad is a mobile detailing business on the Atherton Tablelands. Jarrad comes to your home or work and details your car on site.</p><p>He is rated 5.0 out of 5 from 43 Google reviews.</p><p><a class="btn btn-primary" href="#quote">Get an estimate</a></p></div><img class="about__photo" src="img/jarrad-ute.webp" alt="Jarrad standing in front of his ute" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo" src="img/jarrad-shirt.webp" alt="Jarrad leaning on a car door, wearing a Detailed By Jarrad shirt" width="720" height="960" loading="lazy" decoding="async"><img class="about__photo about__photo--wide" src="img/hoodie-street.webp" alt="The Detailed By Jarrad hoodie, worn beside a white Lamborghini" width="960" height="960" loading="lazy" decoding="async"></div></section>
@@ -2195,7 +2573,7 @@ a.rating:hover .rating__count {
         <li><a class="way" href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></span><span class="way__words"><span class="way__label">YouTube</span><span class="way__detail">Videos of recent work</span></span></a></li>
         <li><a class="way" href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><span class="way__badge"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="way__words"><span class="way__label">Google</span><span class="way__detail">Reviews and business listing</span></span></a></li>
       </ul>
-      <p class="areas">We cover the Atherton Tablelands, including Atherton, Mareeba, Malanda, Yungaburra, Herberton, Kuranda, Ravenshoe and Millaa Millaa.</p>
+      <div class="towns-block"><h3 class="towns-title">Where Jarrad works</h3><ul class="towns"><li>Atherton</li><li>Mareeba</li><li>Malanda</li><li>Yungaburra</li><li>Herberton</li><li>Kuranda</li><li>Ravenshoe</li><li>Millaa Millaa</li></ul></div>
       <p class="small">Hours: Monday to Friday, 8am to 5pm</p>
     </div>
   </section>
@@ -2212,7 +2590,7 @@ a.rating:hover .rating__count {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T12:46+10:00">Wed 25 Nov 2026, 12:46 pm AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T14:27+10:00">Wed 25 Nov 2026, 2:27 pm AEST</time></p>
   </div>
 </footer>
 
@@ -2246,6 +2624,8 @@ a.rating:hover .rating__count {
 
   var config = window.SITE_CONFIG || {};
   var root = document.documentElement;
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  root.classList.add('js');
   var picked = [];
   var photos = [];
   var photoLimit = config.photoLimit || 6;
@@ -2257,6 +2637,8 @@ a.rating:hover .rating__count {
 
   var menuButtons = Array.prototype.slice.call(document.querySelectorAll('[data-service]'));
   var countButton = document.getElementById('quote-count');
+  var quoteOpen = document.getElementById('quote-open');
+  var quoteTotal = document.getElementById('quote-total');
   var chosenBox = document.getElementById('chosen');
   var form = document.getElementById('quote-form');
   var servicesField = document.getElementById('f-services');
@@ -2382,6 +2764,11 @@ a.rating:hover .rating__count {
       estFigure.textContent = money(state.total);
       estNote.textContent = 'Estimated total. ' + config.owner + ' confirms the final price after he reviews your photos.';
     }
+    if (quoteTotal) {
+      quoteTotal.hidden = state.kind !== 'price';
+      quoteTotal.textContent = state.kind === 'price' ? money(state.total) : '';
+    }
+    updateSteps();
   }
 
   /* Drawer and header count */
@@ -2456,10 +2843,13 @@ a.rating:hover .rating__count {
     });
   });
 
-  vehicleField.addEventListener('change', renderEstimate);
+  vehicleField.addEventListener('change', function () {
+    applySize(false);
+    renderEstimate();
+  });
   dirtField.addEventListener('change', renderEstimate);
 
-  countButton.addEventListener('click', function () {
+  quoteOpen.addEventListener('click', function () {
     if (typeof drawer.showModal === 'function') {
       drawer.showModal();
     } else {
@@ -2566,6 +2956,7 @@ a.rating:hover .rating__count {
     pickButton.textContent = photos.length >= photoLimit
       ? 'All ' + photoLimit + ' photos added'
       : 'Choose photos (' + photos.length + ' of ' + photoLimit + ')';
+    updateSteps();
   }
 
   function addFiles(fileList) {
@@ -2692,6 +3083,7 @@ a.rating:hover .rating__count {
       picked = [];
       clearPhotos();
       render();
+      applySize(true);
       setStatus('Request sent. Thank you. ' + config.owner + ' will reply with your estimate.', 'ok');
     }).catch(function () {
       setStatus("Your request didn't send. Try again, or message " + config.owner + ' on Facebook.', 'error');
@@ -3051,8 +3443,257 @@ a.rating:hover .rating__count {
     renderCart();
   })();
 
+  /* Vehicle size switch: reprices the menu and stays in step with the form. */
+  var sizeInputs = Array.prototype.slice.call(document.querySelectorAll('input[name="menu-size"]'));
+  var priceBlocks = Array.prototype.slice.call(document.querySelectorAll('.menu__price[data-prices]'));
+
+  function sizeLabel(size) {
+    for (var i = 0; i < sizeInputs.length; i++) {
+      if (sizeInputs[i].value === size) {
+        return sizeInputs[i].parentNode.textContent.trim();
+      }
+    }
+    return '';
+  }
+
+  /* The final value is recorded at once; the count is only how it is shown. */
+  function countTo(el, to, instant) {
+    var from = parseFloat(el.getAttribute('data-value'));
+    el.setAttribute('data-value', to);
+    var token = (el.countToken || 0) + 1;
+    el.countToken = token;
+    if (instant || reduceMotion || isNaN(from) || from === to || !window.requestAnimationFrame) {
+      el.textContent = money(to);
+      return;
+    }
+    var start = null;
+    function frame(now) {
+      if (el.countToken !== token) {
+        return;
+      }
+      if (start === null) {
+        start = now;
+      }
+      var t = Math.min(1, (now - start) / 380);
+      el.textContent = money(from + (to - from) * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) {
+        window.requestAnimationFrame(frame);
+      }
+    }
+    window.requestAnimationFrame(frame);
+  }
+
+  function applySize(instant) {
+    var size = vehicleField.value;
+    var label = sizeLabel(size);
+    sizeInputs.forEach(function (input) {
+      input.checked = input.value === size;
+    });
+    priceBlocks.forEach(function (block) {
+      var table = {};
+      try {
+        table = JSON.parse(block.getAttribute('data-prices')) || {};
+      } catch (error) {
+        table = {};
+      }
+      if (typeof table[size] === 'number') {
+        block.querySelector('.menu__from').textContent = label;
+        countTo(block.querySelector('.menu__figure'), table[size], instant);
+      }
+    });
+  }
+
+  sizeInputs.forEach(function (input) {
+    input.addEventListener('change', function () {
+      if (input.checked) {
+        vehicleField.value = input.value;
+        applySize(false);
+        renderEstimate();
+      }
+    });
+  });
+
+  /* Estimate steps tick off as each part is filled in. */
+  var stepItems = Array.prototype.slice.call(document.querySelectorAll('#steps [data-step]'));
+
+  function updateSteps() {
+    if (!stepItems) {
+      return;
+    }
+    var done = {
+      services: picked.length > 0,
+      car: form.elements.car.value.trim() !== '',
+      photos: photos.length > 0,
+      details: form.elements.name.value.trim() !== '' && form.elements.mobile.value.trim() !== ''
+    };
+    stepItems.forEach(function (item) {
+      var isDone = !!done[item.getAttribute('data-step')];
+      item.setAttribute('data-done', isDone ? 'true' : 'false');
+      var state = item.querySelector('.steps__state');
+      if (state) {
+        state.textContent = isDone ? 'Done: ' : '';
+      }
+    });
+  }
+
+  form.addEventListener('input', updateSteps);
+
+  /* Reviews row: previous and next, and a count of where you are. */
+  (function () {
+    var track = document.getElementById('reviews-track');
+    var prev = document.getElementById('reviews-prev');
+    var next = document.getElementById('reviews-next');
+    var count = document.getElementById('reviews-count');
+    if (!track || !prev || !next || !count || !track.children.length) {
+      return;
+    }
+    var cards = track.children;
+    var queued = false;
+
+    function metrics() {
+      var style = window.getComputedStyle(track);
+      var gap = parseFloat(style.columnGap) || 0;
+      var step = cards[0].getBoundingClientRect().width + gap;
+      var room = track.clientWidth - (parseFloat(style.paddingLeft) || 0) + gap;
+      return { step: step, visible: Math.max(1, Math.floor(room / step)) };
+    }
+
+    function paint() {
+      queued = false;
+      var m = metrics();
+      var total = cards.length;
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      var first = atEnd ? Math.max(1, total - m.visible + 1) : Math.min(total, Math.floor((track.scrollLeft + m.step / 2) / m.step) + 1);
+      var last = Math.min(total, first + m.visible - 1);
+      count.textContent = (first === last ? first : first + ' to ' + last) + ' of ' + total;
+      prev.disabled = track.scrollLeft < 4;
+      next.disabled = atEnd;
+    }
+
+    function move(direction) {
+      var m = metrics();
+      track.scrollBy({ left: direction * m.step * m.visible, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+
+    prev.addEventListener('click', function () {
+      move(-1);
+    });
+    next.addEventListener('click', function () {
+      move(1);
+    });
+    track.addEventListener('scroll', function () {
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(paint);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', paint);
+    paint();
+  })();
+
+  /* Header: reading progress, and the section in view marked in the menu. */
+  (function () {
+    var line = document.getElementById('scroll-line');
+    var links = Array.prototype.slice.call(document.querySelectorAll('.site-nav > a[href^="#"]'));
+    var queued = false;
+
+    function paint() {
+      queued = false;
+      var max = root.scrollHeight - window.innerHeight;
+      var y = window.pageYOffset || root.scrollTop || 0;
+      if (line) {
+        line.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, Math.max(0, y / max)) : 0) + ')';
+      }
+      var mark = window.innerHeight * 0.4;
+      var current = '';
+      links.forEach(function (link) {
+        var target = document.getElementById(link.getAttribute('href').slice(1));
+        if (target) {
+          var box = target.getBoundingClientRect();
+          if (box.top <= mark && box.bottom > mark) {
+            current = link.getAttribute('href');
+          }
+        }
+      });
+      links.forEach(function (link) {
+        if (link.getAttribute('href') === current) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function request() {
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(paint);
+      }
+    }
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    paint();
+  })();
+
+  /* Section headings: the red bar draws in once, when the heading arrives. */
+  (function () {
+    var heads = Array.prototype.slice.call(document.querySelectorAll('main h2'));
+    if (!('IntersectionObserver' in window)) {
+      heads.forEach(function (head) {
+        head.classList.add('is-in');
+      });
+      return;
+    }
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          watcher.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    heads.forEach(function (head) {
+      watcher.observe(head);
+    });
+  })();
+
+  /* Hero light: follows a mouse; on touch screens it keeps its slow drift. */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var light = document.querySelector('.hero__light');
+    if (!hero || !light || reduceMotion) {
+      return;
+    }
+    var queued = false;
+    var x = 0;
+    var y = 0;
+    hero.addEventListener('pointermove', function (event) {
+      if (event.pointerType && event.pointerType !== 'mouse') {
+        return;
+      }
+      var box = hero.getBoundingClientRect();
+      x = event.clientX - box.left;
+      y = event.clientY - box.top;
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(function () {
+          queued = false;
+          light.classList.add('is-tracking');
+          light.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+        });
+      }
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        hero.classList.toggle('is-off', !entries[0].isIntersecting);
+      }).observe(hero);
+    }
+  })();
+
   render();
   renderPhotos();
+  applySize(true);
 
   if (/[?&]sent=1/.test(location.search)) {
     setStatus('Request sent. Thank you. ' + config.owner + ' will reply with your estimate.', 'ok');

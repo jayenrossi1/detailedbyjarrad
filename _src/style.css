@@ -36,6 +36,7 @@
   --max: 68rem;
   --radius: 2px;
   --fast: 120ms ease-out;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 *, *::before, *::after {
@@ -101,9 +102,10 @@ a {
   color: inherit;
 }
 
+/* Anchors stop exactly under the sticky header (its height plus its border). */
 section[id],
 main[id] {
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: calc(4.25rem + 1px);
 }
 
 :focus-visible {
@@ -284,11 +286,35 @@ main[id] {
   text-decoration: none;
 }
 
-.site-nav > a:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--red);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.3em;
+/* A red line marks the link under the pointer and the section in view. */
+.site-nav > a:not(.head-call) {
+  position: relative;
+}
+
+.site-nav > a:not(.head-call)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.4rem;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms var(--ease);
+}
+
+.site-nav > a:not(.head-call):hover::after,
+.site-nav > a[aria-current="true"]::after {
+  transform: none;
+}
+
+@media (min-width: 40.01rem) {
+  .site-nav > a:not(.head-call) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
 }
 
 /* Hero: the logo, the name in capitals, and a red edge that echoes the badge. */
@@ -368,6 +394,10 @@ main[id] {
 
 .hero__inner > :nth-child(4) {
   animation-delay: 380ms;
+}
+
+.hero__inner > :nth-child(5) {
+  animation-delay: 480ms;
 }
 
 .hero__inner {
@@ -587,36 +617,6 @@ main[id] {
   border-color: #ff4040;
 }
 
-/* Price for each vehicle size. */
-.menu__sizes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.85rem 0 0;
-}
-
-.menu__sizes div {
-  display: grid;
-  gap: 0.1rem;
-  min-width: 7.25rem;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid var(--line-light);
-  border-top: 3px solid var(--red);
-  border-radius: var(--radius);
-  background: #ffffff;
-}
-
-.menu__sizes dt {
-  font-size: var(--fs-small);
-  color: var(--grey);
-}
-
-.menu__sizes dd {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
 /* The headline price: the loudest thing in the row. */
 .menu__price {
   display: grid;
@@ -757,38 +757,88 @@ main[id] {
   }
 }
 
-/* Reviews: plain columns under black rules, like the price board. No cards. */
+/* Reviews: one row to swipe or step through. Every review is in it. */
 
 .reviews {
+  container-type: inline-size;
   padding: 5rem 0 5.5rem;
   background: #ffffff;
   border-top: 1px solid var(--line-light);
 }
 
-.reviews__list {
-  columns: 3 17rem;
-  column-gap: 2.5rem;
-  margin: 2.5rem 0 0;
+.reviews__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+}
+
+.reviews__controls {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.js .reviews__controls {
+  display: flex;
+}
+
+.reviews__count {
+  margin-right: 0.5rem;
+  color: var(--grey);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.reviews__btn {
+  width: 3rem;
+  min-height: 3rem;
   padding: 0;
+}
+
+.reviews__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.reviews__track {
+  --edge: max(var(--pad), calc((100vw - var(--max)) / 2 + var(--pad)));
+  --edge: max(var(--pad), calc((100cqw - var(--max)) / 2 + var(--pad)));
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(16.5rem, 29cqw, 21rem);
+  gap: 2rem;
+  margin: 2.5rem 0 0;
+  padding: 0 var(--edge) 0.5rem;
   list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: none;
+}
+
+.reviews__track::-webkit-scrollbar {
+  display: none;
+}
+
+.reviews__track:focus-visible {
+  outline-offset: -3px;
 }
 
 .review {
-  break-inside: avoid;
-  margin: 0 0 1.75rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-content: start;
+  margin: 0;
   padding-top: 1rem;
   border-top: 2px solid #000000;
-}
-
-.review__stars {
-  color: var(--red);
-  font-size: 1rem;
-  letter-spacing: 0.15em;
-  line-height: 1;
+  scroll-snap-align: start;
 }
 
 .review blockquote {
-  margin: 0.7rem 0 0.8rem;
+  margin: 0.8rem 0 1rem;
 }
 
 .review__name {
@@ -798,22 +848,11 @@ main[id] {
   letter-spacing: 0.03em;
 }
 
-.reviews__more {
-  margin-top: 0.75rem;
-}
-
-.reviews__more summary {
-  display: inline-flex;
-  list-style: none;
-}
-
-.reviews__more summary::-webkit-details-marker {
-  display: none;
-}
-
-.reviews__more[open] .when-closed,
-.reviews__more:not([open]) .when-open {
-  display: none;
+@media (max-width: 40rem) {
+  .reviews__track {
+    grid-auto-columns: min(80cqw, 20rem);
+    gap: 1.25rem;
+  }
 }
 
 /* Merch: a small product grid. Appears only when merch.json has products. */
@@ -1264,17 +1303,6 @@ main[id] {
   display: none;
 }
 
-/* Phones show three reviews up front; the rest sit behind "Show all". */
-@media (max-width: 40rem) {
-  .reviews__list:not(.reviews__more .reviews__list) > .review:nth-child(n + 4) {
-    display: none;
-  }
-
-  .reviews:has(.reviews__more[open]) .reviews__list > .review {
-    display: block;
-  }
-}
-
 /* Quote: summary and estimate on the left, the form on the right. */
 
 .quote {
@@ -1297,6 +1325,14 @@ main[id] {
 .quote__summary {
   display: grid;
   gap: 0;
+}
+
+/* On roomy screens the summary stays in view while the form is filled in. */
+@media (min-width: 52.01rem) and (min-height: 50rem) {
+  .quote__summary {
+    position: sticky;
+    top: 5.75rem;
+  }
 }
 
 .chosen {
@@ -1870,6 +1906,337 @@ a.rating:hover .rating__count {
   color: var(--paper);
   font-size: var(--fs-small);
   text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Interaction layer. One rhythm for everything: quick, eased, transform-only.
+   --------------------------------------------------------------------------- */
+
+a,
+button,
+select,
+summary,
+label {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.btn {
+  transition: background-color var(--fast), color var(--fast), border-color var(--fast), transform 120ms var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled:active,
+.btn.is-off:active {
+  transform: none;
+}
+
+/* Five stars, drawn as one shape. */
+.stars {
+  display: inline-block;
+  flex: none;
+  width: 5.5em;
+  height: 1em;
+  background: var(--red);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'/%3E%3C/svg%3E") left center / 1.1em 1em repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'/%3E%3C/svg%3E") left center / 1.1em 1em repeat-x;
+}
+
+/* Header: reading progress, and the running total once a price is known. */
+.scroll-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.quote-total {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius);
+  background: var(--red);
+  color: #ffffff;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero: a soft light on the black, like a lamp over polished paint. It drifts
+   on its own and follows a mouse. */
+.hero__light {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 48rem;
+  height: 48rem;
+  margin: -24rem 0 0 -24rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.17), rgb(255 255 255 / 0.06) 45%, transparent 72%);
+  transform: translate3d(50vw, 7rem, 0);
+  pointer-events: none;
+  animation: light-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes light-drift {
+  from {
+    transform: translate3d(20vw, 4rem, 0);
+  }
+  to {
+    transform: translate3d(80vw, 22rem, 0);
+  }
+}
+
+.hero__light.is-tracking {
+  animation: none;
+  transition: transform 260ms var(--ease);
+}
+
+.hero.is-off .hero__light {
+  animation-play-state: paused;
+}
+
+.hero__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  color: var(--paper);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero__rating .stars {
+  background: #ff4040;
+  font-size: 1.05rem;
+}
+
+.hero__rating:hover span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* Section headings: a red bar draws in as the section arrives. */
+main h2::before {
+  content: "";
+  display: block;
+  width: 4rem;
+  height: 6px;
+  margin-bottom: 1.1rem;
+  background: var(--red);
+  transform-origin: left center;
+}
+
+.js main h2::before {
+  transform: scaleX(0);
+  transition: transform 650ms var(--ease) 60ms;
+}
+
+.js main h2.is-in::before {
+  transform: none;
+}
+
+/* Vehicle size switch. */
+.size-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 2rem;
+}
+
+.size-switch__label {
+  font-weight: 700;
+}
+
+.seg-group {
+  display: inline-flex;
+  border: 2px solid #000000;
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.seg {
+  position: relative;
+  cursor: pointer;
+}
+
+.seg + .seg {
+  border-left: 2px solid #000000;
+}
+
+.seg input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.seg span {
+  display: grid;
+  place-items: center;
+  min-height: 2.9rem;
+  padding: 0 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  transition: background-color var(--fast), color var(--fast);
+}
+
+.seg:hover span {
+  background: #f0f0f0;
+}
+
+.seg input:checked + span {
+  background: var(--red);
+  color: #ffffff;
+}
+
+.seg input:focus-visible + span {
+  outline: 3px solid #000000;
+  outline-offset: 3px;
+}
+
+.menu__figure {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 40rem) {
+  .size-switch {
+    display: grid;
+  }
+
+  .seg-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .seg span {
+    min-height: 3.25rem;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+}
+
+/* Estimate steps: each one turns red and ticks itself off. */
+.steps {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted-dark);
+  counter-increment: step;
+  transition: color var(--fast);
+}
+
+.steps a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+.steps__dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 2px solid var(--line-dark-strong);
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background-color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.steps__dot::before {
+  content: counter(step);
+}
+
+.steps li[data-done="true"] {
+  color: #ffffff;
+}
+
+.steps li[data-done="true"] .steps__dot {
+  border-color: var(--red);
+  background: var(--red);
+}
+
+.steps li[data-done="true"] .steps__dot::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.38rem;
+  margin-top: -0.15rem;
+  border-left: 2.5px solid #ffffff;
+  border-bottom: 2.5px solid #ffffff;
+  transform: rotate(-45deg);
+}
+
+/* Meet Jarrad lines up to the page edge without counting the scrollbar. */
+.about {
+  container-type: inline-size;
+}
+
+.about__layout {
+  padding-left: max(var(--pad), calc((100cqw - var(--max)) / 2 + var(--pad)));
+}
+
+/* Towns covered. */
+.towns-block {
+  margin-top: 2.25rem;
+}
+
+.towns-title {
+  font-size: 1.35rem;
+}
+
+.towns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.towns li {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line-light);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius);
+  background: #ffffff;
+  font-weight: 600;
+}
+
+/* Tap targets: footer links and the logo link are at least 44px tall. */
+.foot-links a {
+  min-height: 2.75rem;
+}
+
+.site-head .wordmark {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -100,20 +100,12 @@ def main():
         prices = s.get("prices")
         if prices is None:
             return '<div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div>'
+        first = vehicles[0]
         return (
-            '<div class="menu__price"><span class="menu__from">from</span>'
-            f'<span class="menu__figure">{money_text(min(prices.values()))}</span></div>'
+            f'<div class="menu__price" data-prices="{esc(json.dumps(prices))}">'
+            f'<span class="menu__from">{esc(first.get("short", first["name"]))}</span>'
+            f'<span class="menu__figure" data-value="{prices[first["id"]]}">{money_text(prices[first["id"]])}</span></div>'
         )
-
-    def sizes_line(s):
-        prices = s.get("prices")
-        if prices is None:
-            return ""
-        cells = "".join(
-            f'<div><dt>{esc(v.get("short", v["name"]))}</dt><dd>{money_text(prices[v["id"]])}</dd></div>'
-            for v in vehicles
-        )
-        return f'<dl class="menu__sizes">{cells}</dl>'
 
     def service_row(s):
         includes = "".join(f"<li>{esc(i)}</li>" for i in s.get("includes", []))
@@ -121,13 +113,25 @@ def main():
         return (
             '<li class="menu__item">'
             f'<div class="menu__text"><h4>{esc(s["name"])}</h4>'
-            f'<p>{esc(s["summary"])}</p>{includes_html}{sizes_line(s)}</div>'
+            f'<p>{esc(s["summary"])}</p>{includes_html}</div>'
             f"{price_block(s)}"
             '<button class="btn btn-line menu__add" type="button" '
             f'data-service="{esc(s["id"])}" data-name="{esc(s["name"])}" aria-pressed="false">'
             "Add to quote</button>"
             "</li>"
         )
+
+    # One switch reprices the whole menu for the chosen vehicle size.
+    size_switch = (
+        '<div class="size-switch"><span class="size-switch__label" id="size-switch-label">Show prices for</span>'
+        '<div class="seg-group" role="radiogroup" aria-labelledby="size-switch-label">'
+        + "".join(
+            f'<label class="seg"><input type="radio" name="menu-size" value="{esc(v["id"])}"{" checked" if i == 0 else ""}>'
+            f'<span>{esc(v.get("short", v["name"]))}</span></label>'
+            for i, v in enumerate(vehicles)
+        )
+        + "</div></div>"
+    )
 
     service_rows = "\n      ".join(
         f'<div class="menu-group{" menu-group--dark" if g.get("dark") else ""}">'
@@ -148,7 +152,7 @@ def main():
     def review_li(r):
         return (
             '<li class="review">'
-            '<p class="review__stars" role="img" aria-label="5 out of 5 stars">★★★★★</p>'
+            '<span class="stars" role="img" aria-label="5 out of 5 stars"></span>'
             f'<blockquote>{esc(r["text"])}</blockquote>'
             f'<p class="review__name">{esc(r["name"])}</p>'
             "</li>"
@@ -157,6 +161,7 @@ def main():
     featured = int(rv.get("featured", 6))
     reviews_top = "\n      ".join(review_li(r) for r in rv["items"][:featured])
     reviews_rest = "\n        ".join(review_li(r) for r in rv["items"][featured:])
+    reviews_all = "\n      ".join(review_li(r) for r in rv["items"])
     reviews_link = ""
     if rv.get("google_url", "").strip():
         reviews_link = (
@@ -331,7 +336,7 @@ def main():
 
     rating_inner = (
         f'<span class="rating__score">{esc(rv["rating"])}</span>'
-        '<span class="rating__text"><span class="rating__stars" aria-hidden="true">★★★★★</span>'
+        '<span class="rating__text"><span class="stars rating__stars" aria-hidden="true"></span>'
         f'<span class="rating__count">{int(rv["count"])} reviews on Google</span></span>'
     )
     rating_label = f'Rated {esc(rv["rating"])} out of 5 from {int(rv["count"])} reviews on Google'
@@ -342,6 +347,18 @@ def main():
         )
     else:
         rating_box = f'<div class="rating" role="img" aria-label="{rating_label}">{rating_inner}</div>'
+
+    hero_rating = (
+        f'<a class="hero__rating" href="#reviews" aria-label="{rating_label}. Read the reviews">'
+        '<span class="stars" aria-hidden="true"></span>'
+        f'<span>{esc(rv["rating"])} from {int(rv["count"])} Google reviews</span></a>'
+    )
+
+    towns = (
+        f'<div class="towns-block"><h3 class="towns-title">Where {owner} works</h3><ul class="towns">'
+        + "".join(f"<li>{esc(t)}</li>" for t in suburbs)
+        + "</ul></div>"
+    ) if suburbs else ""
 
     area_name = data.get("area", "").strip()
     if suburbs and area_name:
@@ -402,6 +419,10 @@ def main():
         "{{AREAS}}": areas,
         "{{MERCH}}": merch_section,
         "{{RATING_BOX}}": rating_box,
+        "{{HERO_RATING}}": hero_rating,
+        "{{TOWNS}}": towns,
+        "{{SIZE_SWITCH}}": size_switch,
+        "{{REVIEWS_ALL}}": reviews_all,
         "{{MERCH_CART}}": merch_cart,
         "{{ABOUT}}": about_section,
         "{{AREA}}": esc(data.get("area", "")),

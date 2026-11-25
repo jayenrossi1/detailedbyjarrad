@@ -10,17 +10,20 @@
       {{NAV_MERCH}}
       <a href="#contact">Contact</a>
       {{HEADER_CALL}}
-      <button class="btn btn-ghost btn-sm" id="quote-count" type="button" aria-haspopup="dialog">Quote (0)</button>
+      <button class="btn btn-ghost btn-sm" id="quote-open" type="button" aria-haspopup="dialog"><span id="quote-count">Quote (0)</span><span class="quote-total" id="quote-total" hidden></span></button>
     </nav>
   </div>
+  <div class="scroll-line" id="scroll-line" aria-hidden="true"></div>
 </header>
 
 <main id="top">
   <section class="hero">
+    <div class="hero__light" aria-hidden="true"></div>
     <div class="hero__inner">
       <div class="hero__mark"><img class="hero__badge" src="{{LOGO_LARGE}}" alt="{{BUSINESS}} logo" width="560" height="560"></div>
       <h1>{{BUSINESS}}</h1>
       <p class="lead">{{TAGLINE}}</p>
+      {{HERO_RATING}}
       <div class="actions">
         <a class="btn btn-primary" href="#quote">Get an estimate</a>
         <a class="btn btn-ghost" href="{{FACEBOOK}}" target="_blank" rel="noopener">Message on Facebook</a>
@@ -31,7 +34,8 @@
   <section class="services" id="services" aria-labelledby="services-title">
     <div class="wrap">
       <h2 id="services-title">Services</h2>
-      <p class="intro">Choose what you need. Prices are for well-kept cars and depend on the size of your vehicle. Heavy jobs are quoted from photos.</p>
+      <p class="intro">Pick your vehicle size to see your price, then add what you need. Prices are for well-kept cars. Heavy jobs are quoted from photos.</p>
+      {{SIZE_SWITCH}}
       {{SERVICES}}
       {{AREAS}}
       <p class="note">Not sure what you need? <a href="{{FACEBOOK}}" target="_blank" rel="noopener">Message {{OWNER}} on Facebook</a>.</p>
@@ -42,7 +46,12 @@
     <div class="wrap quote__layout">
       <div class="quote__summary">
         <h2 id="quote-title">Get an estimate</h2>
-        <p class="intro">Choose your services, tell us about your car and add photos. Your estimate updates as you go.</p>
+        <ol class="steps" id="steps" aria-label="Steps to get your estimate">
+          <li data-step="services"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span><a href="#services">Choose your services</a></span></li>
+          <li data-step="car"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Tell us about your car</span></li>
+          <li data-step="photos"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Add photos (optional)</span></li>
+          <li data-step="details"><span class="steps__dot" aria-hidden="true"></span><span><span class="visually-hidden steps__state"></span>Add your details and send</span></li>
+        </ol>
         <div class="chosen" id="chosen"></div>
         <section class="estimate" aria-labelledby="est-title">
           <h3 id="est-title">Your estimate</h3>
@@ -127,19 +136,20 @@
   </section>
 
   <section class="reviews" id="reviews" aria-labelledby="reviews-title">
-    <div class="wrap">
-      <h2 id="reviews-title">Reviews</h2>
-      <p class="intro">Rated {{REVIEW_RATING}} out of 5 from {{REVIEW_COUNT}} Google reviews.{{REVIEWS_LINK}}</p>
-      <ul class="reviews__list">
-      {{REVIEWS_TOP}}
-      </ul>
-      <details class="reviews__more">
-        <summary class="btn btn-line"><span class="when-closed">Show all {{REVIEW_SHOWN}} reviews</span><span class="when-open">Show fewer reviews</span></summary>
-        <ul class="reviews__list">
-        {{REVIEWS_REST}}
-        </ul>
-      </details>
+    <div class="wrap reviews__head">
+      <div>
+        <h2 id="reviews-title">Reviews</h2>
+        <p class="intro">Rated {{REVIEW_RATING}} out of 5 from {{REVIEW_COUNT}} Google reviews.{{REVIEWS_LINK}}</p>
+      </div>
+      <div class="reviews__controls">
+        <span class="reviews__count" id="reviews-count"></span>
+        <button class="btn btn-line reviews__btn" type="button" id="reviews-prev" aria-label="Previous reviews"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="btn btn-line reviews__btn" type="button" id="reviews-next" aria-label="Next reviews"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
     </div>
+    <ul class="reviews__track" id="reviews-track" tabindex="0" aria-label="Customer reviews. Scroll sideways for more.">
+      {{REVIEWS_ALL}}
+    </ul>
   </section>
 
   {{ABOUT}}
@@ -153,7 +163,7 @@
       <ul class="ways">
         {{CONTACT_WAYS}}
       </ul>
-      {{AREAS}}
+      {{TOWNS}}
       {{FOOT_HOURS}}
     </div>
   </section>

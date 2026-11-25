@@ -17,6 +17,13 @@ The built `index.html` is one self-contained file. The font, the logo and all CS
 - `photo_limit`: the most photos a customer can add (6 by default).
 - `reviews.json`: the Google reviews, rating and link.
 
+## How the page behaves
+
+- **Vehicle size switch** (top of Services): changes every price on the menu and stays in step with the "Vehicle size" field in the estimate form.
+- **Estimate steps**: the four steps beside the form tick themselves off as the customer fills things in.
+- **Reviews**: every review in `reviews.json` sits in one row that can be swiped or stepped through with the arrows.
+- **Motion**: the hero light, the heading bars and the price count are all switched off for visitors who have "reduce motion" turned on.
+
 ## How the estimate works
 
 Estimate = the chosen services' prices for the selected vehicle size, added together. It shows "To be confirmed" if any chosen service has no price yet, and "Quoted from your photos" for heavy jobs. The owner confirms the final price.
