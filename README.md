@@ -47,8 +47,7 @@ The Merch section and its header link appear only when `products` has at least o
 - `id`: a short unique name, such as `tee`.
 - `sizes`: the sizes offered. The customer picks one before adding to the cart.
 - `sold_out`: `true` replaces the button with "Sold out".
-- `postage_note` (top level): one line shown under the products.
-- `postage` (top level): `flat` is the postage price in dollars, and `free_over` is the order value at which postage is free. The cart uses both.
+- `postage` (top level): `flat` is the postage price in dollars, and `free_over` is the order value at which postage is free. The cart uses both, and the rates are only shown there, beside the Post option.
 
 The cart sends the order to the owner by text or email. He confirms it and arranges payment.
 

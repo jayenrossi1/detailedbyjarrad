@@ -282,11 +282,25 @@ def main():
 
     if products:
         merch_intro = esc(merch.get("intro") or f"Shirts and hoodies from {data['business_name']}.")
-        postage = f'<p class="note">{esc(merch["postage_note"])}</p>' if merch.get("postage_note") else ""
+        # Postage rates are stated in the cart only, never under the products.
+        post_cfg = merch.get("postage") or {}
+
+        def money(v):
+            v = float(v)
+            return f"${v:.0f}" if v == int(v) else f"${v:.2f}"
+
+        post_flat = float(post_cfg.get("flat", 0) or 0)
+        post_free = float(post_cfg.get("free_over", 0) or 0)
+        if post_flat and post_free:
+            post_rate = f" ({money(post_flat)}, free on orders of {money(post_free)} or more)"
+        elif post_flat:
+            post_rate = f" ({money(post_flat)})"
+        else:
+            post_rate = " (free)"
         merch_section = (
             '<section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap">'
             f'<h2 id="merch-title">Merch</h2><p class="intro">{merch_intro}</p>'
-            '<ul class="products">' + "".join(product_card(i) for i in products) + f"</ul>{postage}</div></section>"
+            '<ul class="products">' + "".join(product_card(i) for i in products) + "</ul></div></section>"
         )
         nav_merch = '<a href="#merch">Merch</a>'
         area_name = esc(data.get("area", ""))
@@ -300,7 +314,7 @@ def main():
             '<div id="cart-checkout">'
             '<fieldset class="cart-delivery"><legend>Delivery</legend>'
             f'<label><input type="radio" name="cart-delivery" value="pickup" checked> Pickup or drop-off on the {area_name} (free)</label>'
-            '<label><input type="radio" name="cart-delivery" value="post"> Post, Australia-wide</label></fieldset>'
+            f'<label><input type="radio" name="cart-delivery" value="post"> Post, Australia-wide{post_rate}</label></fieldset>'
             '<dl class="cart-totals"><div><dt>Items</dt><dd id="cart-sub"></dd></div>'
             '<div><dt>Delivery</dt><dd id="cart-post"></dd></div>'
             '<div class="cart-total"><dt>Total</dt><dd id="cart-total"></dd></div></dl>'
