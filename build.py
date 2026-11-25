@@ -330,7 +330,7 @@ def main():
     if not LIVE:
         draft_bar = (
             f'<div class="draft-bar" role="note">Draft for {owner} to review. '
-            "Prices, areas and contact details still need to be confirmed.</div>"
+            "Some prices are still to be confirmed.</div>"
         )
         robots = '<meta name="robots" content="noindex, nofollow">'
 
@@ -371,6 +371,7 @@ def main():
         "{{MERCH_CART}}": merch_cart,
         "{{ABOUT}}": about_section,
         "{{AREA}}": esc(data.get("area", "")),
+        "{{SITE_URL}}": esc(data.get("site_url", "")),
         "{{NAV_MERCH}}": nav_merch,
         "{{REVIEWS_TOP}}": reviews_top,
         "{{REVIEWS_REST}}": reviews_rest,

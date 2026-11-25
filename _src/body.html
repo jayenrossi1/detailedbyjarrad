@@ -80,7 +80,7 @@
             <div class="dropzone" id="dropzone">
               <p>Drop photos here, or</p>
               <button class="btn btn-ghost" type="button" id="photo-pick">Choose photos</button>
-              <input type="file" id="f-photos" accept="image/*" multiple hidden>
+              <input type="file" id="f-photos" accept="image/*" multiple hidden aria-label="Choose photos of your car">
             </div>
             <ul class="photos" id="photos" hidden></ul>
             <p class="status" id="photo-status" role="status" aria-live="polite"></p>
@@ -113,11 +113,13 @@
           </fieldset>
 
           <input type="hidden" id="f-services" name="services" value="">
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Send request</button>
+          <div class="form-end">
+            <p class="help">Your details and photos are sent to {{OWNER}} by email and are only used to prepare your quote.</p>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Send request</button>
+            </div>
+            <p class="status" id="form-status" role="status" aria-live="polite"></p>
           </div>
-          <p class="status" id="form-status" role="status" aria-live="polite"></p>
-          <p class="help">Your details and photos are sent to {{OWNER}} by email and are only used to prepare your quote.</p>
         </form>
         <noscript><p class="chosen-empty">Turn on JavaScript to send a quote request, or message {{OWNER}} on Facebook.</p></noscript>
       </div>

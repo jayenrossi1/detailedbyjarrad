@@ -7,6 +7,12 @@
 <meta name="description" content="Mobile car detailing on the Atherton Tablelands by Jarrad. Choose your services, add photos of your car and get an estimate.">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://detailedbyjarrad.com.au/">
+<meta property="og:image" content="https://detailedbyjarrad.com.au/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://detailedbyjarrad.com.au/">
 <meta property="og:title" content="Detailed By Jarrad">
 <meta property="og:description" content="Mobile car detailing on the Atherton Tablelands by Jarrad. We come to you.">
 <meta name="robots" content="noindex, nofollow">
@@ -486,7 +492,8 @@ main[id] {
 }
 
 .lead {
-  max-width: 30rem;
+  max-width: 34rem;
+  text-wrap: balance;
   font-size: var(--fs-lead);
   color: var(--muted-dark);
 }
@@ -1194,6 +1201,17 @@ main[id] {
   display: none;
 }
 
+/* Phones show three reviews up front; the rest sit behind "Show all". */
+@media (max-width: 40rem) {
+  .reviews__list:not(.reviews__more .reviews__list) > .review:nth-child(n + 4) {
+    display: none;
+  }
+
+  .reviews:has(.reviews__more[open]) .reviews__list > .review {
+    display: block;
+  }
+}
+
 /* Quote: summary and estimate on the left, the form on the right. */
 
 .quote {
@@ -1503,12 +1521,17 @@ a.rating:hover .rating__count {
   background: var(--red);
 }
 
+.form-end {
+  display: grid;
+  gap: 1rem;
+  margin-top: -1rem;
+}
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  margin-top: -0.5rem;
 }
 
 .status {
@@ -1798,7 +1821,7 @@ a.rating:hover .rating__count {
 </style>
 </head>
 <body>
-<div class="draft-bar" role="note">Draft for Jarrad to review. Prices, areas and contact details still need to be confirmed.</div>
+<div class="draft-bar" role="note">Draft for Jarrad to review. Some prices are still to be confirmed.</div>
 <a class="skip-link" href="#services">Skip to services</a>
 
 <header class="site-head">
@@ -1895,7 +1918,7 @@ a.rating:hover .rating__count {
             <div class="dropzone" id="dropzone">
               <p>Drop photos here, or</p>
               <button class="btn btn-ghost" type="button" id="photo-pick">Choose photos</button>
-              <input type="file" id="f-photos" accept="image/*" multiple hidden>
+              <input type="file" id="f-photos" accept="image/*" multiple hidden aria-label="Choose photos of your car">
             </div>
             <ul class="photos" id="photos" hidden></ul>
             <p class="status" id="photo-status" role="status" aria-live="polite"></p>
@@ -1928,11 +1951,13 @@ a.rating:hover .rating__count {
           </fieldset>
 
           <input type="hidden" id="f-services" name="services" value="">
-          <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Send request</button>
+          <div class="form-end">
+            <p class="help">Your details and photos are sent to Jarrad by email and are only used to prepare your quote.</p>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Send request</button>
+            </div>
+            <p class="status" id="form-status" role="status" aria-live="polite"></p>
           </div>
-          <p class="status" id="form-status" role="status" aria-live="polite"></p>
-          <p class="help">Your details and photos are sent to Jarrad by email and are only used to prepare your quote.</p>
         </form>
         <noscript><p class="chosen-empty">Turn on JavaScript to send a quote request, or message Jarrad on Facebook.</p></noscript>
       </div>
@@ -2026,7 +2051,7 @@ a.rating:hover .rating__count {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T11:21+10:00">Wed 25 Nov 2026, 11:21 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T11:29+10:00">Wed 25 Nov 2026, 11:29 am AEST</time></p>
   </div>
 </footer>
 

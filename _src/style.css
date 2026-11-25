@@ -403,7 +403,8 @@ main[id] {
 }
 
 .lead {
-  max-width: 30rem;
+  max-width: 34rem;
+  text-wrap: balance;
   font-size: var(--fs-lead);
   color: var(--muted-dark);
 }
@@ -1111,6 +1112,17 @@ main[id] {
   display: none;
 }
 
+/* Phones show three reviews up front; the rest sit behind "Show all". */
+@media (max-width: 40rem) {
+  .reviews__list:not(.reviews__more .reviews__list) > .review:nth-child(n + 4) {
+    display: none;
+  }
+
+  .reviews:has(.reviews__more[open]) .reviews__list > .review {
+    display: block;
+  }
+}
+
 /* Quote: summary and estimate on the left, the form on the right. */
 
 .quote {
@@ -1420,12 +1432,17 @@ a.rating:hover .rating__count {
   background: var(--red);
 }
 
+.form-end {
+  display: grid;
+  gap: 1rem;
+  margin-top: -1rem;
+}
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  margin-top: -0.5rem;
 }
 
 .status {
