@@ -663,7 +663,7 @@
       });
       lines.push('Delivery: ' + (sum.posting
         ? 'Post (' + (sum.postage ? dollars(sum.postage) : 'free') + ')'
-        : 'Pickup or drop-off' + (shop.area ? ' on the ' + shop.area : '')));
+        : 'Pickup or drop off' + (shop.area ? ' on the ' + shop.area : '')));
       lines.push('Total: ' + dollars(sum.total));
       lines.push('My name: ');
       if (sum.posting) {
