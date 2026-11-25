@@ -1224,6 +1224,7 @@ main[id] {
   align-items: center;
   gap: 1rem;
   min-height: 5.25rem;
+  height: 100%;
   padding: 1rem 1.15rem;
   border: 2px solid #000000;
   border-radius: var(--radius);

@@ -187,7 +187,7 @@ def main():
         if whatsapp:
             out.append(("WhatsApp", esc(whatsapp), "https://wa.me/" + intl_digits(whatsapp) + "?text=" + quote(sms_body), True))
         if email:
-            out.append(("Email", esc(email), "mailto:" + esc(email) + "?subject=" + quote("Quote request"), False))
+            out.append(("Email", esc(email).replace("@", "<wbr>@"), "mailto:" + esc(email) + "?subject=" + quote("Quote request"), False))
         if messenger:
             out.append(("Messenger", "Message on Facebook", esc(messenger), True))
         out.append(("Facebook", "Detailed By Jarrad", facebook, True))
