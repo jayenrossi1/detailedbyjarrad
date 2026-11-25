@@ -4,9 +4,9 @@
   "products": [
     {
       "name": "Detailed By Jarrad Tee",
-      "price": 49.95,
+      "price": 49.99,
       "description": "Large badge print on the back.",
-      "image": "img/merch/tee-back.webp",
+      "image": "",
       "sold_out": false,
       "id": "tee",
       "sizes": [
@@ -19,9 +19,9 @@
     },
     {
       "name": "Detailed By Jarrad Hoodie",
-      "price": 74.95,
+      "price": 79.99,
       "description": "Pullover hoodie with the large badge print on the back.",
-      "image": "img/merch/hoodie-back.webp",
+      "image": "",
       "sold_out": false,
       "id": "hoodie",
       "sizes": [

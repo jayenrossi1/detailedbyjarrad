@@ -242,7 +242,7 @@ def main():
         picture = (
             f'<img class="product__img" src="{esc(image)}" alt="{esc(item["name"])}" '
             'width="640" height="640" loading="lazy" decoding="async">'
-            if image else '<div class="product__img product__img--none" aria-hidden="true"></div>'
+            if image else ""
         )
         price = f'{currency}{item["price"]:,.0f}' if float(item["price"]).is_integer() else f'{currency}{item["price"]:,.2f}'
         colours = f'<p class="product__fact">Colours: {esc(", ".join(item["colours"]))}</p>' if item.get("colours") else ""
@@ -251,16 +251,20 @@ def main():
             action = '<div class="product__row"><span class="btn btn-line product__add is-off">Sold out</span></div>'
         else:
             sizes = item.get("sizes") or []
-            select = ""
+            chips = ""
             if sizes:
-                options = '<option value="">Size</option>' + "".join(f"<option>{esc(sz)}</option>" for sz in sizes)
-                select = (
-                    f'<label class="visually-hidden" for="size-{pid}">Size for {esc(item["name"])}</label>'
-                    f'<select class="product__size" id="size-{pid}">{options}</select>'
+                chips = (
+                    f'<fieldset class="sizes"><legend>Choose your size</legend><div class="sizes__row">'
+                    + "".join(
+                        f'<label class="size-chip"><input type="radio" name="size-{pid}" value="{esc(sz)}">'
+                        f"<span>{esc(sz)}</span></label>"
+                        for sz in sizes
+                    )
+                    + "</div></fieldset>"
                 )
             action = (
-                f'<div class="product__row">{select}'
-                '<button class="btn btn-primary product__add" type="button">Add to cart</button></div>'
+                f"{chips}"
+                '<button class="btn btn-primary product__add" type="button">Add to cart</button>'
                 '<p class="product__msg" role="status" aria-live="polite"></p>'
             )
         return (

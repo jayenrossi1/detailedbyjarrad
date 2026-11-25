@@ -736,15 +736,27 @@
       if (!button) {
         return;
       }
-      var select = card.querySelector('.product__size');
+      var sizeGroup = card.querySelector('.sizes');
+      var sizeInputs = Array.prototype.slice.call(card.querySelectorAll('.size-chip input'));
       var note = card.querySelector('.product__msg');
+      var resetTimer = null;
+      sizeInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+          sizeGroup.classList.remove('is-missing');
+          note.textContent = '';
+        });
+      });
       button.addEventListener('click', function () {
         var id = card.getAttribute('data-product');
-        var size = select ? select.value : '';
-        if (select && !size) {
+        var chosen = sizeInputs.filter(function (input) {
+          return input.checked;
+        })[0];
+        var size = chosen ? chosen.value : '';
+        if (sizeInputs.length && !size) {
           note.textContent = 'Choose a size first.';
           note.removeAttribute('data-tone');
-          select.focus();
+          sizeGroup.classList.add('is-missing');
+          sizeInputs[0].focus();
           return;
         }
         var existing = cart.filter(function (line) {
@@ -757,6 +769,16 @@
         }
         note.textContent = 'Added to cart.';
         note.setAttribute('data-tone', 'ok');
+        button.textContent = 'Added';
+        button.classList.add('is-added');
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(function () {
+          button.textContent = 'Add to cart';
+          button.classList.remove('is-added');
+        }, 1400);
+        fab.classList.remove('is-bumped');
+        void fab.offsetWidth;
+        fab.classList.add('is-bumped');
         update();
       });
     });
