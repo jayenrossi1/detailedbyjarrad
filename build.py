@@ -317,7 +317,13 @@ def main():
     else:
         rating_box = f'<div class="rating" role="img" aria-label="{rating_label}">{rating_inner}</div>'
 
-    areas = f'<p class="areas">We cover {esc(join_names(suburbs))}.</p>' if suburbs else ""
+    area_name = data.get("area", "").strip()
+    if suburbs and area_name:
+        areas = f'<p class="areas">We cover the {esc(area_name)}, including {esc(join_names(suburbs))}.</p>'
+    elif suburbs:
+        areas = f'<p class="areas">We cover {esc(join_names(suburbs))}.</p>'
+    else:
+        areas = ""
 
     if phone:
         sticky_second = f'<a class="btn btn-ghost" href="{tel(phone)}">Call</a>'

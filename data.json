@@ -18,7 +18,14 @@
   "form_endpoint": "https://formsubmit.co/detailedbyjarrad@gmail.com",
   "form_mode": "post",
   "suburbs": [
-    "the Atherton Tablelands"
+    "Atherton",
+    "Mareeba",
+    "Malanda",
+    "Yungaburra",
+    "Herberton",
+    "Kuranda",
+    "Ravenshoe",
+    "Millaa Millaa"
   ],
   "hours": "8am to 5pm",
   "currency": "$",

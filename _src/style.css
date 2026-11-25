@@ -1103,8 +1103,13 @@ main[id] {
   overflow-wrap: anywhere;
 }
 
+.contact .areas {
+  max-width: 44rem;
+}
+
 .contact .small {
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+  font-size: var(--fs-body);
   color: var(--grey);
 }
 
