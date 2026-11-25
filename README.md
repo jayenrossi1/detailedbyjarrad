@@ -21,6 +21,26 @@ The built `index.html` is one self-contained file. The font, the logo and all CS
 
 Estimate = the chosen services' prices for the selected vehicle size, added together. It shows "To be confirmed" if any chosen service has no price yet, and "Quoted from your photos" for heavy jobs. The owner confirms the final price.
 
+## Merch store (merch.json)
+
+The Merch section and its header link appear only when `products` has at least one item. Each product:
+
+    {
+      "name": "Logo Tee",
+      "price": 35,
+      "description": "Heavyweight cotton, regular fit.",
+      "sizes": ["S", "M", "L", "XL"],
+      "colours": ["Black"],
+      "image": "img/merch/logo-tee.webp",
+      "checkout_url": "",
+      "sold_out": false
+    }
+
+- `image`: a square photo in `img/merch/`, about 600 px wide.
+- `checkout_url`: the payment provider's checkout link. With it, the button reads "Buy now". Without it, the button reads "Order by text" and opens a message to the owner.
+- `sold_out`: `true` replaces the button with "Sold out".
+- `postage_note` (top level): one line shown under the products, such as postage price and timing.
+
 ## Photos
 
 Customers can drop photos into the photo box or choose them from their phone. Photos are resized on the device to 1600 px on the longest side, so uploads stay small. Photos are only sent when `form_endpoint` points to a service that accepts file uploads. Until then, the page tells the customer to attach them in a Facebook message.

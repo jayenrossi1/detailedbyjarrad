@@ -660,6 +660,72 @@ main[id] {
   display: none;
 }
 
+/* Merch: a small product grid. Appears only when merch.json has products. */
+
+.merch {
+  padding: 5rem 0 5.5rem;
+  background: #ffffff;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 2rem 1.5rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+.product__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: #ececec;
+}
+
+.product__body {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.product__body p {
+  color: var(--grey);
+}
+
+.product__body .product__price {
+  color: #000000;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.product__fact {
+  font-size: var(--fs-small);
+}
+
+.product__buy {
+  margin-top: 0.75rem;
+  justify-self: start;
+}
+
+.product__buy.is-off {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.merch .note {
+  margin-top: 2rem;
+}
+
 /* Contact: every way to reach the owner, as large tap targets. */
 
 .contact {
@@ -1262,6 +1328,7 @@ main[id] {
     <nav class="site-nav" aria-label="Main">
       <a href="#services">Services</a>
       <a href="#reviews">Reviews</a>
+      
       <a href="#contact">Contact</a>
       <a class="head-call" href="tel:0407530046">Call</a>
       <button class="btn btn-ghost btn-sm" id="quote-count" type="button" aria-haspopup="dialog">Quote (0)</button>
@@ -1444,6 +1511,8 @@ main[id] {
       </div>
     </div>
   </section>
+  
+
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
       <h2 id="contact-title">Contact Jarrad</h2>
@@ -1472,7 +1541,7 @@ main[id] {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T09:56+10:00">Wed 25 Nov 2026, 9:56 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T10:22+10:00">Wed 25 Nov 2026, 10:22 am AEST</time></p>
   </div>
 </footer>
 

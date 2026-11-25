@@ -189,6 +189,57 @@ def main():
     )
     header_call = f'<a class="head-call" href="{tel(phone)}">Call</a>' if phone else ""
 
+    # Merch store. Hidden until merch.json lists at least one product.
+    merch = json.loads((ROOT / "merch.json").read_text(encoding="utf-8"))
+    products = merch.get("products", [])
+
+    def product_card(item):
+        if not isinstance(item.get("price"), (int, float)):
+            raise SystemExit(f"Build stopped: merch item '{item.get('name')}' needs a price.")
+        image = item.get("image", "").strip()
+        if image and not (ROOT / image).is_file():
+            raise SystemExit(f"Build stopped: merch image not found: {image}")
+        picture = (
+            f'<img class="product__img" src="{esc(image)}" alt="{esc(item["name"])}" '
+            'width="600" height="600" loading="lazy" decoding="async">'
+            if image else '<div class="product__img product__img--none" aria-hidden="true"></div>'
+        )
+        facts = []
+        if item.get("sizes"):
+            facts.append("Sizes: " + ", ".join(item["sizes"]))
+        if item.get("colours"):
+            facts.append("Colours: " + ", ".join(item["colours"]))
+        facts_html = "".join(f'<p class="product__fact">{esc(f)}</p>' for f in facts)
+        price = f'{currency}{item["price"]:,.0f}' if float(item["price"]).is_integer() else f'{currency}{item["price"]:,.2f}'
+        checkout = item.get("checkout_url", "").strip()
+        order_text = f"Hi {data['owner']}, I'd like to order the {item['name']}. Size: "
+        if item.get("sold_out"):
+            action = '<span class="btn btn-line product__buy is-off">Sold out</span>'
+        elif checkout:
+            action = f'<a class="btn btn-primary product__buy" href="{esc(checkout)}" target="_blank" rel="noopener">Buy now</a>'
+        elif phone:
+            action = f'<a class="btn btn-primary product__buy" href="sms:{tel(phone)[4:]}?&body={quote(order_text)}">Order by text</a>'
+        else:
+            action = f'<a class="btn btn-primary product__buy" href="{facebook}" target="_blank" rel="noopener">Order on Facebook</a>'
+        desc = f'<p>{esc(item["description"])}</p>' if item.get("description") else ""
+        return (
+            f'<li class="product">{picture}<div class="product__body"><h3>{esc(item["name"])}</h3>'
+            f'<p class="product__price">{price}</p>{desc}{facts_html}{action}</div></li>'
+        )
+
+    if products:
+        merch_intro = esc(merch.get("intro") or f"Shirts and hoodies from {data['business_name']}.")
+        postage = f'<p class="note">{esc(merch["postage_note"])}</p>' if merch.get("postage_note") else ""
+        merch_section = (
+            '<section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap">'
+            f'<h2 id="merch-title">Merch</h2><p class="intro">{merch_intro}</p>'
+            '<ul class="products">' + "".join(product_card(i) for i in products) + f"</ul>{postage}</div></section>"
+        )
+        nav_merch = '<a href="#merch">Merch</a>'
+    else:
+        merch_section = ""
+        nav_merch = ""
+
     areas = f'<p class="areas">We cover {esc(join_names(suburbs))}.</p>' if suburbs else ""
 
     if phone:
@@ -238,6 +289,8 @@ def main():
         "{{STAMP_ISO}}": now.isoformat(timespec="minutes"),
         "{{SERVICES}}": service_rows,
         "{{AREAS}}": areas,
+        "{{MERCH}}": merch_section,
+        "{{NAV_MERCH}}": nav_merch,
         "{{REVIEWS_TOP}}": reviews_top,
         "{{REVIEWS_REST}}": reviews_rest,
         "{{REVIEWS_LINK}}": reviews_link,

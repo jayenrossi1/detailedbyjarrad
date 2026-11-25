@@ -580,6 +580,72 @@ main[id] {
   display: none;
 }
 
+/* Merch: a small product grid. Appears only when merch.json has products. */
+
+.merch {
+  padding: 5rem 0 5.5rem;
+  background: #ffffff;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 2rem 1.5rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+.product__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: #ececec;
+}
+
+.product__body {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.product__body p {
+  color: var(--grey);
+}
+
+.product__body .product__price {
+  color: #000000;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.product__fact {
+  font-size: var(--fs-small);
+}
+
+.product__buy {
+  margin-top: 0.75rem;
+  justify-self: start;
+}
+
+.product__buy.is-off {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.merch .note {
+  margin-top: 2rem;
+}
+
 /* Contact: every way to reach the owner, as large tap targets. */
 
 .contact {
