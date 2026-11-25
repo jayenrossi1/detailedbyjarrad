@@ -93,18 +93,36 @@ def main():
 
     currency = data.get("currency", "$")
 
-    def price_label(s):
+    def money_text(value):
+        return f"{currency}{value:,.0f}"
+
+    def price_block(s):
         prices = s.get("prices")
         if prices is None:
-            return "Price on request"
-        return f"From {currency}{min(prices.values()):,.0f}"
+            return '<div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div>'
+        return (
+            '<div class="menu__price"><span class="menu__from">from</span>'
+            f'<span class="menu__figure">{money_text(min(prices.values()))}</span></div>'
+        )
+
+    def sizes_line(s):
+        prices = s.get("prices")
+        if prices is None:
+            return ""
+        cells = "".join(
+            f'<div><dt>{esc(v.get("short", v["name"]))}</dt><dd>{money_text(prices[v["id"]])}</dd></div>'
+            for v in vehicles
+        )
+        return f'<dl class="menu__sizes">{cells}</dl>'
 
     def service_row(s):
+        includes = "".join(f"<li>{esc(i)}</li>" for i in s.get("includes", []))
+        includes_html = f'<ul class="menu__includes">{includes}</ul>' if includes else ""
         return (
             '<li class="menu__item">'
             f'<div class="menu__text"><h4>{esc(s["name"])}</h4>'
-            f'<p class="menu__price">{esc(price_label(s))}</p>'
-            f'<p>{esc(s["summary"])}</p></div>'
+            f'<p>{esc(s["summary"])}</p>{includes_html}{sizes_line(s)}</div>'
+            f"{price_block(s)}"
             '<button class="btn btn-line menu__add" type="button" '
             f'data-service="{esc(s["id"])}" data-name="{esc(s["name"])}" aria-pressed="false">'
             "Add to quote</button>"
@@ -112,9 +130,10 @@ def main():
         )
 
     service_rows = "\n      ".join(
+        f'<div class="menu-group{" menu-group--dark" if g.get("dark") else ""}">'
         f'<h3 class="menu__group">{esc(g["name"])}</h3>\n      <ul class="menu">\n      '
         + "\n      ".join(service_row(s) for s in services if s.get("group") == g["id"])
-        + "\n      </ul>"
+        + "\n      </ul></div>"
         for g in data["service_groups"]
     )
     vehicle_options = "".join(

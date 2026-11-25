@@ -429,65 +429,187 @@ main[id] {
   color: var(--grey);
 }
 
+.menu-group {
+  margin-top: 3rem;
+}
+
+.menu-group--dark {
+  margin-left: calc(var(--pad) * -1);
+  margin-right: calc(var(--pad) * -1);
+  padding: 2.5rem var(--pad) 1rem;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgb(255 255 255 / 0.09), transparent 70%),
+    var(--ink);
+  color: var(--paper);
+  color-scheme: dark;
+}
+
+.menu__group {
+  color: var(--red);
+  font-size: 1.35rem;
+}
+
+.menu-group--dark .menu__group {
+  color: #ff4040;
+}
+
 .menu {
-  margin: 2.5rem 0 0;
+  margin: 0.9rem 0 0;
   padding: 0;
   list-style: none;
-  border-top: 2px solid #000000;
+  border-top: 2px solid currentColor;
 }
 
 .menu__item {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 1rem 2rem;
-  padding: 1.5rem 0;
+  gap: 1rem 2.5rem;
+  padding: 2rem 0;
   border-bottom: 1px solid var(--line-light);
+}
+
+.menu-group--dark .menu__item {
+  border-bottom-color: var(--line-dark);
+}
+
+.menu-group--dark .menu__item:last-child {
+  border-bottom: 0;
 }
 
 .menu__text {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .menu__text h4 {
   margin: 0;
   font-stretch: 70%;
   font-weight: 800;
-  font-size: 1.6rem;
-  line-height: 1.05;
+  font-size: 2rem;
+  line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.01em;
 }
 
-.menu__text .menu__price {
-  color: #000000;
-  font-weight: 700;
-}
-
-.menu__group {
-  margin-top: 3rem;
-  color: var(--red);
-}
-
-.menu__group + .menu {
-  margin-top: 0.9rem;
-}
-
 .menu__text p {
-  max-width: 40rem;
+  max-width: 38rem;
   color: var(--grey);
 }
 
+.menu-group--dark .menu__text p {
+  color: var(--muted-dark);
+}
+
+/* What you get: short lines with a red tick. */
+.menu__includes {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__includes li {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.menu__includes li::before {
+  content: "";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.42em;
+  width: 0.8rem;
+  height: 0.42rem;
+  border-left: 3px solid var(--red);
+  border-bottom: 3px solid var(--red);
+  transform: rotate(-45deg);
+}
+
+.menu-group--dark .menu__includes li::before {
+  border-color: #ff4040;
+}
+
+/* Price for each vehicle size. */
+.menu__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.85rem 0 0;
+}
+
+.menu__sizes div {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 7.25rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.menu__sizes dt {
+  font-size: var(--fs-small);
+  color: var(--grey);
+}
+
+.menu__sizes dd {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* The headline price: the loudest thing in the row. */
+.menu__price {
+  display: grid;
+  justify-items: end;
+  min-width: 8.5rem;
+  text-align: right;
+}
+
+.menu__from {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--grey);
+}
+
+.menu__figure {
+  font-stretch: 70%;
+  font-weight: 800;
+  font-size: 4rem;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+}
+
+.menu__figure--ask {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
 .menu__add {
-  min-width: 12.5rem;
+  min-width: 11rem;
+}
+
+.menu-group--dark .btn-line {
+  color: var(--paper);
+  border-color: var(--paper);
+}
+
+.menu-group--dark .btn-line:hover,
+.menu-group--dark .btn-line[aria-pressed="true"] {
+  background: var(--paper);
+  color: #000000;
+}
+
+.menu-group--dark :focus-visible {
+  outline-color: #ffffff;
 }
 
 /* A red rule grows down the left edge of the item being looked at. */
-.menu__item {
-  position: relative;
-}
-
 .menu__item::before {
   content: "";
   position: absolute;
@@ -1224,12 +1346,35 @@ main[id] {
   }
 
   .menu__item {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem 1rem;
+  }
+
+  .menu__text {
+    grid-column: 1 / -1;
+  }
+
+  .menu__price {
+    justify-items: start;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .menu__figure {
+    font-size: 3.25rem;
+  }
+
+  .menu__figure--ask {
+    font-size: 1.3rem;
   }
 
   .menu__add {
-    width: 100%;
     min-width: 0;
+  }
+
+  .menu__sizes div {
+    min-width: 0;
+    flex: 1 1 0;
   }
 
   .group__grid {

@@ -512,65 +512,187 @@ main[id] {
   color: var(--grey);
 }
 
+.menu-group {
+  margin-top: 3rem;
+}
+
+.menu-group--dark {
+  margin-left: calc(var(--pad) * -1);
+  margin-right: calc(var(--pad) * -1);
+  padding: 2.5rem var(--pad) 1rem;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgb(255 255 255 / 0.09), transparent 70%),
+    var(--ink);
+  color: var(--paper);
+  color-scheme: dark;
+}
+
+.menu__group {
+  color: var(--red);
+  font-size: 1.35rem;
+}
+
+.menu-group--dark .menu__group {
+  color: #ff4040;
+}
+
 .menu {
-  margin: 2.5rem 0 0;
+  margin: 0.9rem 0 0;
   padding: 0;
   list-style: none;
-  border-top: 2px solid #000000;
+  border-top: 2px solid currentColor;
 }
 
 .menu__item {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 1rem 2rem;
-  padding: 1.5rem 0;
+  gap: 1rem 2.5rem;
+  padding: 2rem 0;
   border-bottom: 1px solid var(--line-light);
+}
+
+.menu-group--dark .menu__item {
+  border-bottom-color: var(--line-dark);
+}
+
+.menu-group--dark .menu__item:last-child {
+  border-bottom: 0;
 }
 
 .menu__text {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .menu__text h4 {
   margin: 0;
   font-stretch: 70%;
   font-weight: 800;
-  font-size: 1.6rem;
-  line-height: 1.05;
+  font-size: 2rem;
+  line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.01em;
 }
 
-.menu__text .menu__price {
-  color: #000000;
-  font-weight: 700;
-}
-
-.menu__group {
-  margin-top: 3rem;
-  color: var(--red);
-}
-
-.menu__group + .menu {
-  margin-top: 0.9rem;
-}
-
 .menu__text p {
-  max-width: 40rem;
+  max-width: 38rem;
   color: var(--grey);
 }
 
+.menu-group--dark .menu__text p {
+  color: var(--muted-dark);
+}
+
+/* What you get: short lines with a red tick. */
+.menu__includes {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__includes li {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.menu__includes li::before {
+  content: "";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.42em;
+  width: 0.8rem;
+  height: 0.42rem;
+  border-left: 3px solid var(--red);
+  border-bottom: 3px solid var(--red);
+  transform: rotate(-45deg);
+}
+
+.menu-group--dark .menu__includes li::before {
+  border-color: #ff4040;
+}
+
+/* Price for each vehicle size. */
+.menu__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.85rem 0 0;
+}
+
+.menu__sizes div {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 7.25rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.menu__sizes dt {
+  font-size: var(--fs-small);
+  color: var(--grey);
+}
+
+.menu__sizes dd {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* The headline price: the loudest thing in the row. */
+.menu__price {
+  display: grid;
+  justify-items: end;
+  min-width: 8.5rem;
+  text-align: right;
+}
+
+.menu__from {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--grey);
+}
+
+.menu__figure {
+  font-stretch: 70%;
+  font-weight: 800;
+  font-size: 4rem;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+}
+
+.menu__figure--ask {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
 .menu__add {
-  min-width: 12.5rem;
+  min-width: 11rem;
+}
+
+.menu-group--dark .btn-line {
+  color: var(--paper);
+  border-color: var(--paper);
+}
+
+.menu-group--dark .btn-line:hover,
+.menu-group--dark .btn-line[aria-pressed="true"] {
+  background: var(--paper);
+  color: #000000;
+}
+
+.menu-group--dark :focus-visible {
+  outline-color: #ffffff;
 }
 
 /* A red rule grows down the left edge of the item being looked at. */
-.menu__item {
-  position: relative;
-}
-
 .menu__item::before {
   content: "";
   position: absolute;
@@ -1307,12 +1429,35 @@ main[id] {
   }
 
   .menu__item {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem 1rem;
+  }
+
+  .menu__text {
+    grid-column: 1 / -1;
+  }
+
+  .menu__price {
+    justify-items: start;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .menu__figure {
+    font-size: 3.25rem;
+  }
+
+  .menu__figure--ask {
+    font-size: 1.3rem;
   }
 
   .menu__add {
-    width: 100%;
     min-width: 0;
+  }
+
+  .menu__sizes div {
+    min-width: 0;
+    flex: 1 1 0;
   }
 
   .group__grid {
@@ -1405,22 +1550,22 @@ main[id] {
     <div class="wrap">
       <h2 id="services-title">Services</h2>
       <p class="intro">Choose what you need. Prices are for well-kept cars and depend on the size of your vehicle. Heavy jobs are quoted from photos.</p>
-      <h3 class="menu__group">Details</h3>
+      <div class="menu-group"><h3 class="menu__group">Details</h3>
       <ul class="menu">
-      <li class="menu__item"><div class="menu__text"><h4>Interior Detail</h4><p class="menu__price">From $350</p><p>Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.</p></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior Detail" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h4>Inside and Out Detail</h4><p class="menu__price">From $550</p><p>The full interior detail, plus a hand wash, paint decontamination, polish and protection. Wheels and glass included.</p></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Inside and Out Detail" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h4>Maintenance Detail</h4><p class="menu__price">Price on request</p><p>For existing customers. A regular inside and out clean every 4 to 8 weeks, to keep a detailed car looking detailed. Available after your first full detail or ceramic coating.</p></div><button class="btn btn-line menu__add" type="button" data-service="maintenance" data-name="Maintenance Detail" aria-pressed="false">Add to quote</button></li>
-      </ul>
-      <h3 class="menu__group">Protection</h3>
+      <li class="menu__item"><div class="menu__text"><h4>Interior Detail</h4><p>A deep clean of everything inside the car.</p><ul class="menu__includes"><li>Carpets, mats and seats vacuumed and shampooed</li><li>Dash, console and trims cleaned</li><li>Glass and mirrors cleaned</li></ul><dl class="menu__sizes"><div><dt>Small car</dt><dd>$350</dd></div><div><dt>Sedan or wagon</dt><dd>$450</dd></div><div><dt>SUV or ute</dt><dd>$550</dd></div></dl></div><div class="menu__price"><span class="menu__from">from</span><span class="menu__figure">$350</span></div><button class="btn btn-line menu__add" type="button" data-service="interior" data-name="Interior Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Inside and Out Detail</h4><p>The complete detail, inside and out, in one visit.</p><ul class="menu__includes"><li>Everything in the Interior Detail</li><li>Hand wash and paint decontamination</li><li>Polish and paint protection</li><li>Wheels and glass cleaned</li></ul><dl class="menu__sizes"><div><dt>Small car</dt><dd>$550</dd></div><div><dt>Sedan or wagon</dt><dd>$650</dd></div><div><dt>SUV or ute</dt><dd>$750</dd></div></dl></div><div class="menu__price"><span class="menu__from">from</span><span class="menu__figure">$550</span></div><button class="btn btn-line menu__add" type="button" data-service="full" data-name="Inside and Out Detail" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Maintenance Detail</h4><p>For existing customers. Keeps a detailed car looking detailed.</p><ul class="menu__includes"><li>A regular inside and out clean</li><li>Every 4 to 8 weeks</li><li>Available after your first full detail or ceramic coating</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="maintenance" data-name="Maintenance Detail" aria-pressed="false">Add to quote</button></li>
+      </ul></div>
+      <div class="menu-group menu-group--dark"><h3 class="menu__group">Protection</h3>
       <ul class="menu">
-      <li class="menu__item"><div class="menu__text"><h4>Interior Detail and Protection</h4><p class="menu__price">Price on request</p><p>A full interior detail, then a protective coating on the seats and carpets, so spills and stains clean up easily.</p></div><button class="btn btn-line menu__add" type="button" data-service="interior-protect" data-name="Interior Detail and Protection" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h4>Ceramic Coating</h4><p class="menu__price">Price on request</p><p>Paint decontaminated and polished, then sealed with a ceramic coating for lasting gloss and easier washing. Needs an undercover space at your place.</p></div><button class="btn btn-line menu__add" type="button" data-service="ceramic" data-name="Ceramic Coating" aria-pressed="false">Add to quote</button></li>
-      </ul>
-      <h3 class="menu__group">Add-ons</h3>
+      <li class="menu__item"><div class="menu__text"><h4>Interior Detail and Protection</h4><p>A full interior detail, then a coating that makes spills easy to clean up.</p><ul class="menu__includes"><li>Everything in the Interior Detail</li><li>Protective coating on the seats and carpets</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="interior-protect" data-name="Interior Detail and Protection" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Ceramic Coating</h4><p>Lasting gloss, and paint that is easier to wash.</p><ul class="menu__includes"><li>Paint decontaminated and polished</li><li>Sealed with a ceramic coating</li><li>Needs an undercover space at your place</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="ceramic" data-name="Ceramic Coating" aria-pressed="false">Add to quote</button></li>
+      </ul></div>
+      <div class="menu-group"><h3 class="menu__group">Add-ons</h3>
       <ul class="menu">
-      <li class="menu__item"><div class="menu__text"><h4>Glass Ceramic</h4><p class="menu__price">Price on request</p><p>A ceramic coating for the windscreen and windows, so rain beads and runs off. Add it to a ceramic coating or a full detail.</p></div><button class="btn btn-line menu__add" type="button" data-service="glass" data-name="Glass Ceramic" aria-pressed="false">Add to quote</button></li>
-      <li class="menu__item"><div class="menu__text"><h4>Trim Dye and Ceramic</h4><p class="menu__price">Price on request</p><p>Faded exterior plastics dyed back to black, then sealed with a ceramic coating.</p></div><button class="btn btn-line menu__add" type="button" data-service="trim" data-name="Trim Dye and Ceramic" aria-pressed="false">Add to quote</button></li>
-      </ul>
+      <li class="menu__item"><div class="menu__text"><h4>Glass Ceramic</h4><p>Rain beads and runs off the glass.</p><ul class="menu__includes"><li>Ceramic coating on the windscreen and windows</li><li>Add it to a ceramic coating or a full detail</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="glass" data-name="Glass Ceramic" aria-pressed="false">Add to quote</button></li>
+      <li class="menu__item"><div class="menu__text"><h4>Trim Dye and Ceramic</h4><p>Faded plastics brought back to black.</p><ul class="menu__includes"><li>Exterior plastics dyed back to black</li><li>Sealed with a ceramic coating</li></ul></div><div class="menu__price"><span class="menu__figure menu__figure--ask">Price on request</span></div><button class="btn btn-line menu__add" type="button" data-service="trim" data-name="Trim Dye and Ceramic" aria-pressed="false">Add to quote</button></li>
+      </ul></div>
       <p class="areas">We cover the Atherton Tablelands.</p>
       <p class="note">Not sure what you need? <a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Message Jarrad on Facebook</a>.</p>
     </div>
@@ -1595,7 +1740,7 @@ main[id] {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener">YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener">Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T10:39+10:00">Wed 25 Nov 2026, 10:39 am AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T10:42+10:00">Wed 25 Nov 2026, 10:42 am AEST</time></p>
   </div>
 </footer>
 

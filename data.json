@@ -25,15 +25,18 @@
   "vehicle_types": [
     {
       "id": "small",
-      "name": "Small car or hatch"
+      "name": "Small car or hatch",
+      "short": "Small car"
     },
     {
       "id": "medium",
-      "name": "Sedan or wagon"
+      "name": "Sedan or wagon",
+      "short": "Sedan or wagon"
     },
     {
       "id": "large",
-      "name": "SUV, ute or people mover"
+      "name": "SUV, ute or people mover",
+      "short": "SUV or ute"
     }
   ],
   "dirt_levels": [
@@ -58,72 +61,108 @@
       "id": "interior",
       "group": "details",
       "name": "Interior Detail",
-      "summary": "Vacuum and shampoo the carpets, mats and seats. Clean the dash, trims, glass and mirrors.",
+      "summary": "A deep clean of everything inside the car.",
       "prices": {
         "small": 350,
         "medium": 450,
         "large": 550
-      }
+      },
+      "includes": [
+        "Carpets, mats and seats vacuumed and shampooed",
+        "Dash, console and trims cleaned",
+        "Glass and mirrors cleaned"
+      ]
     },
     {
       "id": "full",
       "group": "details",
       "name": "Inside and Out Detail",
-      "summary": "The full interior detail, plus a hand wash, paint decontamination, polish and protection. Wheels and glass included.",
+      "summary": "The complete detail, inside and out, in one visit.",
       "prices": {
         "small": 550,
         "medium": 650,
         "large": 750
-      }
+      },
+      "includes": [
+        "Everything in the Interior Detail",
+        "Hand wash and paint decontamination",
+        "Polish and paint protection",
+        "Wheels and glass cleaned"
+      ]
     },
     {
       "id": "maintenance",
       "group": "details",
       "name": "Maintenance Detail",
-      "summary": "For existing customers. A regular inside and out clean every 4 to 8 weeks, to keep a detailed car looking detailed. Available after your first full detail or ceramic coating.",
-      "prices": null
+      "summary": "For existing customers. Keeps a detailed car looking detailed.",
+      "prices": null,
+      "includes": [
+        "A regular inside and out clean",
+        "Every 4 to 8 weeks",
+        "Available after your first full detail or ceramic coating"
+      ]
     },
     {
       "id": "interior-protect",
       "group": "protection",
       "name": "Interior Detail and Protection",
-      "summary": "A full interior detail, then a protective coating on the seats and carpets, so spills and stains clean up easily.",
-      "prices": null
+      "summary": "A full interior detail, then a coating that makes spills easy to clean up.",
+      "prices": null,
+      "includes": [
+        "Everything in the Interior Detail",
+        "Protective coating on the seats and carpets"
+      ]
     },
     {
       "id": "ceramic",
       "group": "protection",
       "name": "Ceramic Coating",
-      "summary": "Paint decontaminated and polished, then sealed with a ceramic coating for lasting gloss and easier washing. Needs an undercover space at your place.",
-      "prices": null
+      "summary": "Lasting gloss, and paint that is easier to wash.",
+      "prices": null,
+      "includes": [
+        "Paint decontaminated and polished",
+        "Sealed with a ceramic coating",
+        "Needs an undercover space at your place"
+      ]
     },
     {
       "id": "glass",
       "group": "addons",
       "name": "Glass Ceramic",
-      "summary": "A ceramic coating for the windscreen and windows, so rain beads and runs off. Add it to a ceramic coating or a full detail.",
-      "prices": null
+      "summary": "Rain beads and runs off the glass.",
+      "prices": null,
+      "includes": [
+        "Ceramic coating on the windscreen and windows",
+        "Add it to a ceramic coating or a full detail"
+      ]
     },
     {
       "id": "trim",
       "group": "addons",
       "name": "Trim Dye and Ceramic",
-      "summary": "Faded exterior plastics dyed back to black, then sealed with a ceramic coating.",
-      "prices": null
+      "summary": "Faded plastics brought back to black.",
+      "prices": null,
+      "includes": [
+        "Exterior plastics dyed back to black",
+        "Sealed with a ceramic coating"
+      ]
     }
   ],
   "service_groups": [
     {
       "id": "details",
-      "name": "Details"
+      "name": "Details",
+      "dark": false
     },
     {
       "id": "protection",
-      "name": "Protection"
+      "name": "Protection",
+      "dark": true
     },
     {
       "id": "addons",
-      "name": "Add-ons"
+      "name": "Add-ons",
+      "dark": false
     }
   ],
   "about": {
