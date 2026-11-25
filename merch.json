@@ -1,5 +1,22 @@
 {
-  "intro": "",
+  "intro": "Wear the badge. Tees and hoodies with the Detailed By Jarrad print on the back.",
   "postage_note": "",
-  "products": []
+  "products": [
+    {
+      "name": "Detailed By Jarrad Tee",
+      "price": null,
+      "description": "Large badge print on the back.",
+      "image": "img/merch/tee-back.webp",
+      "checkout_url": "",
+      "sold_out": false
+    },
+    {
+      "name": "Detailed By Jarrad Hoodie",
+      "price": null,
+      "description": "Pullover hoodie with the large badge print on the back.",
+      "image": "img/merch/hoodie-back.webp",
+      "checkout_url": "",
+      "sold_out": false
+    }
+  ]
 }

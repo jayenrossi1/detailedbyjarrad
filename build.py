@@ -233,14 +233,12 @@ def main():
     products = merch.get("products", [])
 
     def product_card(item):
-        if not isinstance(item.get("price"), (int, float)):
-            raise SystemExit(f"Build stopped: merch item '{item.get('name')}' needs a price.")
         image = item.get("image", "").strip()
         if image and not (ROOT / image).is_file():
             raise SystemExit(f"Build stopped: merch image not found: {image}")
         picture = (
             f'<img class="product__img" src="{esc(image)}" alt="{esc(item["name"])}" '
-            'width="600" height="600" loading="lazy" decoding="async">'
+            'width="640" height="640" loading="lazy" decoding="async">'
             if image else '<div class="product__img product__img--none" aria-hidden="true"></div>'
         )
         facts = []
@@ -249,7 +247,12 @@ def main():
         if item.get("colours"):
             facts.append("Colours: " + ", ".join(item["colours"]))
         facts_html = "".join(f'<p class="product__fact">{esc(f)}</p>' for f in facts)
-        price = f'{currency}{item["price"]:,.0f}' if float(item["price"]).is_integer() else f'{currency}{item["price"]:,.2f}'
+        if not isinstance(item.get("price"), (int, float)):
+            price = "Message for price"
+        elif float(item["price"]).is_integer():
+            price = f'{currency}{item["price"]:,.0f}'
+        else:
+            price = f'{currency}{item["price"]:,.2f}'
         checkout = item.get("checkout_url", "").strip()
         order_text = f"Hi {data['owner']}, I'd like to order the {item['name']}. Size: "
         if item.get("sold_out"):

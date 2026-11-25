@@ -760,7 +760,7 @@ main[id] {
 
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 22rem));
   gap: 2rem 1.5rem;
   margin: 2.5rem 0 0;
   padding: 0;
