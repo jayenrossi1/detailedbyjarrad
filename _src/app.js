@@ -737,7 +737,7 @@
       smsLink.hidden = !shop.phone;
       smsLink.href = 'sms:' + shop.phone + '?&body=' + text;
       emailLink.hidden = !config.email;
-      emailLink.href = 'mailto:' + config.email + '?subject=' + encodeURIComponent('Merch order') + '&body=' + text;
+      emailLink.href = 'mailto:' + config.email + '?subject=' + encodeURIComponent('Clothing order') + '&body=' + text;
     }
 
     function update() {

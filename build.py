@@ -299,10 +299,10 @@ def main():
             post_rate = " (free)"
         merch_section = (
             '<section class="merch" id="merch" aria-labelledby="merch-title"><div class="wrap">'
-            f'<h2 id="merch-title">Merch</h2><p class="intro">{merch_intro}</p>'
+            f'<h2 id="merch-title">Clothing</h2><p class="intro">{merch_intro}</p>'
             '<ul class="products">' + "".join(product_card(i) for i in products) + "</ul></div></section>"
         )
-        nav_merch = '<a href="#merch">Merch</a>'
+        nav_merch = '<a href="#merch">Clothing</a>'
         area_name = esc(data.get("area", ""))
         merch_cart = (
             '<button class="cart-fab" id="cart-fab" type="button" aria-haspopup="dialog" hidden>Cart (0)</button>'
@@ -310,7 +310,7 @@ def main():
             '<div class="drawer__head"><h2 id="cart-title">Your cart</h2>'
             '<button class="btn btn-ghost btn-sm" type="button" data-close>Close</button></div>'
             '<ul class="cart-items" id="cart-items"></ul>'
-            '<p class="note" id="cart-empty">Your cart is empty. Add a tee or hoodie from the Merch section.</p>'
+            '<p class="note" id="cart-empty">Your cart is empty. Add a tee or hoodie from the Clothing section.</p>'
             '<div id="cart-checkout">'
             '<fieldset class="cart-delivery"><legend>Delivery</legend>'
             f'<label><input type="radio" name="cart-delivery" value="pickup" checked> Pickup or drop-off on the {area_name} (free)</label>'
