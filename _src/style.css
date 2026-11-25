@@ -419,8 +419,49 @@ main[id] {
 /* Services: a price board. Black rules, one per item. */
 
 .services {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 5.5rem 0 4.5rem;
   background: var(--paper);
+}
+
+/* Red rings echoing the badge, spreading from two corners and fading out.
+   Pure CSS, no image, and it sits behind the content. */
+.services::before,
+.services::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 60rem;
+  height: 60rem;
+  pointer-events: none;
+  background: repeating-radial-gradient(circle at center, transparent 0 2.6rem, rgb(224 0 0 / 0.16) 2.6rem calc(2.6rem + 2px));
+  -webkit-mask-image: radial-gradient(circle at center, #000 0, transparent 68%);
+  mask-image: radial-gradient(circle at center, #000 0, transparent 68%);
+}
+
+.services::before {
+  top: -24rem;
+  right: -26rem;
+}
+
+.services::after {
+  bottom: -30rem;
+  left: -30rem;
+}
+
+/* On phones the rings sit further off the corner, so they stay clear of the text. */
+@media (max-width: 40rem) {
+  .services::before {
+    top: -39rem;
+    right: -40rem;
+  }
+
+  .services::after {
+    bottom: -40rem;
+    left: -42rem;
+  }
 }
 
 .intro {
@@ -455,10 +496,22 @@ main[id] {
 }
 
 .menu {
+  position: relative;
   margin: 0.9rem 0 0;
   padding: 0;
   list-style: none;
   border-top: 2px solid currentColor;
+}
+
+/* The rule under each group heading starts with a red block. */
+.menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 5rem;
+  height: 6px;
+  background: var(--red);
 }
 
 .menu__item {
@@ -547,6 +600,7 @@ main[id] {
   min-width: 7.25rem;
   padding: 0.5rem 0.8rem;
   border: 1px solid var(--line-light);
+  border-top: 3px solid var(--red);
   border-radius: var(--radius);
   background: #ffffff;
 }
@@ -572,8 +626,8 @@ main[id] {
 
 .menu__from {
   font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--grey);
+  font-weight: 700;
+  color: var(--red);
 }
 
 .menu__figure {
