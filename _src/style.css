@@ -2204,3 +2204,39 @@ main h2::before {
     transition: none !important;
   }
 }
+
+/* Hero: call button with a phone symbol, and a quiet Facebook link under the buttons. */
+.btn-call {
+  gap: 0.55rem;
+  border-color: var(--paper);
+}
+
+.btn-call__icon {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: #ff4040;
+}
+
+.btn-call:hover {
+  background: var(--paper);
+  color: #000000;
+}
+
+.btn-call:hover .btn-call__icon {
+  color: var(--red);
+}
+
+.hero__alt {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: var(--muted-dark);
+}
+
+.hero__alt a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--paper);
+  text-underline-offset: 0.2em;
+}

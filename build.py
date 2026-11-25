@@ -234,6 +234,16 @@ def main():
         for label, detail, href, external in ways()
     )
     header_call = f'<a class="head-call" href="{tel(phone)}">Call</a>' if phone else ""
+    # Hero: a call button beside the estimate button. Falls back to Facebook with no phone number.
+    if phone:
+        hero_call = (
+            f'<a class="btn btn-ghost btn-call" href="{tel(phone)}" aria-label="Call now on {esc(phone)}">'
+            '<svg class="btn-call__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" '
+            'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + icon_paths["Call"] + "</svg>Call now</a>"
+        )
+    else:
+        hero_call = f'<a class="btn btn-ghost" href="{facebook}" target="_blank" rel="noopener">Message on Facebook</a>'
 
     # Merch store. Hidden until merch.json lists at least one product.
     merch = json.loads((ROOT / "merch.json").read_text(encoding="utf-8"))
@@ -414,6 +424,7 @@ def main():
         "{{MERCH}}": merch_section,
         "{{RATING_BOX}}": rating_box,
         "{{HERO_RATING}}": hero_rating,
+        "{{HERO_CALL}}": hero_call,
         "{{TOWNS}}": towns,
         "{{SIZE_SWITCH}}": size_switch,
         "{{REVIEWS_ALL}}": reviews_all,

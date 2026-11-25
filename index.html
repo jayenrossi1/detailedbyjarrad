@@ -2302,6 +2302,42 @@ main h2::before {
   }
 }
 
+/* Hero: call button with a phone symbol, and a quiet Facebook link under the buttons. */
+.btn-call {
+  gap: 0.55rem;
+  border-color: var(--paper);
+}
+
+.btn-call__icon {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: #ff4040;
+}
+
+.btn-call:hover {
+  background: var(--paper);
+  color: #000000;
+}
+
+.btn-call:hover .btn-call__icon {
+  color: var(--red);
+}
+
+.hero__alt {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: var(--muted-dark);
+}
+
+.hero__alt a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--paper);
+  text-underline-offset: 0.2em;
+}
+
 </style>
 </head>
 <body>
@@ -2333,8 +2369,9 @@ main h2::before {
       <a class="hero__rating" href="#reviews" aria-label="Rated 5.0 out of 5 from 43 reviews on Google. Read the reviews"><span class="stars" aria-hidden="true"></span><span>5.0 from 43 Google reviews</span></a>
       <div class="actions">
         <a class="btn btn-primary" href="#quote">Get an estimate</a>
-        <a class="btn btn-ghost" href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">Message on Facebook</a>
+        <a class="btn btn-ghost btn-call" href="tel:0407530046" aria-label="Call now on 0407 530 046"><svg class="btn-call__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call now</a>
       </div>
+      <p class="hero__alt">Or <a href="https://www.facebook.com/p/Detailed-By-Jarrad-61566429890680/" target="_blank" rel="noopener">message Jarrad on Facebook</a></p>
     </div>
   </section>
 
@@ -2545,7 +2582,7 @@ main h2::before {
       <li><a href="https://www.youtube.com/channel/UCBm45BoEaUpCr5qCiUiTulg" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>YouTube</a></li>
       <li><a href="https://www.google.com.au/maps/place/Detailed+By+Jarrad/@-17.0990467,145.0296002,10z/data=!3m1!4b1!4m6!3m5!1s0x86856b624474c15:0x244f8d8d50b05dca!8m2!3d-17.0993132!4d145.3592438!16s%2Fg%2F11y7k8p_wx" target="_blank" rel="noopener"><svg class="way__icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Google</a></li>
     </ul>
-    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T15:58+10:00">Wed 25 Nov 2026, 3:58 pm AEST</time></p>
+    <p class="small">&copy; 2026 Detailed By Jarrad. Site updated <time datetime="2026-11-25T16:10+10:00">Wed 25 Nov 2026, 4:10 pm AEST</time></p>
   </div>
 </footer>
 
