@@ -846,6 +846,29 @@ main[id] {
   font-size: 2rem;
 }
 
+/* Cards in a row share one set of rows, so names, prices, sizes and buttons line up. */
+@supports (grid-template-rows: subgrid) {
+  .product:not(:has(.product__picture, picture, img)) {
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+
+  .product:not(:has(.product__picture, picture, img)) .product__body {
+    grid-row: span 6;
+    grid-template-rows: subgrid;
+    align-content: normal;
+  }
+
+  .products {
+    row-gap: 0;
+  }
+
+  .product {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .product__body p {
   color: var(--muted-dark);
 }
