@@ -2420,3 +2420,15 @@ main .intro,
 :focus-visible {
   outline-color: #ffffff;
 }
+
+/* Packages switched off: hide the services list, the estimate form and their controls. */
+.services-off .services,
+.services-off .quote,
+.services-off .site-nav a[href="#services"],
+.services-off #quote-open {
+  display: none;
+}
+
+.services-off .reviews {
+  border-top: 0;
+}

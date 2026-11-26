@@ -70,3 +70,7 @@ Customers can drop photos into the photo box or choose them from their phone. Ph
 - Add Jarrad's pricing, vehicle multipliers and dirt levels to `data.json`.
 - Add phone, email, hours and service areas.
 - Set up hosting and the custom domain, then build with `--live`.
+
+## Hiding the packages
+
+Set `services_enabled` to `false` in `data.json` to hide the services list and the estimate form. The estimate buttons become a text link to the owner. Set it to `true` (or remove the line) to bring everything back. Nothing is deleted either way.

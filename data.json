@@ -173,5 +173,6 @@
       "dark": false
     }
   ],
-  "opening_hours": "Mo-Fr 08:00-17:00"
+  "opening_hours": "Mo-Fr 08:00-17:00",
+  "services_enabled": false
 }

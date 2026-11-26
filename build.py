@@ -383,7 +383,8 @@ def main():
     if not LIVE:
         draft_bar = (
             f'<div class="draft-bar" role="note">Draft for {owner} to review. '
-            "Some prices are still to be confirmed.</div>"
+            + ("Some prices are still to be confirmed." if data.get("services_enabled", True) else "Packages are hidden for now.")
+            + "</div>"
         )
         robots = '<meta name="robots" content="noindex, nofollow">'
 
@@ -395,6 +396,8 @@ def main():
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"]}}
         for s in services
     ]
+    if not data.get("services_enabled", True):
+        ld.pop("makesOffer", None)
     same_as = [u for u in (data["facebook_url"], instagram, tiktok, youtube, google) if u]
     ld["sameAs"] = same_as
     if phone:
@@ -496,6 +499,20 @@ def main():
         "</html>",
         "",
     ])
+
+    # Packages switched off (services_enabled: false in data.json): the services list and the
+    # estimate form stay in the file but are hidden, and the estimate buttons become a text link.
+    if not data.get("services_enabled", True):
+        contact_href = ("sms:" + tel(phone)[4:] + "?&body=" + quote(sms_body)) if (phone and texting) else "#contact"
+        contact_label = f"Text {owner}" if (phone and texting) else "Contact"
+        cta = '<a class="btn btn-primary" href="#quote">Get an estimate</a>'
+        assert page.count(cta) == 2, "expected two estimate buttons"
+        page = page.replace(cta, f'<a class="btn btn-primary" href="{contact_href}">{contact_label}</a>')
+        page = page.replace("<body>", '<body class="services-off">', 1)
+        page = page.replace('<a class="skip-link" href="#services">Skip to services</a>', '<a class="skip-link" href="#reviews">Skip to reviews</a>', 1)
+        old_desc = "Choose your services, add photos of your car and get an estimate."
+        assert page.count(old_desc) == 1
+        page = page.replace(old_desc, "We come to you.")
 
     depth = 0
     for match in __import__("re").finditer(r"<section\b[^>]*>|</section>", page):
